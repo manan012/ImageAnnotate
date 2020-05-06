@@ -100,31 +100,35 @@ class App extends React.Component {
     var inputName;
     
     const { rectCount, mouseDraw } = this.state;
-    if (mouseDraw) {
+    const { rectangles, i } = this.state; 
+     if (mouseDraw) {
       this.setState({ rectCount: rectCount + 1, mouseDraw: false });
       var annotations = document.getElementById('annotate');
       var inputField = annotations.appendChild(document.createElement('input'));
       inputField.className = 'fieldClass';
 
-      //nameIs = document.querySelector('input[className="fieldCLass"+this.state.i]');
-      if(nameIs === null) {
-        while(nameIs){
-          inputName =  this.updateName(nameIs)
+      //nameIs = document.querySelector('input[className="fieldCLass"]');
+      // if(nameIs === null) {
+      //   while(nameIs){
+      //     inputName =  this.updateName(nameIs)
 
-        }
-      }
-      console.log(inputName);
+      //   }
+      // }
+      // console.log(inputName);
       
       // console.log(this.state.rectangles[i]);
       //this.updateName(nameIs);
-      //console.log(this.state.rectangles[this.state.i].name);
+      
+      console.log(rectangles[i].name);
       this.setState(()=>{
+        
         //this.state.rectangles[this.state.i].name = document.querySelector('input[className="fieldCLass"]');
         this1.state.i = this1.state.i + 1;
       });      
     }
+
     
-    console.log(this1.state.rectangles);
+    //console.log(this1.state.rectangles);
     this.setState({ mouseDown: false });
   };
 
