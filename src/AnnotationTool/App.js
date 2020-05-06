@@ -94,18 +94,25 @@ class App extends React.Component {
     return this.setState({ rectangles });
   };
 
+
+  
+
   handleStageMouseUp = () => {
     var this1 = this;
-    var nameIs;
-    var inputName;
     
     const { rectCount, mouseDraw } = this.state;
     const { rectangles, i } = this.state; 
      if (mouseDraw) {
       this.setState({ rectCount: rectCount + 1, mouseDraw: false });
       var annotations = document.getElementById('annotate');
-      var inputField = annotations.appendChild(document.createElement('input'));
-      inputField.className = 'fieldClass';
+      var e1 = annotations.appendChild(document.createElement('input'));
+      e1.className = 'fieldClass';
+      e1.onchange = validation;
+      function validation () {
+        var value = this.value;
+        console.log(value);
+        console.log(this1.state.rectangles);
+      }
 
       //nameIs = document.querySelector('input[className="fieldCLass"]');
       // if(nameIs === null) {
@@ -115,28 +122,20 @@ class App extends React.Component {
       //   }
       // }
       // console.log(inputName);
-      
-      // console.log(this.state.rectangles[i]);
-      //this.updateName(nameIs);
-      
+
       console.log(rectangles[i].name);
-      this.setState(()=>{
+      this.setState({
+        i: i+1      
         
         //this.state.rectangles[this.state.i].name = document.querySelector('input[className="fieldCLass"]');
-        this1.state.i = this1.state.i + 1;
-      });      
+        //this1.state.i = this1.state.i + 1;
+      });
+            
     }
-
     
     //console.log(this1.state.rectangles);
     this.setState({ mouseDown: false });
   };
-
-  updateName = (name1) => {
-    alert(name1);
-
-
-  }
 
   render() {    
     const {
