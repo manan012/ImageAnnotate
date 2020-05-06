@@ -5,8 +5,7 @@ import Rectangle from './Rectangle/Rectangle';
 import RectTransformer from './Rectangle/RectTransformer';
 import AnnotationImage from './AnnotationImage/AnnotationImage';
 import './App.css';
-import Sidebar from './Sidebar/Sidebar'
-
+import Sidebar from './Sidebar/Sidebar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends React.Component {
@@ -107,22 +106,21 @@ class App extends React.Component {
       var annotations = document.getElementById('annotate');
       var e1 = annotations.appendChild(document.createElement('input'));
       e1.className = 'fieldClass';
-      e1.onchange = validation;
-      function validation () {
+      e1.onchange = updateName;
+
+      function updateName () {
         var value = this.value;
         console.log(value);
-        console.log(this1.state.rectangles);
+        this1.setState(Object.assign(this1.state.rectangles[i], {name: value}));
+
+
+        // this1.setState(prevState => ({...rectangles , ...prevState.rectangles.map(
+        //   e2 => e2.key === key ? {...e2, name: 'Manan1'} : e2
+        // )}), console.log(this1.state.rectangles));
+
+
       }
-
-      //nameIs = document.querySelector('input[className="fieldCLass"]');
-      // if(nameIs === null) {
-      //   while(nameIs){
-      //     inputName =  this.updateName(nameIs)
-
-      //   }
-      // }
-      // console.log(inputName);
-
+      console.log(this1.state.rectangles);
       console.log(rectangles[i].name);
       this.setState({
         i: i+1      
