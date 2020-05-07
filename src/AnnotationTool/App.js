@@ -19,7 +19,7 @@ class App extends React.Component {
     newRectY: 0,
     i: 0,
   };
-  
+
   componentDidMount() {
     this.img.moveToBottom();
   }
@@ -60,6 +60,7 @@ class App extends React.Component {
     }
   };
 
+  // When a properties of rectangle are changed
   handleRectChange = (index, newProps) => {
     const { rectangles } = this.state;
     rectangles[index] = {
@@ -70,19 +71,20 @@ class App extends React.Component {
     this.setState({ rectangles });
   };
 
+  // when a new rectangle is drawn
   handleNewRectChange = (event) => {
     const {
       rectangles, rectCount, newRectX, newRectY,
     } = this.state;
     const stage = event.target.getStage();
-    const mousePos = stage.getPointerPosition();
+    const mousePos = stage.getPointerPosition();    // get mouse position
     if (!rectangles[rectCount]) {
       rectangles.push({
         x: newRectX,
         y: newRectY,
         width: mousePos.x - newRectX,
         height: mousePos - newRectY,
-        name: `rect${rectCount + 1}`,
+        name: '',
         stroke: '#00A3AA',
         key: shortid.generate(),
       });
@@ -93,49 +95,38 @@ class App extends React.Component {
     return this.setState({ rectangles });
   };
 
-
-  
-
   handleStageMouseUp = () => {
     var this1 = this;
-    
+
     const { rectCount, mouseDraw } = this.state;
-    const { rectangles, i } = this.state; 
-     if (mouseDraw) {
+    const { rectangles, i } = this.state;
+    if (mouseDraw) {
       this.setState({ rectCount: rectCount + 1, mouseDraw: false });
       var annotations = document.getElementById('annotate');
-      var e1 = annotations.appendChild(document.createElement('input'));
+      var e1 = annotations.appendChild(document.createElement('input'));    // creating input field
       e1.className = 'fieldClass';
       e1.onchange = updateName;
 
-      function updateName () {
+      function updateName() {       //Local function to update name
         var value = this.value;
         console.log(value);
-        this1.setState(Object.assign(this1.state.rectangles[i], {name: value}));
-
-
-        // this1.setState(prevState => ({...rectangles , ...prevState.rectangles.map(
-        //   e2 => e2.key === key ? {...e2, name: 'Manan1'} : e2
-        // )}), console.log(this1.state.rectangles));
-
-
+        this1.setState(Object.assign(this1.state.rectangles[i], { name: value }));
       }
       console.log(this1.state.rectangles);
       console.log(rectangles[i].name);
       this.setState({
-        i: i+1      
-        
+        i: i + 1
+
         //this.state.rectangles[this.state.i].name = document.querySelector('input[className="fieldCLass"]');
         //this1.state.i = this1.state.i + 1;
       });
-            
     }
-    
+
     //console.log(this1.state.rectangles);
     this.setState({ mouseDown: false });
   };
 
-  render() {    
+  render() {
     const {
       state: { rectangles, selectedShapeName, mouseDown },
       handleStageMouseDown,
@@ -147,7 +138,7 @@ class App extends React.Component {
       <div id="app">
         <div className="row">
           <div className="sm spa">
-            <Sidebar/>
+            <Sidebar />
           </div>
           <div className="col-md-9">
             <Stage
@@ -173,6 +164,7 @@ class App extends React.Component {
                     onTransform={(newProps) => {
                       handleRectChange(i, newProps);
                     }}
+
                   />
                 ))}
                 <RectTransformer selectedShapeName={selectedShapeName} />
@@ -191,8 +183,6 @@ class App extends React.Component {
             <h3>Annotations</h3>
           </div>
         </div>
-
-
       </div>
     );
   }
