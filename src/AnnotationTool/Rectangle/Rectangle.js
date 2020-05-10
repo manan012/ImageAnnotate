@@ -79,9 +79,9 @@ class Rectangle extends React.Component {
                     }
                 />
                 <Text
-                    text={name}
-                    x={x}
-                    y={y}
+                    text={this.props.name}
+                    x={this.props.x}
+                    y={this.props.y}
                     fill={'white'}
                     fontSize={'15'}
                 />

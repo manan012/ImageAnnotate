@@ -3,4 +3,20 @@
     background-size: contain !important;
     cursor: crosshair;
     position: absolute;
+    width: 100%;
+}
+#app {
+    padding: 0%;
+    margin: 0%;
+}
+
+.spa {
+	margin-left: 1%;
+}
+
+#annotate {
+    align-items: right;
+    justify-content: right;
+    padding: 0%;
+    background-color: red;
 }

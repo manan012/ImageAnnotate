@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import "./Sidebar.css"
 import axios from 'axios';
-
-import '../../../node_modules/font-awesome/css/font-awesome.min.css'
+import '../../../node_modules/@fortawesome/fontawesome-free/css/all.css'
 
 class Sidebar extends Component {
   constructor(props) {
@@ -73,37 +72,39 @@ class Sidebar extends Component {
     return (
       <div className="wholeSidebar">
         <div>
-          <label htmlFor="files" className="submitButton" title="Select File to Upload"><i className="fa fa-file fa-3x"></i></label>
+          <label htmlFor="files" className="submitButton1" title="Select File to Upload"><i className="fas fa-file-upload fa-3x"></i></label>
           <input id="files" accept="image/*" hidden="hidden" type="file" onChange={this.uploadImage} />
         </div>
         <div>
            <button className="submitButton" title="Draw Rectangle">
-            <i className="fa fa-square fa-3x"></i>
+           <i className="fas fa-vector-square fa-3x"></i>
           </button>
         </div>
         <div>
           <button className="submitButton" title="Draw Circle">
-            <i className="fa fa-circle fa-3x"></i>
+          <i className="far fa-circle fa-3x"></i>
           </button>
         </div>
         <div>
           <button className="submitButton" title="Draw Line">
-            <h3>Line</h3>
+          <i className="fas fa-pen fa-2x"></i>
           </button>
         </div>
         <div>
           <button className="submitButton" title="Draw Polygon">
-            <p>Polygon</p>
+          <i className="fas fa-draw-polygon fa-3x"></i>
+
+
           </button>
         </div>
-        <div>
+        {/* <div>
           <button className="submitButton" title="Draw Point">
             <p>Point</p>
           </button>
-        </div>
+        </div> */}
         <div>
           <button className="submitButton" title="Save JSON">
-            <i className="fa fa-save fa-3x"></i>
+          <i className="fas fa-download fa-3x"></i>
           </button>
         </div>
       </div>

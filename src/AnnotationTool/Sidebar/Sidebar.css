@@ -9,11 +9,22 @@
 }
 
 .submitButton {
-    background: #66ffe5;
+    background: #f2c2c2;
     border: 1px solid;
     cursor: pointer;
     width: 100%;
     margin-bottom: 0px;
+    padding: 15%;
+    
+}
+
+.submitButton1 {
+    background: #f2c2c2;
+    border: 1px solid;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 0px;
+    padding: 18%;
     
 }
 

@@ -20,7 +20,7 @@ class AnnotationImage extends React.Component {
     render() {   
         return ( <Image 
                     image =  {this.state.image}
-                     width = {window.innerWidth}
+                     width = {window.innerWidth*0.84}
                      height = {window.innerHeight}
                 />);
     }

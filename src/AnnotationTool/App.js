@@ -160,14 +160,14 @@ class App extends React.Component {
           <div className="sm spa">
             <Sidebar imageSet = {this.imageSet}/>
           </div>
-          <div id="app" className="col-md-10">
+          <div id="app" className="col">
             <Stage
               ref={(node) => {
                 this.stage = node;
               }}
               container="app"
               width= { this.state.stageWidth}
-              height= { window.innerHeight * 0.98}
+              height= { window.innerHeight * 0.95}
               onMouseDown={handleStageMouseDown}
               onTouchStart={handleStageMouseDown}
               onMouseMove={mouseDown && handleNewRectChange}
