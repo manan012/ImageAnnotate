@@ -156,6 +156,8 @@ class App extends React.Component {
     // console.log(this.state.image);
     
     return (
+      <div>
+      <div className = "row" style={{justifyContent : "center", color : "#00edae"}}><h1>Image Annotator</h1></div>
         <div className="row">
           <div className="sm spa">
             <Sidebar imageSet = {this.imageSet}/>
@@ -167,7 +169,7 @@ class App extends React.Component {
               }}
               container="app"
               width= { this.state.stageWidth}
-              height= { window.innerHeight * 0.95}
+              height= { window.innerHeight * 0.90}
               onMouseDown={handleStageMouseDown}
               onTouchStart={handleStageMouseDown}
               onMouseMove={mouseDown && handleNewRectChange}
@@ -203,6 +205,7 @@ class App extends React.Component {
               <h4>Annotations</h4>
             </div>
 			    </div>
+        </div>
         </div>
     );
   }

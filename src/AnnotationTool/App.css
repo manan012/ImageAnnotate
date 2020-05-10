@@ -1,27 +1,14 @@
-/* .konvajs-content{
-    border: 1px solid black;
-    background-size: contain !important;
-    cursor: crosshair;
-    position: absolute;
-    width: 100%;
-} */
 #app {
     border: 1px solid black;
     padding: 0%;
     margin: 0%;
     width: 100%;
+    cursor: crosshair;
 }
 
 .spa {
 	margin-left: 1%;
 }
-
-/* #annotate {
-    align-items: right;
-    justify-content: right;
-    padding: 0%;
-    background-color: red;
-} */
 
 #annotate {
 	border: 1px solid;
@@ -34,4 +21,9 @@
 .ann {
 	justify-content: center;
 	background-color: turquoise;
+}
+
+.fieldClass{
+    display: block;
+    margin: 2px auto;
 }
