@@ -141,7 +141,7 @@ class App extends React.Component {
 
   checkSize = () => {
     this.setState({
-      stageWidth: window.innerWidth*0.84
+      stageWidth: window.innerWidth*0.763
     });
   };
 
@@ -160,7 +160,7 @@ class App extends React.Component {
           <div className="sm spa">
             <Sidebar imageSet = {this.imageSet}/>
           </div>
-          <div id="app" className="col">
+          <div id="app" className="col-md-9">
             <Stage
               ref={(node) => {
                 this.stage = node;
@@ -198,9 +198,11 @@ class App extends React.Component {
             </Stage>
 
           </div>
-          <div id="annotate" className="col-md-1">
-            <h3>Annotations</h3>
-          </div>
+          <div className="col-md-2" id = "annotate">
+            <div className="row ann">
+              <h4>Annotations</h4>
+            </div>
+			    </div>
         </div>
     );
   }

@@ -1,22 +1,37 @@
-.konvajs-content{
+/* .konvajs-content{
     border: 1px solid black;
     background-size: contain !important;
     cursor: crosshair;
     position: absolute;
     width: 100%;
-}
+} */
 #app {
+    border: 1px solid black;
     padding: 0%;
     margin: 0%;
+    width: 100%;
 }
 
 .spa {
 	margin-left: 1%;
 }
 
-#annotate {
+/* #annotate {
     align-items: right;
     justify-content: right;
     padding: 0%;
     background-color: red;
+} */
+
+#annotate {
+	border: 1px solid;
+	border-radius: 25px;
+	margin-right: 0px;
+    overflow: hidden;
+    margin-left: 0.75%;
+}
+
+.ann {
+	justify-content: center;
+	background-color: turquoise;
 }
