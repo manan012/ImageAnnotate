@@ -20,7 +20,7 @@ class Rectangle extends React.Component {
             y: shape.y(),
             width: shape.width() * shape.scaleX(),
             height: shape.height() * shape.scaleY(),
-            rotation: shape.rotation(),
+            rotation: shape.rotation()
         });
     };
 
@@ -79,9 +79,9 @@ class Rectangle extends React.Component {
                     }
                 />
                 <Text
-                    text={this.props.name}
-                    x={this.props.x}
-                    y={this.props.y}
+                    text={name}
+                    x={x}
+                    y={y}
                     fill={'white'}
                     fontSize={'15'}
                 />

@@ -1,10 +1,6 @@
-#app {
-    width: 1200px;
-    height: 600px;
+.konvajs-content{
+    border: 1px solid black;
+    background-size: contain !important;
     cursor: crosshair;
+    position: absolute;
 }
-
-.spa {
-	margin-left: 10px;
-}
-

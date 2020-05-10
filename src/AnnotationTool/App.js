@@ -18,11 +18,10 @@ class App extends React.Component {
     newRectX: 0,
     newRectY: 0,
     i: 0,
+    image: "",
+    stageWidth: 1000
   };
 
-  componentDidMount() {
-    this.img.moveToBottom();
-  }
 
   handleStageMouseDown = (event) => {
     const { rectangles } = this.state;
@@ -126,6 +125,26 @@ class App extends React.Component {
     this.setState({ mouseDown: false });
   };
 
+  imageSet = (file) =>{
+    this.setState({image: file})
+  }
+
+  //To resize the canvas dynamically
+  componentDidMount() {
+    this.checkSize();
+    window.addEventListener("resize", this.checkSize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.checkSize);
+  }
+
+  checkSize = () => {
+    this.setState({
+      stageWidth: window.innerWidth*0.84
+    });
+  };
+
   render() {
     const {
       state: { rectangles, selectedShapeName, mouseDown },
@@ -134,20 +153,21 @@ class App extends React.Component {
       handleRectChange,
       handleStageMouseUp,
     } = this;
+    // console.log(this.state.image);
+    
     return (
-      <div id="app">
         <div className="row">
           <div className="sm spa">
-            <Sidebar />
+            <Sidebar imageSet = {this.imageSet}/>
           </div>
-          <div className="col-md-9">
+          <div id="app" className="col-md-10">
             <Stage
               ref={(node) => {
                 this.stage = node;
               }}
               container="app"
-              width={1200}
-              height={700}
+              width= { this.state.stageWidth}
+              height= { window.innerHeight * 0.98}
               onMouseDown={handleStageMouseDown}
               onTouchStart={handleStageMouseDown}
               onMouseMove={mouseDown && handleNewRectChange}
@@ -155,6 +175,13 @@ class App extends React.Component {
               onMouseUp={mouseDown && handleStageMouseUp}
               onTouchEnd={mouseDown && handleStageMouseUp}
             >
+              <Layer
+                ref={(node) => {
+                  this.img = node;
+                }}
+              >
+                <AnnotationImage image = {this.state.image}/>
+              </Layer>
               <Layer>
                 {rectangles.map((rect, i) => (
                   <Rectangle id="annotate"
@@ -164,26 +191,17 @@ class App extends React.Component {
                     onTransform={(newProps) => {
                       handleRectChange(i, newProps);
                     }}
-
                   />
                 ))}
                 <RectTransformer selectedShapeName={selectedShapeName} />
               </Layer>
-              <Layer
-                ref={(node) => {
-                  this.img = node;
-                }}
-              >
-                <AnnotationImage />
-              </Layer>
             </Stage>
 
           </div>
-          <div className="col-md-2" id="annotate">
+          <div id="annotate" className="col-md-1">
             <h3>Annotations</h3>
           </div>
         </div>
-      </div>
     );
   }
 }

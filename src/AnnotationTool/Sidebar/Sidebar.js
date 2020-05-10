@@ -8,30 +8,23 @@ class Sidebar extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      dta: ''
+      dta: '',
+      imageFile: ""
     }
   }
 
   uploadImage = () => {
-    var upload = document.querySelector('canvas');
     var file = document.querySelector('input[type=file]').files[0];
     var reader = new FileReader();
-    reader.onloadend = function () {
-      upload.style.backgroundImage = `url(${reader.result})`;
+    reader.onload = () => {
+      this.setState(()=>{this.props.imageSet(reader.result)});
     }
+    
     if (file) {
       reader.readAsDataURL(file);
-
-      // console.log(file);
       var data = JSON.stringify({ "name": file.name, "Image type": file.type, "Image Size(KB)": (file.size) / 1024, "Last Modified Date": file.lastModifiedDate });
       this.setState({ dta: data });
-      // console.log(data);
-      // axios
-      //     .post('https://labell.herokuapp.com/api/generate', data)
-      //     .then(() => console.log('Data Send'))
-      //     .catch(err => {
-      //       console.error(err);
-      //     });
+      // console.log(reader.result);
     }
   }
 
