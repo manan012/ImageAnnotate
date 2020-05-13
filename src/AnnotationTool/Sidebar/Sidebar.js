@@ -76,29 +76,29 @@ class Sidebar extends Component {
           <input id="files" accept="image/*" hidden="hidden" type="file" onChange={this.uploadImage} />
         </div>
         <div>
-           <button className="submitButton" title="Draw Rectangle">
+           <button className="submitButton" title="Draw Rectangle" onClick={()=>{this.props.buttonClick(true, false, false, false, false)}}>
            <i className="fas fa-vector-square fa-3x"></i>
           </button>
         </div>
         <div>
-          <button className="submitButton" title="Draw Circle">
+          <button className="submitButton" title="Draw Circle" onClick={()=>{this.props.buttonClick(false, true, false, false, false)}}>
           <i className="far fa-circle fa-3x"></i>
           </button>
         </div>
         <div>
-          <button className="submitButton" title="Draw Line">
+          <button className="submitButton" title="Draw Line" onClick={()=>{this.props.buttonClick(false, false, true, false, false)}}>
           <i className="fas fa-pen fa-2x"></i>
           </button>
         </div>
         <div>
-          <button className="submitButton" title="Draw Polygon">
+          <button className="submitButton" title="Draw Polygon" onClick={()=>{this.props.buttonClick(false, false, false, true, false)}}>
           <i className="fas fa-draw-polygon fa-3x"></i>
 
 
           </button>
         </div>
         {/* <div>
-          <button className="submitButton" title="Draw Point">
+          <button className="submitButton" title="Draw Point" onClick={()=>{this.props.buttonClick(false, false, false, false, true)}}>
             <p>Point</p>
           </button>
         </div> */}

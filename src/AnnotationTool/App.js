@@ -10,27 +10,36 @@ class App extends React.Component {
   state = {
     image: "",
     stageWidth: 1000,
-    mouseDown : false
+    mouseDown : false,
+    rector : false,
+    circle : false,
+    line: false,
+    polygon: false,
+    point: false
   };
 
+  //Setting background image
   imageSet = (file) =>{
     this.setState({image: file})
   }
 
-  handleNewRectChange = (event) =>{
-    this.refs.child.handleNewRectChange(event);
+  // Calling child functions inside parent
+  handleNewShapeChange = (event) =>{
+    if(this.state.rector){
+      this.refs.child.handleNewRectChange(event);
+    }
   }
   handleStageMouseUp = () =>{
-    this.refs.child.handleStageMouseUp();
-    this.setState({mouseDown : this.refs.child.state.mouseDown})
-    console.log(this.refs.child.state.mouseDown);
-    
+    if(this.state.rector){
+      this.refs.child.handleStageMouseUp();
+      this.setState({mouseDown : this.refs.child.state.mouseDown});
+    }
   }
   handleStageMouseDown = (event) =>{
-    // console.log(this.refs.child);
-    this.refs.child.handleStageMouseDown(event);
-    this.setState({mouseDown : this.refs.child.state.mouseDown})
-    console.log(this.refs.child.state.mouseDown);
+    if(this.state.rector){
+      this.refs.child.handleStageMouseDown(event);
+      this.setState({mouseDown : this.refs.child.state.mouseDown})
+    }
   }
 
   //To resize the canvas dynamically
@@ -43,22 +52,21 @@ class App extends React.Component {
     window.removeEventListener("resize", this.checkSize);
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   if(this.state !== prevState){
-  //     this.setState({mouseDown : this.refs.child.state.mouseDown})
-  //   }
-  // }
-
   checkSize = () => {
     this.setState({
       stageWidth: window.innerWidth*0.763
     });
   };
 
+  //Setting the buttons
+  buttonClick = (rector, circle, line, polygon, point)=>{
+    this.setState({rector , circle, line , polygon, point})
+  }
+
   render() {
 
     const { state : {mouseDown},
-      handleNewRectChange,
+      handleNewShapeChange,
       handleStageMouseDown,
       handleStageMouseUp
     } = this;
@@ -68,7 +76,7 @@ class App extends React.Component {
       <div className = "row" style={{justifyContent : "center", color : "#00edae"}}><h1>Image Annotator</h1></div>
         <div className="row">
           <div className="sm spa">
-            <Sidebar imageSet = {this.imageSet}/>
+            <Sidebar buttonClick = {this.buttonClick} imageSet = {this.imageSet}/>
           </div>
           <div id="app" className="col-md-9">
             <Stage
@@ -80,8 +88,8 @@ class App extends React.Component {
               height= { window.innerHeight * 0.90}
               onMouseDown={handleStageMouseDown}
               onTouchStart={handleStageMouseDown}
-              onMouseMove={mouseDown && handleNewRectChange}
-              onTouchMove={mouseDown && handleNewRectChange}
+              onMouseMove={mouseDown && handleNewShapeChange}
+              onTouchMove={mouseDown && handleNewShapeChange}
               onMouseUp={mouseDown && handleStageMouseUp}
               onTouchEnd={mouseDown && handleStageMouseUp}
               
@@ -94,7 +102,11 @@ class App extends React.Component {
                 <AnnotationImage image = {this.state.image}/>
               </Layer>
 
-              <DrawRect ref = "child"/>
+              <Layer>
+                <DrawRect ref = "child"/>
+              </Layer>
+                
+
             </Stage>
 
           </div>

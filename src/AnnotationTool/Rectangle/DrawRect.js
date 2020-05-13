@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Rectangle from './Rectangle';
 import RectTransformer from './RectTransformer';
 import shortid from 'shortid';
-import { Layer } from 'react-konva';
 
 class DrawRect extends React.Component{
     state = {
@@ -130,7 +129,7 @@ class DrawRect extends React.Component{
             handleRectChange,
           } = this;
         return(
-            <Layer>
+            <Fragment>
                 {rectangles.map((rect, i) => (
                 <Rectangle id="annotate"
                     
@@ -143,7 +142,7 @@ class DrawRect extends React.Component{
                 />
               ))}
               <RectTransformer selectedShapeName={selectedShapeName} />
-            </Layer>
+            </Fragment>
             
         )
     }
