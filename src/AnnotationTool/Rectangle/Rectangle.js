@@ -20,7 +20,7 @@ class Rectangle extends React.Component {
             y: shape.y(),
             width: shape.width() * shape.scaleX(),
             height: shape.height() * shape.scaleY(),
-            rotation: shape.rotation(),
+            rotation: shape.rotation()
         });
     };
 

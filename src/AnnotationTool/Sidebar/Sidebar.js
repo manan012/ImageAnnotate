@@ -7,34 +7,32 @@ class Sidebar extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      dta: ''
+      dta: '',
+      imageFile: "",
+      varx:false,
     }
   }
 
   uploadImage = () => {
-    var upload = document.querySelector('canvas');
     var file = document.querySelector('input[type=file]').files[0];
     var reader = new FileReader();
-    reader.onloadend = function () {
-      upload.style.backgroundImage = `url(${reader.result})`;
+    reader.onload = () => {
+      this.setState(()=>{this.props.imageSet(reader.result)});
     }
+    
     if (file) {
       reader.readAsDataURL(file);
-
-      // console.log(file);
       var data = JSON.stringify({ "name": file.name, "Image type": file.type, "Image Size(KB)": (file.size) / 1024, "Last Modified Date": file.lastModifiedDate });
       this.setState({ dta: data });
-      // console.log(data);
-      // axios
-      //     .post('https://labell.herokuapp.com/api/generate', data)
-      //     .then(() => console.log('Data Send'))
-      //     .catch(err => {
-      //       console.error(err);
-      //     });
+      this.setState({varx:true});
+      // console.log(reader.result);
     }
   }
 
   DataSend() {
+    if(this.state.varx)
+    {
+      //console.log('hello');
     axios.post('https://labell.herokuapp.com/api/generate', this.state.dta)
       .then(console.log('data send!'))
       .then(
@@ -56,6 +54,7 @@ class Sidebar extends Component {
         }))
       .catch(err => { console.log('error2', err) })
   }
+}
 
   // getFile() {
   //   axios({
@@ -79,37 +78,39 @@ class Sidebar extends Component {
     return (
       <div className="wholeSidebar">
         <div>
-          <label htmlFor="files" className="submitButton1" title="Select File to Upload"><i className="fa fa-file fa-3x"></i></label>
+          <label htmlFor="files" className="submitButton1" title="Select File to Upload"><i className="fas fa-file-upload fa-3x"></i></label>
           <input id="files" accept="image/*" hidden="hidden" type="file" onChange={this.uploadImage} />
         </div>
         <div>
-           <button className="submitButton" title="Draw Rectangle">
-            <i className="fa fa-square fa-3x"></i>
+           <button className="submitButton" title="Draw Rectangle" onClick={()=>{this.props.buttonClick(true, false, false, false, false)}}>
+           <i className="fas fa-vector-square fa-3x"></i>
           </button>
         </div>
         <div>
-          <button className="submitButton" title="Draw Circle">
-            <i className="fa fa-circle fa-3x"></i>
+          <button className="submitButton" title="Draw Circle" onClick={()=>{this.props.buttonClick(false, true, false, false, false)}}>
+          <i className="far fa-circle fa-3x"></i>
           </button>
         </div>
         <div>
-          <button className="submitButton" title="Draw Polygon">
-          <i class="fas fa-draw-polygon fa-3x"></i>
+          <button className="submitButton" title="Draw Line" onClick={()=>{this.props.buttonClick(false, false, true, false, false)}}>
+          <i className="fas fa-pen fa-2x"></i>
           </button>
         </div>
         <div>
-          <button className="submitButton" title="Draw Line">
-            <p>Line</p>
+          <button className="submitButton" title="Draw Polygon" onClick={()=>{this.props.buttonClick(false, false, false, true, false)}}>
+          <i className="fas fa-draw-polygon fa-3x"></i>
+
+
           </button>
         </div>
-        <div>
-          <button className="submitButton" title="Draw Point">
+        {/* <div>
+          <button className="submitButton" title="Draw Point" onClick={()=>{this.props.buttonClick(false, false, false, false, true)}}>
             <p>Point</p>
           </button>
-        </div>
+        </div> */}
         <div>
-          <button className="submitButton" title="Save JSON">
-            <i className="fa fa-save fa-3x"></i>
+          <button className="submitButton" title="Save JSON" onClick={()=>this.DataSend()}>
+          <i className="fas fa-download fa-3x"></i>
           </button>
         </div>
       </div>
