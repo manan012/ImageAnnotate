@@ -61,10 +61,10 @@ class Start extends React.Component {
         <div style={{marginTop:'80px'}}>
         <main>
           <section class="intro">
-            <h1 class="intro__title">
+            <h1 class="intro__title" style={{fontSize:'5rem'}}>
               Image Annotation
         </h1>
-            <p className="intro__subtitle">
+            <p className="intro__subtitle" style={{fontSize:'2.0rem'}}>
               Data is the fuel to AI and for the same . . . .
               AI starts with quality data with good annotation,
         High quality training and validation data for AI applications</p>

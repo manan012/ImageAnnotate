@@ -22,7 +22,7 @@ html {
 
 
 body {
-  
+  margin: 0;
   background-color: var(--lightGrey);
   font-family: var(--familyRoboto);
   /* line-height: 1.6; */
@@ -227,7 +227,7 @@ a {
 .intro__title {
   margin: 0;
   font-family: var(--familyRobotoSlab);
-  font-size: 2.4rem;
+  font-size: 5.0rem;
   font-weight: normal;
   line-height: 1.3;
   color: var(--darkPurple);
