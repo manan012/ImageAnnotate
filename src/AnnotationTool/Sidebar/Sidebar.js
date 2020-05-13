@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import "./Sidebar.css"
 import axios from 'axios';
-
-import '../../../node_modules/font-awesome/css/font-awesome.min.css'
+import '../../../node_modules/@fortawesome/fontawesome-free/css/all.css'
 
 class Sidebar extends Component {
   constructor(props) {
@@ -80,7 +79,7 @@ class Sidebar extends Component {
     return (
       <div className="wholeSidebar">
         <div>
-          <label htmlFor="files" className="submitButton" title="Select File to Upload"><i className="fa fa-file fa-3x"></i></label>
+          <label htmlFor="files" className="submitButton1" title="Select File to Upload"><i className="fa fa-file fa-3x"></i></label>
           <input id="files" accept="image/*" hidden="hidden" type="file" onChange={this.uploadImage} />
         </div>
         <div>
@@ -94,13 +93,13 @@ class Sidebar extends Component {
           </button>
         </div>
         <div>
-          <button className="submitButton" title="Draw Line">
-            <h3>Line</h3>
+          <button className="submitButton" title="Draw Polygon">
+          <i class="fas fa-draw-polygon fa-3x"></i>
           </button>
         </div>
         <div>
-          <button className="submitButton" title="Draw Polygon">
-            <p>Polygon</p>
+          <button className="submitButton" title="Draw Line">
+            <p>Line</p>
           </button>
         </div>
         <div>

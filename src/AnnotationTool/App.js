@@ -1,12 +1,14 @@
 import React from 'react';
 import { Stage, Layer } from 'react-konva';
 import shortid from 'shortid';
-import Rectangle from './Rectangle/Rectangle';
-import RectTransformer from './Rectangle/RectTransformer';
+//import Rectangle from './Rectangle/Rectangle';
+//import RectTransformer from './Rectangle/RectTransformer';
 import AnnotationImage from './AnnotationImage/AnnotationImage';
 import './App.css';
 import Sidebar from './Sidebar/Sidebar';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Circ from './Circle/Circ';
+import CircleTransformer from './Circle/CircleTransformer';
 
 class App extends React.Component {
   state = {
@@ -46,7 +48,7 @@ class App extends React.Component {
 
     // find clicked rect by its name
     const name = event.target.name();
-    console.log(name);
+    //console.log(name);
     const rect = rectangles.find(r => r.name === name);
     if (rect) {
       this.setState({
@@ -77,13 +79,13 @@ class App extends React.Component {
       rectangles, rectCount, newRectX, newRectY,
     } = this.state;
     const stage = event.target.getStage();
+    //console.log('stage ', event.target);
     const mousePos = stage.getPointerPosition();    // get mouse position
     if (!rectangles[rectCount]) {
       rectangles.push({
         x: newRectX,
         y: newRectY,
         width: mousePos.x - newRectX,
-        height: mousePos - newRectY,
         name: '',
         stroke: '#00A3AA',
         key: shortid.generate(),
@@ -91,7 +93,6 @@ class App extends React.Component {
       return this.setState({ rectangles, mouseDraw: true });
     }
     rectangles[rectCount].width = mousePos.x - newRectX;
-    rectangles[rectCount].height = mousePos.y - newRectY;
     return this.setState({ rectangles });
   };
 
@@ -157,7 +158,7 @@ class App extends React.Component {
             >
               <Layer>
                 {rectangles.map((rect, i) => (
-                  <Rectangle id="annotate"
+                  <Circ id="annotate"
                     sclassName="rect"
                     key={rect.key}
                     {...rect}
@@ -167,7 +168,7 @@ class App extends React.Component {
 
                   />
                 ))}
-                <RectTransformer selectedShapeName={selectedShapeName} />
+                <CircleTransformer selectedShapeName={selectedShapeName} />
               </Layer>
               <Layer
                 ref={(node) => {

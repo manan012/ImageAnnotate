@@ -4,7 +4,7 @@
     border-top: 1px solid #000;
     border-left: 1px solid #000;
     padding: 10px;
-    
+    margin: 20%;    
     cursor: pointer;
 }
 
@@ -14,6 +14,16 @@
     cursor: pointer;
     width: 100%;
     margin-bottom: 0px;
+    padding: 15%;
+    
+}
+.submitButton1 {
+    background: #f2c2c2;
+    border: 1px solid;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 0px;
+    padding: 18%;
     
 }
 
@@ -21,3 +31,6 @@
     background: #efefef;
 }
 
+.wholeSidebar {
+    margin-left: 10px;
+}
