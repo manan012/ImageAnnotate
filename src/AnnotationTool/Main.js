@@ -7,16 +7,29 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import DrawRect from './Rectangle/DrawRect';
 
 class App extends React.Component {
-  state = {
-    image: "",
-    stageWidth: 1000,
-    mouseDown : false,
-    rector : false,
-    circle : false,
-    line: false,
-    polygon: false,
-    point: false
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      image: "",
+      stageWidth: 1000,
+      mouseDown : false,
+      rector : false,
+      circle : false,
+      line: false,
+      polygon: false,
+      point: false,
+      rectangles:[],
+    };
+  this.handleInputValueRect = this.handleInputValueRect.bind(this);
+    
+  }
+
+  handleInputValueRect(val) {
+    //console.log('hell0', val);
+    this.setState({rectangles:val});
+    //console.log('hell', this.state.rectangles);
+  }
+ 
 
   //Setting background image
   imageSet = (file) =>{
@@ -76,7 +89,7 @@ class App extends React.Component {
       <div className = "row" style={{justifyContent : "center", color : "#00edae"}}><h1>Image Annotator</h1></div>
         <div className="row">
           <div className="sm spa">
-            <Sidebar buttonClick = {this.buttonClick} imageSet = {this.imageSet}/>
+            <Sidebar buttonClick = {this.buttonClick} imageSet = {this.imageSet} rectangles={this.state.rectangles}/>
           </div>
           <div id="app" className="col-md-9">
             <Stage
@@ -103,7 +116,7 @@ class App extends React.Component {
               </Layer>
 
               <Layer>
-                <DrawRect ref = "child"/>
+                <DrawRect ref = "child" handleInput={this.handleInputValueRect}/>
               </Layer>
                 
 

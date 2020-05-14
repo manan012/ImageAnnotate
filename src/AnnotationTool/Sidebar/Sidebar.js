@@ -9,7 +9,8 @@ class Sidebar extends Component {
     this.state = {
       dta: '',
       imageFile: "",
-      varx:false,
+      varx: false,
+      rectangles: [],
     }
   }
 
@@ -17,44 +18,50 @@ class Sidebar extends Component {
     var file = document.querySelector('input[type=file]').files[0];
     var reader = new FileReader();
     reader.onload = () => {
-      this.setState(()=>{this.props.imageSet(reader.result)});
+      this.setState(() => { this.props.imageSet(reader.result) });
     }
-    
+
     if (file) {
       reader.readAsDataURL(file);
       var data = JSON.stringify({ "name": file.name, "Image type": file.type, "Image Size(KB)": (file.size) / 1024, "Last Modified Date": file.lastModifiedDate });
       this.setState({ dta: data });
-      this.setState({varx:true});
+      this.setState({ varx: true });
       // console.log(reader.result);
     }
+
+
   }
 
   DataSend() {
-    if(this.state.varx)
-    {
+    //this.state.rectangles=this.props.rectangles;
+    var data = JSON.stringify(this.props.rectangles);
+    //console.log(data);
+    
+    this.setState({dta:data});
+    if (this.state.varx) {
       //console.log('hello');
-    axios.post('https://labell.herokuapp.com/api/generate', this.state.dta)
-      .then(console.log('data send!'))
-      .then(
-        axios({
-          url: 'https://labell.herokuapp.com/api/getfile',
-          method: 'GET',
-          responseType: 'blob',
-        }).then((response) => {
-          console.log(response.data);
-          const url = window.URL.createObjectURL(new Blob([response.data]));
-          const link = document.createElement('a');
-          link.href = url;
-          link.setAttribute('download', 'file.json'); //or any other extension
-          document.body.appendChild(link);
-          link.click();
+      axios.post('https://labell.herokuapp.com/api/generate', data)
+        .then(console.log('data send!'))
+        .then(
+          axios({
+            url: 'https://labell.herokuapp.com/api/getfile',
+            method: 'GET',
+            responseType: 'blob',
+          }).then((response) => {
+            console.log(response.data);
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'file.json'); //or any other extension
+            document.body.appendChild(link);
+            link.click();
 
-        }).catch(err => {
-          console.log('error1', err);
-        }))
-      .catch(err => { console.log('error2', err) })
+          }).catch(err => {
+            console.log('error1', err);
+          }))
+        .catch(err => { console.log('error2', err) })
+    }
   }
-}
 
   // getFile() {
   //   axios({
@@ -82,23 +89,23 @@ class Sidebar extends Component {
           <input id="files" accept="image/*" hidden="hidden" type="file" onChange={this.uploadImage} />
         </div>
         <div>
-           <button className="submitButton" title="Draw Rectangle" onClick={()=>{this.props.buttonClick(true, false, false, false, false)}}>
-           <i className="fas fa-vector-square fa-3x"></i>
+          <button className="submitButton" title="Draw Rectangle" onClick={() => { this.props.buttonClick(true, false, false, false, false) }}>
+            <i className="fas fa-vector-square fa-3x"></i>
           </button>
         </div>
         <div>
-          <button className="submitButton" title="Draw Circle" onClick={()=>{this.props.buttonClick(false, true, false, false, false)}}>
-          <i className="far fa-circle fa-3x"></i>
+          <button className="submitButton" title="Draw Circle" onClick={() => { this.props.buttonClick(false, true, false, false, false) }}>
+            <i className="far fa-circle fa-3x"></i>
           </button>
         </div>
         <div>
-          <button className="submitButton" title="Draw Line" onClick={()=>{this.props.buttonClick(false, false, true, false, false)}}>
-          <i className="fas fa-pen fa-2x"></i>
+          <button className="submitButton" title="Draw Line" onClick={() => { this.props.buttonClick(false, false, true, false, false) }}>
+            <i className="fas fa-pen fa-2x"></i>
           </button>
         </div>
         <div>
-          <button className="submitButton" title="Draw Polygon" onClick={()=>{this.props.buttonClick(false, false, false, true, false)}}>
-          <i className="fas fa-draw-polygon fa-3x"></i>
+          <button className="submitButton" title="Draw Polygon" onClick={() => { this.props.buttonClick(false, false, false, true, false) }}>
+            <i className="fas fa-draw-polygon fa-3x"></i>
 
 
           </button>
@@ -109,8 +116,8 @@ class Sidebar extends Component {
           </button>
         </div> */}
         <div>
-          <button className="submitButton" title="Save JSON" onClick={()=>this.DataSend()}>
-          <i className="fas fa-download fa-3x"></i>
+          <button className="submitButton" title="Save JSON" onClick={() => this.DataSend()}>
+            <i className="fas fa-download fa-3x"></i>
           </button>
         </div>
       </div>

@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import Rectangle from './Rectangle';
 import RectTransformer from './RectTransformer';
-import shortid from 'shortid';
 
 class DrawRect extends React.Component{
     state = {
@@ -81,7 +80,6 @@ class DrawRect extends React.Component{
             height: mousePos - newRectY,
             name: '',
             stroke: '#00A3AA',
-            key: shortid.generate(),
           });
           return this.setState({ rectangles, mouseDraw: true });
         }
@@ -108,7 +106,8 @@ class DrawRect extends React.Component{
             this1.setState(Object.assign(this1.state.rectangles[i], { name: value }));
           }
           console.log(this1.state.rectangles);
-          console.log(rectangles[i].name);
+          this.props.handleInput(this1.state.rectangles);
+          //console.log(rectangles[i].name);
           this.setState({
             i: i + 1
     
