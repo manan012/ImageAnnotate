@@ -4,7 +4,7 @@ import { Circle, Text } from 'react-konva';
 class Circ extends React.Component {
 
     componentDidUpdate() {
-        this.rect.getLayer().draw();
+        this.circ.getLayer().draw();
         //console.log(this.rect.getLayer().draw());
         
     }
@@ -35,7 +35,7 @@ class Circ extends React.Component {
         shape.stroke('#3DF6FF');
         shape.getStage().container().style.cursor = 'move';
         // this.rect.draw();
-        this.rect.getLayer().draw();
+        this.circ.getLayer().draw();
     };
 
     handleMouseLeave = (event) => {
@@ -43,7 +43,7 @@ class Circ extends React.Component {
         shape.stroke('#00A3AA');
         shape.getStage().container().style.cursor = 'crosshair';
         // this.rect.draw();
-        this.rect.getLayer().draw();
+        this.circ.getLayer().draw();
     };
 
     render() {
@@ -71,7 +71,7 @@ class Circ extends React.Component {
                     scaleX={1}
                     scaleY={1}
                     stroke={stroke}
-                    strokeWidth={2}
+                    strokeWidth={5}
                     name={name}
                     
                     
@@ -82,7 +82,7 @@ class Circ extends React.Component {
                     onMouseLeave={handleMouseLeave}
                     draggable ref={
                         (node) => {
-                            this.rect = node;
+                            this.circ = node;
                         }
                     }
                 />

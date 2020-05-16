@@ -85,7 +85,7 @@ class Sidebar extends Component {
     return (
       <div className="wholeSidebar">
         <div>
-          <label htmlFor="files" className="submitButton1" title="Select File to Upload"><i className="fas fa-file-upload fa-3x"></i></label>
+          <label htmlFor="files" className="submitButton" title="Select File to Upload"><i className="fas fa-file-upload fa-3x"></i></label>
           <input id="files" accept="image/*" hidden="hidden" type="file" onChange={this.uploadImage} />
         </div>
         <div>
@@ -100,7 +100,7 @@ class Sidebar extends Component {
         </div>
         <div>
           <button className="submitButton" title="Draw Line" onClick={() => { this.props.buttonClick(false, false, true, false, false) }}>
-            <i className="fas fa-pen fa-2x"></i>
+            <i className="fas fa-pen fa-3x"></i>
           </button>
         </div>
         <div>

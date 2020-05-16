@@ -8,22 +8,25 @@ import { Button } from 'reactstrap';
 import Logo from './edunomics_logo.png';
 
 class Start extends React.Component {
-  state = {
-    importColor: 'import ',
-    message: "Annotator \n image_url =  ",
-    linkColor: "'https://Annotator.com/tesla_model3.jpg' \n ",
-    message1: "datasets = Annotator.datasets() \n Annotator.add_row_to_dataset({ \n ",
-    message2: "'dataset_id'",
-    message3: ":datasets[0]['id'], \n ",
-    message4: "'data'",
-    message5: ":image_url \n})",
-    message6: "",
-    message7: "",
-    message8: "",
-    message9: "",
-    message10: "",
+  constructor() {
+    super()
+    this.state = {
+      importColor: 'import ',
+      message: "Annotator \n image_url =  ",
+      linkColor: "'https://Annotator.com/tesla_model3.jpg' \n ",
+      message1: "datasets = Annotator.datasets() \n Annotator.add_row_to_dataset({ \n ",
+      message2: "'dataset_id'",
+      message3: ":datasets[0]['id'], \n ",
+      message4: "'data'",
+      message5: ":image_url \n})",
+      message6: "",
+      message7: "",
+      message8: "",
+      message9: "",
+      message10: "",
+    }
   }
-
+  
 
   componentDidMount() {
     // this.props.history.push
@@ -156,7 +159,7 @@ class Start extends React.Component {
           </button>
 
         </header>
-        <div style={{ marginTop: '140px' }}>
+        <div style={{ marginTop: '100px' }}>
           <main>
             <section class="intro">
               <h1 class="intro__title" style={{ fontSize: '5rem' }}>

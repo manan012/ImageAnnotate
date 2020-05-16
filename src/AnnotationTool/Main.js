@@ -5,6 +5,10 @@ import './Main.css';
 import Sidebar from './Sidebar/Sidebar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DrawRect from './Rectangle/DrawRect';
+import { Button } from 'reactstrap';
+import DrawCircle from './Circle/DrawCircle';
+import { useHistory } from 'react-router-dom';
+
 
 class App extends React.Component {
   constructor(props){
@@ -19,17 +23,31 @@ class App extends React.Component {
       polygon: false,
       point: false,
       rectangles:[],
+      circles:[],
     };
   this.handleInputValueRect = this.handleInputValueRect.bind(this);
+  this.handleInputValueCirc = this.handleInputValueCirc.bind(this);
     
   }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    //console.log('hello');
+    localStorage.removeItem("token");
+    window.location.href="/"
+    // window.location.pathname = '/';
+}
+
 
   handleInputValueRect(val) {
     //console.log('hell0', val);
     this.setState({rectangles:val});
     //console.log('hell', this.state.rectangles);
   }
- 
+
+  handleInputValueCirc(val) {
+    this.setState({circles:val});
+  }
 
   //Setting background image
   imageSet = (file) =>{
@@ -39,23 +57,39 @@ class App extends React.Component {
   // Calling child functions inside parent
   handleNewShapeChange = (event) =>{
     if(this.state.rector){
-      this.refs.child.handleNewRectChange(event);
+      //console.log('hello');
+      
+      this.refs.child1.handleNewRectChange(event);
+    }
+
+    else if(this.state.circle){
+      this.refs.child.handleNewCircleChange(event);
     }
   }
   handleStageMouseUp = () =>{
     if(this.state.rector){
+      this.refs.child1.handleStageMouseUp();
+      this.setState({mouseDown : this.refs.child1.state.mouseDown});
+    }
+
+    else if(this.state.circle){
       this.refs.child.handleStageMouseUp();
       this.setState({mouseDown : this.refs.child.state.mouseDown});
     }
   }
   handleStageMouseDown = (event) =>{
     if(this.state.rector){
+      this.refs.child1.handleStageMouseDown(event);
+      this.setState({mouseDown : this.refs.child1.state.mouseDown})
+    }
+
+    else if(this.state.circle) {
       this.refs.child.handleStageMouseDown(event);
-      this.setState({mouseDown : this.refs.child.state.mouseDown})
+      this.setState({mouseDown: this.refs.child.state.mouseDown})
     }
   }
 
-  //To resize the canvas dynamically
+  //To resize the canvasdynamically
   componentDidMount() {
     this.checkSize();
     window.addEventListener("resize", this.checkSize);
@@ -67,7 +101,7 @@ class App extends React.Component {
 
   checkSize = () => {
     this.setState({
-      stageWidth: window.innerWidth*0.763
+      stageWidth: window.innerWidth*0.764
     });
   };
 
@@ -85,11 +119,20 @@ class App extends React.Component {
     } = this;
     
     return (
-      <div>
-      <div className = "row" style={{justifyContent : "center", color : "#00edae"}}><h1>Image Annotator</h1></div>
+      <div className="whole">
+      <div className = "row" >
+        <div className="col-md-2"></div>
+
+        <div className="col-md-8 name" style={{color:'#08c751'}}>
+        <h1><b>Image Annotator</b></h1>
+        </div>
+        <div className="col-md-2 name1">
+        <Button color="primary" type='submit' onClick={this.handleSubmit}>Log out</Button>
+        </div>
+      </div>
         <div className="row">
           <div className="sm spa">
-            <Sidebar buttonClick = {this.buttonClick} imageSet = {this.imageSet} rectangles={this.state.rectangles}/>
+            <Sidebar buttonClick = {this.buttonClick} imageSet = {this.imageSet} rectangles={this.state.rectangles} circles={this.state.circles}/>
           </div>
           <div id="app" className="col-md-9">
             <Stage
@@ -98,7 +141,7 @@ class App extends React.Component {
               }}
               container="app"
               width= { this.state.stageWidth}
-              height= { window.innerHeight * 0.90}
+              height= { window.innerHeight * 0.88}
               onMouseDown={handleStageMouseDown}
               onTouchStart={handleStageMouseDown}
               onMouseMove={mouseDown && handleNewShapeChange}
@@ -116,8 +159,15 @@ class App extends React.Component {
               </Layer>
 
               <Layer>
-                <DrawRect ref = "child" handleInput={this.handleInputValueRect}/>
-              </Layer>
+                
+                <DrawCircle ref = "child" handleInput={this.handleInputValueCirc}/>
+                <DrawRect ref = "child1" handleInput={this.handleInputValueRect}/>
+
+                </Layer>
+                {/* <Layer>
+                <DrawCircle ref = "child" handleInput={this.handleInputValueCirc}/>
+
+              </Layer> */}
                 
 
             </Stage>
@@ -135,3 +185,4 @@ class App extends React.Component {
 }
 
 export default App;
+
