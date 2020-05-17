@@ -17,11 +17,14 @@ class Signin extends React.Component {
         this.onChange = this.onChange.bind(this);
     }
 
+    //When input fields change on filling the form
     onChange = (e) => {
         this.setState({ [e.target.name]: e.target.value });
 
     }
 
+
+    // Sign up form is submitted
     onSubmit = (e) => {
 
         e.preventDefault();
@@ -54,6 +57,7 @@ class Signin extends React.Component {
 
     }
 
+    // When login form is submitted
     onSubmit1 = (e) => {
         e.preventDefault();
         var this1 = this;
@@ -79,7 +83,6 @@ class Signin extends React.Component {
 
 
     componentDidMount() {
-
 
         const loginBtn = document.getElementById('login');
         const signupBtn = document.getElementById('signup');

@@ -14,6 +14,7 @@ class Sidebar extends Component {
     }
   }
 
+  // Image uploading on Canvas
   uploadImage = () => {
     var file = document.querySelector('input[type=file]').files[0];
     var reader = new FileReader();
@@ -32,6 +33,7 @@ class Sidebar extends Component {
 
   }
 
+  // Downloading the Json File
   DataSend() {
     //this.state.rectangles=this.props.rectangles;
     var data = JSON.stringify(this.props.rectangles);

@@ -35,15 +35,14 @@ class App extends Component {
                 path='/signin'
                 component={Signin}
               >
+                
+
               </Route>
               <Route exact
                 path='/'
                 component={Start}
               >
               </Route>
-
-              
-
 
               
               {localStorage.getItem('token') ? (

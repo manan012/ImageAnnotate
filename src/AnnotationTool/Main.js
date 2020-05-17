@@ -30,21 +30,23 @@ class App extends React.Component {
     
   }
 
+  //Signout Button Action
   handleSubmit(event) {
     event.preventDefault();
     //console.log('hello');
     localStorage.removeItem("token");
     window.location.href="/"
     // window.location.pathname = '/';
-}
+  }
 
-
+  //When a new rectangle is added
   handleInputValueRect(val) {
     //console.log('hell0', val);
     this.setState({rectangles:val});
     //console.log('hell', this.state.rectangles);
   }
 
+  // When a circle is added
   handleInputValueCirc(val) {
     this.setState({circles:val});
   }
@@ -66,6 +68,8 @@ class App extends React.Component {
       this.refs.child.handleNewCircleChange(event);
     }
   }
+
+  // When mouse key is realised up
   handleStageMouseUp = () =>{
     if(this.state.rector){
       this.refs.child1.handleStageMouseUp();
@@ -77,6 +81,8 @@ class App extends React.Component {
       this.setState({mouseDown : this.refs.child.state.mouseDown});
     }
   }
+
+  // When mouse key is pressed down
   handleStageMouseDown = (event) =>{
     if(this.state.rector){
       this.refs.child1.handleStageMouseDown(event);

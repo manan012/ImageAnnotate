@@ -15,7 +15,7 @@ class DrawRect extends React.Component{
     }
 
 
-
+    //When mouse key is pressed down
     handleStageMouseDown = (event) => {
         const { rectangles } = this.state;
         
@@ -87,7 +87,8 @@ class DrawRect extends React.Component{
         rectangles[rectCount].height = mousePos.y - newRectY;
         return this.setState({ rectangles });
       };
-    
+      
+      //When mouse key is released
       handleStageMouseUp = () => {
         var this1 = this;
     

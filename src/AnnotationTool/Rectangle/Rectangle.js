@@ -24,6 +24,7 @@ class Rectangle extends React.Component {
         });
     };
 
+    // MOuse over on rectangle
     handleMouseEnter = (event) => {
         const shape = event.target;
         shape.stroke('#3DF6FF');
@@ -32,6 +33,7 @@ class Rectangle extends React.Component {
         this.rect.getLayer().draw();
     };
 
+    //When mouse is leaved from rectangle
     handleMouseLeave = (event) => {
         const shape = event.target;
         shape.stroke('#00A3AA');

@@ -46,6 +46,7 @@ class Start extends React.Component {
     navButton.addEventListener("click", toggleNavigation);
   }
 
+  //When Button1 is pressed on the start page
   updateContent1 = () => {
     this.setState({
       importColor: 'import ',
@@ -66,6 +67,7 @@ class Start extends React.Component {
 
   }
 
+  //When Button2 is pressed on the start page
   updateContent2 = () => {
     this.setState({
       importColor: 'import ',
@@ -82,11 +84,9 @@ class Start extends React.Component {
       message9: "",
       message10: "",
     });
-
-
-
   }
 
+  //When Button3 is pressed on the start page
   updateContent3 = () => {
     this.setState({
       importColor: 'import ',
@@ -106,6 +106,7 @@ class Start extends React.Component {
 
   }
 
+  //When Button4 is pressed on the start page
   updateContent4 = () => {
     this.setState({
       importColor: 'import ',
@@ -345,13 +346,6 @@ class Start extends React.Component {
                   <span style={{ color: '#f09178' }}>{this.state.message8}</span>
                   <span>{this.state.message9}</span>
                   <span style={{ color: '#f09178' }}>{this.state.message10}</span>
-
-
-
-
-
-
-
 
                 </code>
 
