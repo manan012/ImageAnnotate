@@ -81,6 +81,7 @@ class Rectangle extends React.Component {
                     }
                 />
                 <Text
+                // Text on rectangle when annotating name is done
                     text={this.props.name}
                     x={this.props.x}
                     y={this.props.y}

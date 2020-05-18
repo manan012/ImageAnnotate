@@ -2,6 +2,9 @@ import React, { Fragment } from 'react';
 import Rectangle from './Rectangle';
 import RectTransformer from './RectTransformer';
 
+// It imports 2 files from the same directory
+// first is Rectangle.js which draws the rectangle
+// second is RectTransformer.js which transforms/modifies the rectangle
 class DrawRect extends React.Component{
     state = {
         rectangles: [],
@@ -38,7 +41,7 @@ class DrawRect extends React.Component{
           return;
         }
     
-        // find clicked rect by its name
+        // find clicked rect by its name for its modification
         const name = event.target.name();
         console.log(name);
         const rect = rectangles.find(r => r.name === name);
@@ -74,11 +77,11 @@ class DrawRect extends React.Component{
         const mousePos = stage.getPointerPosition();    // get mouse position
         if (!rectangles[rectCount]) {
           rectangles.push({
-            x: newRectX,
-            y: newRectY,
-            width: mousePos.x - newRectX,
-            height: mousePos - newRectY,
-            name: '',
+            x: newRectX,                                // Stores x coordinates in array
+            y: newRectY,                                // Stores y coordinates in array
+            width: mousePos.x - newRectX,               // Stores width of rectangle in array, it can be negative
+            height: mousePos - newRectY,                // Stores height of rectangle in array, it can be negative
+            name: '',                                   // By default, name of rectangle is empty: ''
             stroke: '#00A3AA',
           });
           return this.setState({ rectangles, mouseDraw: true });
@@ -111,9 +114,6 @@ class DrawRect extends React.Component{
           //console.log(rectangles[i].name);
           this.setState({
             i: i + 1
-    
-            //this.state.rectangles[this.state.i].name = document.querySelector('input[className="fieldCLass"]');
-            //this1.state.i = this1.state.i + 1;
           });
         }
     

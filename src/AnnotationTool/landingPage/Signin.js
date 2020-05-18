@@ -23,20 +23,17 @@ class Signin extends React.Component {
 
     }
 
-
     // Sign up form is submitted
     onSubmit = (e) => {
-
         e.preventDefault();
-
         // get our form data out of state
         var data = JSON.stringify({
-            "name":this.state.name,
-            "email":this.state.email,
-            "contact_no":this.state.contact_no,
-            "dob":this.state.dob,
-            "organizationName":this.state.organizationName,
-            "password":this.state.password,
+            "name": this.state.name,
+            "email": this.state.email,
+            "contact_no": this.state.contact_no,
+            "dob": this.state.dob,
+            "organizationName": this.state.organizationName,
+            "password": this.state.password,
         });
         console.log(data);
         var this1 = this;
@@ -46,15 +43,12 @@ class Signin extends React.Component {
 
                 console.log(response);
                 alert('Please login with your credentials');
-                //this1.props.history.push("label");
 
             })
             .catch(err => {
                 console.log('error1', err);
 
             })
-
-
     }
 
     // When login form is submitted
@@ -67,7 +61,7 @@ class Signin extends React.Component {
         var x = axios.post('http://rachitpahwa.codes/api/labelImg/user/login', data, { headers: { "Content-Type": "application/json" } })
             .then(function (response) {
                 localStorage.setItem("token", response.data.token);
-                
+
                 this1.props.history.push("/label");
                 //console.log(response.data.token);
 
@@ -84,6 +78,7 @@ class Signin extends React.Component {
 
     componentDidMount() {
 
+        // Event listeners for Landing Page(Start.js)
         const loginBtn = document.getElementById('login');
         const signupBtn = document.getElementById('signup');
 
@@ -133,10 +128,8 @@ class Signin extends React.Component {
                             </div>
                             <button className="submit-btn" type="submit" >Sign up</button>
                         </form>
-
-
-
                     </div>
+                    
                     <div class="login slide-up">
                         <div class="center">
                             <h2 class="form-title" id="login"><span>or</span>Log in</h2>

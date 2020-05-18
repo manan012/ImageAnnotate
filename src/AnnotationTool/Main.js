@@ -9,89 +9,96 @@ import { Button } from 'reactstrap';
 import DrawCircle from './Circle/DrawCircle';
 import { useHistory } from 'react-router-dom';
 
+//  This is the main page for Image Annotation.
+//  It has a Sidebar component which has buttons which serves different purposes
+//  It has a Canvas built on Konva.js for Image
+//  It has a Annotation bar which have Input field for Annoting the image
 
 class App extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       image: "",
       stageWidth: 1000,
-      mouseDown : false,
-      rector : false,
-      circle : false,
+      mouseDown: false,
+      rector: false,
+      circle: false,
       line: false,
       polygon: false,
       point: false,
-      rectangles:[],
-      circles:[],
+      rectangles: [],
+      circles: [],
     };
-  this.handleInputValueRect = this.handleInputValueRect.bind(this);
-  this.handleInputValueCirc = this.handleInputValueCirc.bind(this);
-    
+    this.handleInputValueRect = this.handleInputValueRect.bind(this);
+    this.handleInputValueCirc = this.handleInputValueCirc.bind(this);
+
   }
 
   //Signout Button Action
   handleSubmit(event) {
     event.preventDefault();
-    //console.log('hello');
     localStorage.removeItem("token");
-    window.location.href="/"
-    // window.location.pathname = '/';
+    window.location.href = "/"
   }
 
   //When a new rectangle is added
   handleInputValueRect(val) {
-    //console.log('hell0', val);
-    this.setState({rectangles:val});
-    //console.log('hell', this.state.rectangles);
+    this.setState({ rectangles: val });
   }
 
   // When a circle is added
   handleInputValueCirc(val) {
-    this.setState({circles:val});
+    this.setState({ circles: val });
   }
 
   //Setting background image
-  imageSet = (file) =>{
-    this.setState({image: file})
+  imageSet = (file) => {
+    this.setState({ image: file })
   }
 
   // Calling child functions inside parent
-  handleNewShapeChange = (event) =>{
-    if(this.state.rector){
-      //console.log('hello');
-      
+  handleNewShapeChange = (event) => {
+
+    //For rectangle
+    if (this.state.rector) {
       this.refs.child1.handleNewRectChange(event);
     }
 
-    else if(this.state.circle){
+    //For Circle
+    else if (this.state.circle) {
       this.refs.child.handleNewCircleChange(event);
     }
   }
 
-  // When mouse key is realised up
-  handleStageMouseUp = () =>{
-    if(this.state.rector){
+  // When mouse key is released up
+  handleStageMouseUp = () => {
+
+    //For Rectangle
+    if (this.state.rector) {
       this.refs.child1.handleStageMouseUp();
-      this.setState({mouseDown : this.refs.child1.state.mouseDown});
+      this.setState({ mouseDown: this.refs.child1.state.mouseDown });
     }
 
-    else if(this.state.circle){
+    //For Circle
+    else if (this.state.circle) {
       this.refs.child.handleStageMouseUp();
-      this.setState({mouseDown : this.refs.child.state.mouseDown});
+      this.setState({ mouseDown: this.refs.child.state.mouseDown });
     }
   }
 
   // When mouse key is pressed down
-  handleStageMouseDown = (event) =>{
-    if(this.state.rector){
+  handleStageMouseDown = (event) => {
+
+    //For rectangle
+    if (this.state.rector) {
       this.refs.child1.handleStageMouseDown(event);
-      this.setState({mouseDown : this.refs.child1.state.mouseDown})
+      this.setState({ mouseDown: this.refs.child1.state.mouseDown })
     }
 
-    else if(this.state.circle) {
+    //For Circle
+    else if (this.state.circle) {
       this.refs.child.handleStageMouseDown(event);
-      this.setState({mouseDown: this.refs.child.state.mouseDown})
+      this.setState({ mouseDown: this.refs.child.state.mouseDown })
     }
   }
 
@@ -107,38 +114,38 @@ class App extends React.Component {
 
   checkSize = () => {
     this.setState({
-      stageWidth: window.innerWidth*0.764
+      stageWidth: window.innerWidth * 0.764
     });
   };
 
   //Setting the buttons
-  buttonClick = (rector, circle, line, polygon, point)=>{
-    this.setState({rector , circle, line , polygon, point})
+  buttonClick = (rector, circle, line, polygon, point) => {
+    this.setState({ rector, circle, line, polygon, point })
   }
 
   render() {
 
-    const { state : {mouseDown},
+    const { state: { mouseDown },
       handleNewShapeChange,
       handleStageMouseDown,
       handleStageMouseUp
     } = this;
-    
+
     return (
       <div className="whole">
-      <div className = "row" >
-        <div className="col-md-2"></div>
+        <div className="row" >
+          <div className="col-md-2"></div>
 
-        <div className="col-md-8 name" style={{color:'#08c751'}}>
-        <h1><b>Image Annotator</b></h1>
+          <div className="col-md-8 name" style={{ color: '#08c751' }}>
+            <h1><b>Image Annotator</b></h1>
+          </div>
+          <div className="col-md-2 name1">
+            <Button color="primary" type='submit' onClick={this.handleSubmit}>Log out</Button>
+          </div>
         </div>
-        <div className="col-md-2 name1">
-        <Button color="primary" type='submit' onClick={this.handleSubmit}>Log out</Button>
-        </div>
-      </div>
         <div className="row">
           <div className="sm spa">
-            <Sidebar buttonClick = {this.buttonClick} imageSet = {this.imageSet} rectangles={this.state.rectangles} circles={this.state.circles}/>
+            <Sidebar buttonClick={this.buttonClick} imageSet={this.imageSet} rectangles={this.state.rectangles} circles={this.state.circles} />
           </div>
           <div id="app" className="col-md-9">
             <Stage
@@ -146,46 +153,40 @@ class App extends React.Component {
                 this.stage = node;
               }}
               container="app"
-              width= { this.state.stageWidth}
-              height= { window.innerHeight * 0.88}
+              width={this.state.stageWidth}
+              height={window.innerHeight * 0.88}
               onMouseDown={handleStageMouseDown}
               onTouchStart={handleStageMouseDown}
               onMouseMove={mouseDown && handleNewShapeChange}
               onTouchMove={mouseDown && handleNewShapeChange}
               onMouseUp={mouseDown && handleStageMouseUp}
               onTouchEnd={mouseDown && handleStageMouseUp}
-              
+
             >
               <Layer
                 ref={(node) => {
                   this.img = node;
                 }}
               >
-                <AnnotationImage image = {this.state.image}/>
+                <AnnotationImage image={this.state.image} />
               </Layer>
 
               <Layer>
-                
-                <DrawCircle ref = "child" handleInput={this.handleInputValueCirc}/>
-                <DrawRect ref = "child1" handleInput={this.handleInputValueRect}/>
 
-                </Layer>
-                {/* <Layer>
-                <DrawCircle ref = "child" handleInput={this.handleInputValueCirc}/>
+                <DrawCircle ref="child" handleInput={this.handleInputValueCirc} />
+                <DrawRect ref="child1" handleInput={this.handleInputValueRect} />
 
-              </Layer> */}
-                
-
+              </Layer>
             </Stage>
 
           </div>
-          <div className="col-md-2" id = "annotate">
+          <div className="col-md-2" id="annotate">
             <div className="row ann">
               <h4>Annotations</h4>
             </div>
-			    </div>
+          </div>
         </div>
-        </div>
+      </div>
     );
   }
 }

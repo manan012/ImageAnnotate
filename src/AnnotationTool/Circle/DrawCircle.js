@@ -2,8 +2,9 @@ import React, { Fragment } from 'react';
 import Circ from './Circ';
 import CircleTransformer from './CircleTransformer';
 
-// rectangles   ->  circles
-// rectCount    ->  circleCount
+// It imports 2 files from the same directory
+// first is Circ.js which draws the circle
+// second is CircleTransformer.js which transforms/modifies the circle
 
 class DrawCircle extends React.Component {
     state = {
@@ -17,7 +18,7 @@ class DrawCircle extends React.Component {
         i: 0,
     };
 
-
+    // When mouse key is pressed down, the coordinates of the mouse gets stored in circles array
 
     handleStageMouseDown = (event) => {
         const { circles } = this.state;
@@ -55,7 +56,7 @@ class DrawCircle extends React.Component {
         }
     };
 
-    // When a properties of rectangle are changed
+    // When a properties of rectangle are changed i.e, transformation or annotated name is done, it then updates the circles array
     handleCircleChange = (index, newProps) => {
         const { circles } = this.state;
         circles[index] = {
@@ -76,10 +77,10 @@ class DrawCircle extends React.Component {
         const mousePos = stage.getPointerPosition();    // get mouse position
         if (!circles[circleCount]) {
             circles.push({
-                x: newCircleX,
-                y: newCircleY,
-                width: mousePos.x - newCircleX,
-                name: '',
+                x: newCircleX,              //sets mouse position of x coordinate in the array
+                y: newCircleY,              //sets mouse position of y coordinate in the array
+                width: mousePos.x - newCircleX,     //sets width of the circle
+                name: '',                   //deafult name the circle to empty: ''
                 stroke: '#00A3AA',
             });
             return this.setState({ circles, mouseDraw: true });
@@ -88,9 +89,10 @@ class DrawCircle extends React.Component {
         return this.setState({ circles });
     };
 
+
+    //when mouse key is released up i.e, circle is drawn
     handleStageMouseUp = () => {
         var this1 = this;
-
         const { circleCount, mouseDraw } = this.state;
         const { circles, i } = this.state;
         if (mouseDraw) {
@@ -110,9 +112,6 @@ class DrawCircle extends React.Component {
             //console.log(circles[i].name);
             this.setState({
                 i: i + 1
-
-                //this.state.circles[this.state.i].name = document.querySelector('input[className="fieldCLass"]');
-                //this1.state.i = this1.state.i + 1;
             });
         }
 

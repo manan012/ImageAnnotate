@@ -8,8 +8,8 @@ class AnnotationImage extends React.Component {
         };
 
         componentDidUpdate() {
-            const image = new window.Image();
-            image.src = this.props.image;
+            const image = new window.Image();   // make new wondow for image uploading
+            image.src = this.props.image;       // get image url
             image.onload = () => {
                 this.setState({
                     image

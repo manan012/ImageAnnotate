@@ -6,9 +6,9 @@ import {
   Redirect,
 } from "react-router-dom";
 
-import Main from './Main';
-import Start from './landingPage/Start';
-import Signin from './landingPage/Signin';
+import Main from './AnnotationTool/Main';
+import Start from './AnnotationTool/landingPage/Start';
+import Signin from './AnnotationTool/landingPage/Signin';
 
 
 class App extends Component {

@@ -5,7 +5,6 @@ class Circ extends React.Component {
 
     componentDidUpdate() {
         this.circ.getLayer().draw();
-        //console.log(this.rect.getLayer().draw());
         
     }
 
@@ -14,7 +13,6 @@ class Circ extends React.Component {
             props: { onTransform },
         } = this;
         const shape = event.target;
-        //console.log(shape.radius());
         
         // by default Transformer will change scaleX and scaleY
         // while transforming
@@ -29,6 +27,7 @@ class Circ extends React.Component {
         });
     };
 
+    //When mouse is over the circle, style of the cursor changes
     handleMouseEnter = (event) => {
         const shape = event.target;
         //console.log('shape', shape);
@@ -38,6 +37,7 @@ class Circ extends React.Component {
         this.circ.getLayer().draw();
     };
 
+    // When mouse leaves the circle, style of the cursor gets back to default
     handleMouseLeave = (event) => {
         const shape = event.target;
         shape.stroke('#00A3AA');
@@ -86,7 +86,9 @@ class Circ extends React.Component {
                         }
                     }
                 />
+                
                 <Text
+                // Adds text on the circle
                     text={this.props.name}
                     x={this.props.x}
                     y={this.props.y}

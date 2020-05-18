@@ -3,6 +3,11 @@ import "./Sidebar.css"
 import axios from 'axios';
 import '../../../node_modules/@fortawesome/fontawesome-free/css/all.css'
 
+// This file has 2 main functions
+//  1. It lets up upload file from the user's device (Code line: 22-36)
+//  2. It lets you download JSON file to the user's device containing annotation details (Code line: 40-67 )
+
+
 class Sidebar extends Component {
   constructor(props) {
     super(props)
@@ -29,17 +34,13 @@ class Sidebar extends Component {
       this.setState({ varx: true });
       // console.log(reader.result);
     }
-
-
   }
 
   // Downloading the Json File
   DataSend() {
     //this.state.rectangles=this.props.rectangles;
     var data = JSON.stringify(this.props.rectangles);
-    //console.log(data);
-    
-    this.setState({dta:data});
+    this.setState({ dta: data });
     if (this.state.varx) {
       //console.log('hello');
       axios.post('https://labell.herokuapp.com/api/generate', data)
@@ -64,24 +65,6 @@ class Sidebar extends Component {
         .catch(err => { console.log('error2', err) })
     }
   }
-
-  // getFile() {
-  //   axios({
-  //     url: 'https://labell.herokuapp.com/api/getfile',
-  //     method: 'GET',
-  //     responseType: 'blob',
-  //   })
-  //   .then((response) => {
-  //     // console.log(response.data);
-  //     const url = window.URL.createObjectURL(new Blob([response.data]));
-  //     const link = document.createElement('a');
-  //     link.href = url;
-  //     link.setAttribute('download', 'file.json'); //or any other extension
-  //     document.body.appendChild(link);
-  //     link.click();
-
-  //   });
-  // }
 
   render() {
     return (
@@ -108,15 +91,8 @@ class Sidebar extends Component {
         <div>
           <button className="submitButton" title="Draw Polygon" onClick={() => { this.props.buttonClick(false, false, false, true, false) }}>
             <i className="fas fa-draw-polygon fa-3x"></i>
-
-
           </button>
         </div>
-        {/* <div>
-          <button className="submitButton" title="Draw Point" onClick={()=>{this.props.buttonClick(false, false, false, false, true)}}>
-            <p>Point</p>
-          </button>
-        </div> */}
         <div>
           <button className="submitButton" title="Save JSON" onClick={() => this.DataSend()}>
             <i className="fas fa-download fa-3x"></i>
