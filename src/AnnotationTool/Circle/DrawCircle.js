@@ -79,13 +79,13 @@ class DrawCircle extends React.Component {
             circles.push({
                 x: newCircleX,              //sets mouse position of x coordinate in the array
                 y: newCircleY,              //sets mouse position of y coordinate in the array
-                width: mousePos.x - newCircleX,     //sets width of the circle
+                width: 2*Math.sqrt(Math.floor(Math.pow(mousePos.x - newCircleX, 2) + Math.pow(mousePos.y - newCircleY, 2))),     //sets width of the circle
                 name: '',                   //deafult name the circle to empty: ''
                 stroke: '#00A3AA',
             });
             return this.setState({ circles, mouseDraw: true });
         }
-        circles[circleCount].width = mousePos.x - newCircleX;
+        circles[circleCount].width = 2*Math.floor(Math.sqrt(Math.pow(mousePos.x - newCircleX, 2) + Math.pow(mousePos.y - newCircleY, 2)));
         return this.setState({ circles });
     };
 

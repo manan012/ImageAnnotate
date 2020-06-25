@@ -80,7 +80,7 @@ class DrawRect extends React.Component{
             x: newRectX,                                // Stores x coordinates in array
             y: newRectY,                                // Stores y coordinates in array
             width: mousePos.x - newRectX,               // Stores width of rectangle in array, it can be negative
-            height: mousePos - newRectY,                // Stores height of rectangle in array, it can be negative
+            height: mousePos.y - newRectY,                // Stores height of rectangle in array, it can be negative
             name: '',                                   // By default, name of rectangle is empty: ''
             stroke: '#00A3AA',
           });

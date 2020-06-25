@@ -67,6 +67,10 @@ class Signin extends React.Component {
 
             })
             .catch(err => {
+                //Uncomment to bypass login
+                // localStorage.setItem("token", 65515631);
+
+                // this1.props.history.push("/label");
                 alert('Enter valid credentials');
                 console.log('error2', err);
 
