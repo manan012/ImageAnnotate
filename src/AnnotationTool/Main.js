@@ -3,11 +3,13 @@ import { Stage, Layer } from 'react-konva';
 import AnnotationImage from './AnnotationImage/AnnotationImage';
 import './Main.css';
 import Sidebar from './Sidebar/Sidebar';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import DrawRect from './Rectangle/DrawRect';
 import { Button } from 'reactstrap';
 import DrawCircle from './Circle/DrawCircle';
 import { useHistory } from 'react-router-dom';
+import ReadImage from '../Images/ReadImage';
+import ImageSelector from '../Images/ImageSelector';
+import { omit } from 'ramda';
 
 //  This is the main page for Image Annotation.
 //  It has a Sidebar component which has buttons which serves different purposes
@@ -18,6 +20,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      images: [],
+      seletedImage: undefined,
       image: "",
       stageWidth: 1000,
       mouseDown: false,
@@ -32,6 +36,31 @@ class App extends React.Component {
     this.handleInputValueRect = this.handleInputValueRect.bind(this);
     this.handleInputValueCirc = this.handleInputValueCirc.bind(this);
 
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    console.log(nextState);
+  }
+
+  addImages = (newImages) => {
+    this.setState( state => ({images: [...state.images, ...newImages]}))
+  }
+
+  updateImage = (idx, updatedImages) => {
+    this.setState({images: this.state.images.map((image, i) => i === idx ? updatedImages : image)})
+  }
+
+  selectImage = (idx) => {
+      if (this.state.seletedImage == undefined) {
+        this.setState({seletedImage: {idx: idx, ...this.state.images[idx]}});
+        return;
+      }
+      if (this.state.seletedImage.idx === idx) return;
+      this.setState({
+        images: this.state.images.map((img, i) => i=== this.state.seletedImage.idx ? omit(['idx'],
+        this.state.seletedImage) : img),
+        seletedImage: {idx: idx, ...this.state.images[idx]}}
+      );
   }
 
   //Signout Button Action
@@ -130,12 +159,14 @@ class App extends React.Component {
       handleStageMouseDown,
       handleStageMouseUp
     } = this;
-
+  
     return (
       <div className="whole">
         <div className="row" >
+          <div className="col-12">
+            <ImageSelector images={this.state.images} onComplete={(idx, image) => this.updateImage(idx, image)} onSelect={(idx) => this.selectImage(idx)}/>
+          </div>
           <div className="col-md-2"></div>
-
           <div className="col-md-8 name" style={{ color: '#08c751' }}>
             <h1><b>Image Annotator</b></h1>
           </div>
@@ -145,7 +176,7 @@ class App extends React.Component {
         </div>
         <div className="row">
           <div className="sm spa">
-            <Sidebar buttonClick={this.buttonClick} imageSet={this.imageSet} rectangles={this.state.rectangles} circles={this.state.circles} />
+            <Sidebar buttonClick={this.buttonClick} imageSet={this.imageSet} rectangles={this.state.rectangles} circles={this.state.circles} addImages={this.addImages} />
           </div>
           <div id="app" className="col-md-9">
             <Stage
@@ -168,7 +199,7 @@ class App extends React.Component {
                   this.img = node;
                 }}
               >
-                <AnnotationImage image={this.state.image} />
+                <AnnotationImage image={this.state.seletedImage ? this.state.seletedImage.image : ""} />
               </Layer>
 
               <Layer>

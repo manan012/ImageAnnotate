@@ -8,8 +8,8 @@ class AnnotationImage extends React.Component {
         };
 
         componentDidUpdate() {
-            const image = new window.Image();   // make new wondow for image uploading
-            image.src = this.props.image;       // get image url
+            const image = new window.Image();  
+            image.src = this.props.image; 
             image.onload = () => {
                 this.setState({
                     image
@@ -18,6 +18,7 @@ class AnnotationImage extends React.Component {
         }
 
         render() {
+            console.log("anotate")
             return ( < Image image = { this.state.image }
                 width = { window.innerWidth * 0.763 }
                 height = { window.innerHeight * 0.88 }

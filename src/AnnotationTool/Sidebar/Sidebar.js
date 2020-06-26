@@ -19,22 +19,28 @@ class Sidebar extends Component {
     }
   }
 
-  // Image uploading on Canvas
-  uploadImage = () => {
-    var file = document.querySelector('input[type=file]').files[0];
-    var reader = new FileReader();
-    reader.onload = () => {
-      this.setState(() => { this.props.imageSet(reader.result) });
-    }
-
-    if (file) {
-      reader.readAsDataURL(file);
-      var data = JSON.stringify({ "name": file.name, "Image type": file.type, "Image Size(KB)": (file.size) / 1024, "Last Modified Date": file.lastModifiedDate });
-      this.setState({ dta: data });
-      this.setState({ varx: true });
-      // console.log(reader.result);
-    }
+  //Add new images to read
+  newImages = (e) => {
+    const images = [...e.target.files].map(imageFile => ({file: imageFile, readed: 0, image: "", annotations:{rectangles: [], circles: []}}))
+    this.props.addImages(images)
   }
+
+  // Image uploading on Canvas
+  // uploadImage = () => {
+  //   var file = document.querySelector('input[type=file]').files[0];
+  //   var reader = new FileReader();
+  //   reader.onload = () => {
+  //     this.setState(() => { this.props.imageSet(reader.result) });
+  //   }
+
+  //   if (file) {
+  //     reader.readAsDataURL(file);
+  //     var data = JSON.stringify({ "name": file.name, "Image type": file.type, "Image Size(KB)": (file.size) / 1024, "Last Modified Date": file.lastModifiedDate });
+  //     this.setState({ dta: data });
+  //     this.setState({ varx: true });
+  //     // console.log(reader.result);
+  //   }
+  // }
 
   // Downloading the Json File
   DataSend() {
@@ -70,8 +76,12 @@ class Sidebar extends Component {
     return (
       <div className="wholeSidebar">
         <div>
+          <label htmlFor="file" className="submitButton" title="Select File to Upload"><i className="fas fa-file-upload fa-3x"></i></label>
+          <input id="file" accept="image/*" hidden="hidden" type="file" onChange={this.newImages} />
+        </div>
+        <div>
           <label htmlFor="files" className="submitButton" title="Select File to Upload"><i className="fas fa-file-upload fa-3x"></i></label>
-          <input id="files" accept="image/*" hidden="hidden" type="file" onChange={this.uploadImage} />
+          <input id="files" accept="image/*" hidden="hidden" type="file" webkitdirectory="" directory="" onChange={this.newImages} />
         </div>
         <div>
           <button className="submitButton" title="Draw Rectangle" onClick={() => { this.props.buttonClick(true, false, false, false, false) }}>
