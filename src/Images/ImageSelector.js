@@ -18,7 +18,7 @@ class ImageSelector extends Component {
 
     render() {
         return (
-            <Container className="d-flex mt-3 flex-wrap" style={{height:50}}>
+            <Container className="d-flex mt-3 flex-wrap">
                 {
                     this.props.images.map((image, i) => <ReadImage image={image} active={i==this.state.seleted}  onClick={() => this.handleClick(i)} onComplete={(image)=>{this.props.onComplete(i, image)}}/>)
                 }

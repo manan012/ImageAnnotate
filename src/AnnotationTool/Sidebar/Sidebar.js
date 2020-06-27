@@ -74,13 +74,13 @@ class Sidebar extends Component {
 
   render() {
     return (
-      <div className="wholeSidebar">
+      <div className="">
         <div>
           <label htmlFor="file" className="submitButton" title="Select File to Upload"><i className="fas fa-file-upload fa-3x"></i></label>
           <input id="file" accept="image/*" hidden="hidden" type="file" onChange={this.newImages} />
         </div>
         <div>
-          <label htmlFor="files" className="submitButton" title="Select File to Upload"><i className="fas fa-file-upload fa-3x"></i></label>
+          <label htmlFor="files" className="submitButton" title="Select File to Upload"><i class="fas fa-folder-open fa-3x"></i></label>
           <input id="files" accept="image/*" hidden="hidden" type="file" webkitdirectory="" directory="" onChange={this.newImages} />
         </div>
         <div>

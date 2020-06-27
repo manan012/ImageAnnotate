@@ -4,12 +4,14 @@ import AnnotationImage from './AnnotationImage/AnnotationImage';
 import './Main.css';
 import Sidebar from './Sidebar/Sidebar';
 import DrawRect from './Rectangle/DrawRect';
-import { Button } from 'reactstrap';
+import { Button, Row } from 'reactstrap';
 import DrawCircle from './Circle/DrawCircle';
 import { useHistory } from 'react-router-dom';
 import ReadImage from '../Images/ReadImage';
 import ImageSelector from '../Images/ImageSelector';
 import { omit } from 'ramda';
+import NameAnnotations from './Names/NameAnnotations';
+import { Container, Col } from 'reactstrap';
 
 //  This is the main page for Image Annotation.
 //  It has a Sidebar component which has buttons which serves different purposes
@@ -176,7 +178,7 @@ class App extends React.Component {
 
   // When mouse key is pressed down
   handleStageMouseDown = (event) => {
-
+    if (!this.state.selectedImage) return;
     //For rectangle
     if (this.state.rector) {
       this.refs.child1.handleStageMouseDown(event);
@@ -220,24 +222,24 @@ class App extends React.Component {
     } = this;
   
     return (
-      <div className="whole">
-        <div className="row" >
-          <div className="col-12">
+      <Container fuild>
+        <Row className="border-bottom">
+          <Col xs={12} >
             <ImageSelector images={this.state.images} onComplete={(idx, image) => this.updateImage(idx, image)} onSelect={(idx) => this.selectImage(idx)}/>
-          </div>
-          <div className="col-md-2"></div>
-          <div className="col-md-8 name" style={{ color: '#08c751' }}>
+          </Col>
+          <div className="col-md-2 "></div>
+          <div className="col-md-8 name " style={{ color: '#08c751' }}>
             <h1><b>Image Annotator</b></h1>
           </div>
           <div className="col-md-2 name1">
             <Button color="primary" type='submit' onClick={this.handleSubmit}>Log out</Button>
           </div>
-        </div>
-        <div className="row">
-          <div className="sm spa">
+        </Row>
+        <Row>
+          <div className="my-2 border">
             <Sidebar buttonClick={this.buttonClick} imageSet={this.imageSet} rectangles={this.state.rectangles} circles={this.state.circles} addImages={this.addImages} />
           </div>
-          <div id="app" className="col-md-9">
+          <div id="app" className="col-md-9 m-2 border overflow-hidden">
             <Stage
               ref={(node) => {
                 this.stage = node;
@@ -262,29 +264,38 @@ class App extends React.Component {
               </Layer>
 
               <Layer>
-
-                <DrawCircle ref="child" 
-                    circles={this.state.selectedImage ? this.state.selectedImage.annotations.circles : []}
+                {
+                  this.state.selectedImage ?
+                  <DrawCircle ref="child" 
+                    circles={this.state.selectedImage.annotations.circles}
                     addCircle={(newCircle) => this.addCircle(newCircle)}
                     updateCircle={this.updateCircle} 
-                    handleInput={this.handleInputValueCirc} />
-                <DrawRect ref="child1" 
+                    handleInput={this.handleInputValueCirc} /> :
+                    null
+                }
+
+                {
+                  this.state.selectedImage ?
+                  <DrawRect ref="child1" 
                     rectangles={this.state.selectedImage ? this.state.selectedImage.annotations.rectangles: []}
                     addRectangle={this.addRectangle}
                     updateRectangle={this.updateRectangle}
-                    handleInput={this.handleInputValueRect} />
-
+                    handleInput={this.handleInputValueRect} /> :
+                    null
+                }
+                
               </Layer>
             </Stage>
 
           </div>
-          <div className="col-md-2" id="annotate">
-            <div className="row ann">
-              <h4>Annotations</h4>
-            </div>
+          <div className="col-md-2 p-0 border my-2">
+            <NameAnnotations 
+              annotations={this.state.selectedImage ? this.state.selectedImage.annotations : {}}
+              updateCircle={this.updateCircle}
+              updateRectangle={this.updateRectangle} />
           </div>
-        </div>
-      </div>
+        </Row>
+      </Container>
     );
   }
 }
