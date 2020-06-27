@@ -1,35 +1,38 @@
 import React, { Fragment } from 'react';
 import Circ from './Circ';
 import CircleTransformer from './CircleTransformer';
+import { omit } from 'ramda';
 
 // It imports 2 files from the same directory
 // first is Circ.js which draws the circle
 // second is CircleTransformer.js which transforms/modifies the circle
 
 class DrawCircle extends React.Component {
-    state = {
-        circles: [],
-        circleCount: 0,
-        selectedShapeName: '',
-        mouseDown: false,
-        mouseDraw: false,
-        newCircleX: 0,
-        newCircleY: 0,
-        i: 0,
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectedShapeName: '',
+            mouseDown: false,
+            mouseDraw: false,
+            x: null,
+            y: null,
+            stroke: '#00A3AA',
+            width: 0,
+            name: "",
+        };
+    }
 
     // When mouse key is pressed down, the coordinates of the mouse gets stored in circles array
 
     handleStageMouseDown = (event) => {
-        const { circles } = this.state;
         // clicked on stage - clear selection or ready to generate new rectangle
         if (event.target.className === 'Image') {
             const stage = event.target.getStage();
             const mousePos = stage.getPointerPosition();
             this.setState({
                 mouseDown: true,
-                newCircleX: mousePos.x,
-                newCircleY: mousePos.y,
+                x: mousePos.x,
+                y: mousePos.y,
                 selectedShapeName: '',
             });
             return;
@@ -43,11 +46,11 @@ class DrawCircle extends React.Component {
         // find clicked circ by its name
         const name = event.target.name();
         //console.log(name);
-        const circ = circles.find(r => r.name === name);
+        const circ = this.props.circles.find(r => r.name === name);
         if (circ) {
             this.setState({
                 selectedShapeName: name,
-                circles,
+                // circles,
             });
         } else {
             this.setState({
@@ -58,65 +61,33 @@ class DrawCircle extends React.Component {
 
     // When a properties of rectangle are changed i.e, transformation or annotated name is done, it then updates the circles array
     handleCircleChange = (index, newProps) => {
-        const { circles } = this.state;
-        circles[index] = {
-            ...circles[index],
-            ...newProps,
-        };
-
-        this.setState({ circles });
+        this.props.updateCircle(index, newProps);
     };
 
     // when a new rectangle is drawn
     handleNewCircleChange = (event) => {
-        const {
-            circles, circleCount, newCircleX, newCircleY,
-        } = this.state;
+        const {x, y} = this.state;
         const stage = event.target.getStage();
-        //console.log('stage ', event.target);
         const mousePos = stage.getPointerPosition();    // get mouse position
-        if (!circles[circleCount]) {
-            circles.push({
-                x: newCircleX,              //sets mouse position of x coordinate in the array
-                y: newCircleY,              //sets mouse position of y coordinate in the array
-                width: 2*Math.sqrt(Math.floor(Math.pow(mousePos.x - newCircleX, 2) + Math.pow(mousePos.y - newCircleY, 2))),     //sets width of the circle
-                name: '',                   //deafult name the circle to empty: ''
-                stroke: '#00A3AA',
-            });
-            return this.setState({ circles, mouseDraw: true });
+        if (this.state.mouseDown) {
+            return this.setState({
+                mouseDraw: true,
+                width: 2*Math.sqrt(Math.floor(Math.pow(mousePos.x - x, 2) + Math.pow(mousePos.y - y, 2)))
+            })
         }
-        circles[circleCount].width = 2*Math.floor(Math.sqrt(Math.pow(mousePos.x - newCircleX, 2) + Math.pow(mousePos.y - newCircleY, 2)));
-        return this.setState({ circles });
     };
 
 
     //when mouse key is released up i.e, circle is drawn
     handleStageMouseUp = () => {
         var this1 = this;
-        const { circleCount, mouseDraw } = this.state;
-        const { circles, i } = this.state;
-        if (mouseDraw) {
-            this.setState({ circleCount: circleCount + 1, mouseDraw: false });
-            var annotations = document.getElementById('annotate');
-            var e1 = annotations.appendChild(document.createElement('input'));    // creating input field
-            e1.className = 'fieldClass';
-            e1.onchange = updateName;
-
-            function updateName() {       //Local function to update name
-                var value = this.value;
-                console.log(value);
-                this1.setState(Object.assign(this1.state.circles[i], { name: value }));
-            }
-            console.log(this1.state.circles);
-            this.props.handleInput(this1.state.circles);
-            //console.log(circles[i].name);
-            this.setState({
-                i: i + 1
-            });
+        const { mouseDraw } = this.state;
+        if (mouseDraw && (this.state.width > 3)) {
+            this.props.addCircle(omit(['mouseDown', 'mouseDrawn', 'selectedShapeName'], this.state))
         }
 
         //console.log(this1.state.circles);
-        this.setState({ mouseDown: false });
+        this.setState({mouseDown: false, x: null, y: null, width:0});
     };
 
     render() {
@@ -127,7 +98,7 @@ class DrawCircle extends React.Component {
         return (
 
             <Fragment>
-                {circles.map((circ, i) => (
+                {this.props.circles.map((circ, i) => (
                     <Circ id="annotate"
                         sclassName="circ"
                         key={circ.key}
@@ -138,11 +109,13 @@ class DrawCircle extends React.Component {
 
                     />
                 ))}
+                {this.state.x != null && this.state.y != null 
+                    ? <Circ sclassName="circ" {...omit(['mouseDown', 'mouseDrawn', 'selectedShapeName'], this.state)} />
+                    : null
+                }
                 <CircleTransformer selectedShapeName={selectedShapeName} />
 
             </Fragment>
-
-
         );
     }
 }

@@ -21,7 +21,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       images: [],
-      seletedImage: undefined,
+      selectedImage: undefined,
       image: "",
       stageWidth: 1000,
       mouseDown: false,
@@ -51,16 +51,68 @@ class App extends React.Component {
   }
 
   selectImage = (idx) => {
-      if (this.state.seletedImage == undefined) {
-        this.setState({seletedImage: {idx: idx, ...this.state.images[idx]}});
+      if (this.state.selectedImage == undefined) {
+        this.setState({selectedImage: {idx: idx, ...this.state.images[idx]}});
         return;
       }
-      if (this.state.seletedImage.idx === idx) return;
+      if (this.state.selectedImage.idx === idx) return;
       this.setState({
-        images: this.state.images.map((img, i) => i=== this.state.seletedImage.idx ? omit(['idx'],
-        this.state.seletedImage) : img),
-        seletedImage: {idx: idx, ...this.state.images[idx]}}
+        images: this.state.images.map((img, i) => i=== this.state.selectedImage.idx ? omit(['idx'],
+        this.state.selectedImage) : img),
+        selectedImage: {idx: idx, ...this.state.images[idx]}}
       );
+  }
+
+  addCircle = (newCircle) => {
+    this.setState(state => {
+                  return {
+                    selectedImage: {
+                      ...state.selectedImage,
+                      annotations: {
+                        ...state.selectedImage.annotations,
+                        circles: [...state.selectedImage.annotations.circles, newCircle]
+                      }
+                    }
+                  }
+                })
+  }
+
+  updateCircle = (idx, newCircleProps) => {
+    this.setState((state) => ({
+      selectedImage: {
+        ...state.selectedImage, 
+        annotations: {
+          ...state.selectedImage.annotations,
+          circles: state.selectedImage.annotations.circles.map((circle, i) => i == idx ? {...circle, ...newCircleProps} : circle)
+        }
+      }
+    }));
+  }
+
+  addRectangle = (newRectangle) => {
+    this.setState(state => {
+                  return {
+                    selectedImage: {
+                      ...state.selectedImage,
+                      annotations: {
+                        ...state.selectedImage.annotations,
+                        rectangles: [...state.selectedImage.annotations.rectangles, newRectangle]
+                      }
+                    }
+                  }
+                })
+  }
+
+  updateRectangle = (idx, newRectangleProps) => {
+    this.setState((state) => ({
+      selectedImage: {
+        ...state.selectedImage, 
+        annotations: {
+          ...state.selectedImage.annotations,
+          rectangles: state.selectedImage.annotations.rectangles.map((rectangle, i) => i == idx ? {...rectangle, ...newRectangleProps} : rectangle)
+        }
+      }
+    }));
   }
 
   //Signout Button Action
@@ -72,12 +124,19 @@ class App extends React.Component {
 
   //When a new rectangle is added
   handleInputValueRect(val) {
-    this.setState({ rectangles: val });
+    if (this.state.selectedImage === undefined) return;
+    this.setState(state => ({
+      selectedImage: {...this.state.selectedImage, annotations: {...this.state.selectedImage.annotations, rectangles: val}}
+    }));
   }
 
   // When a circle is added
   handleInputValueCirc(val) {
-    this.setState({ circles: val });
+    console.log(val)
+    if (this.state.selectedImage === undefined) return;
+    this.setState(state => ({
+      selectedImage: {...this.state.selectedImage, annotations: {...this.state.selectedImage.annotations, circles: val}}
+    }));
   }
 
   //Setting background image
@@ -199,13 +258,21 @@ class App extends React.Component {
                   this.img = node;
                 }}
               >
-                <AnnotationImage image={this.state.seletedImage ? this.state.seletedImage.image : ""} />
+                <AnnotationImage image={this.state.selectedImage ? this.state.selectedImage.image : ""} />
               </Layer>
 
               <Layer>
 
-                <DrawCircle ref="child" handleInput={this.handleInputValueCirc} />
-                <DrawRect ref="child1" handleInput={this.handleInputValueRect} />
+                <DrawCircle ref="child" 
+                    circles={this.state.selectedImage ? this.state.selectedImage.annotations.circles : []}
+                    addCircle={(newCircle) => this.addCircle(newCircle)}
+                    updateCircle={this.updateCircle} 
+                    handleInput={this.handleInputValueCirc} />
+                <DrawRect ref="child1" 
+                    rectangles={this.state.selectedImage ? this.state.selectedImage.annotations.rectangles: []}
+                    addRectangle={this.addRectangle}
+                    updateRectangle={this.updateRectangle}
+                    handleInput={this.handleInputValueRect} />
 
               </Layer>
             </Stage>
