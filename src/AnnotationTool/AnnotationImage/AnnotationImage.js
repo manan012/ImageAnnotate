@@ -36,7 +36,11 @@ class AnnotationImage extends React.Component {
     image.getStage().container().style.cursor = "default";
     var pos = stage.getPointerPosition();
 
-    if (zoomed_in == false) {
+    if (
+      zoomed_in == false &&
+      this.props.circle === false &&
+      this.props.rector === false
+    ) {
       layer.x(-pos.x);
       layer.y(-pos.y);
       layer.scale({
