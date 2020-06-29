@@ -39,7 +39,7 @@ class ReadImage extends Component {
         })
       )
       .catch((error) => console.log(error));
-    //this.props.onComplete({...this.state, readed:100, image: this.fileReader.result});
+    this.props.onComplete({...this.state, readed:100, image: this.fileReader.result});
   };
 
   render() {
