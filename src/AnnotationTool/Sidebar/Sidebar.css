@@ -9,15 +9,19 @@
 }
 
 .submitButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: #f2c2c2;
     border: 1px solid;
     cursor: pointer;
     width: 100%;
+    height: 50px;
     margin-bottom: 0px;
     text-align: center;
+    font-size: 10px;
     /* padding-left: 18%;
     padding-right: 18%; */
-    padding: 18%;
 }
 
 .submitButton1 {
@@ -27,13 +31,10 @@
     width: 100%;
     margin-bottom: 0px;
     text-align: center;
+    font-size: 10px;
     /* padding-left: 25%; */
 }
 
 .submitButton:hover {
     background: #efefef;
-}
-
-.wholeSidebar {
-    margin-left: 3.5%;
 }

@@ -29,8 +29,8 @@ class ReadImage extends Component {
 
     render() {
         return (
-            <Card width={70} className={"mx-1 " + (this.props.active ? "active" : "")} onClick={this.props.onClick}>
-                <CardImg style={{width: 70}} src={this.state.readed != 100 ? "" : this.state.image} alt={this.state.file.name} />
+            <Card width={70} className={"mx-1 my-1 " + (this.props.active ? "active" : "")} onClick={this.props.onClick}>
+                <CardImg style={{width: 70}} src={this.state.readed != 100 ? "./img/images.jpg" : this.state.image} alt={this.state.file.name} />
                 <CardImgOverlay className="p-0 d-flex justify-content-center align-items-center">
                     <small className="text-muted">{this.state.readed} %</small>
                 </CardImgOverlay>

@@ -92,7 +92,6 @@ class AnnotationImage extends React.Component {
       handleMouseDown,
       handleMouseUp,
     } = this;
-    console.log("anotate");
     return (
       <Image
         image={this.state.image}
