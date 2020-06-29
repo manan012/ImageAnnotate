@@ -47,7 +47,7 @@ class AnnotationImage extends React.Component {
         x: 2,
         y: 2,
       });
-      stage.getLayers().batchDraw();
+      stage.getLayers().draw();
 
       this.setState({ zoomed_in: true });
     } else if (zoomed_in == true) {
@@ -57,7 +57,7 @@ class AnnotationImage extends React.Component {
         x: 1,
         y: 1,
       });
-      stage.getLayers().batchDraw();
+      stage.getLayers().draw();
       this.setState({ zoomed_in: false });
     }
   };
