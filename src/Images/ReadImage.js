@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Card, CardImg, CardImgOverlay } from 'reactstrap';
+import detectObject from '../utils/objectDetection';
 
 class ReadImage extends Component {
     constructor(props) {
@@ -24,6 +25,9 @@ class ReadImage extends Component {
             readed: 100,
             image: this.fileReader.result
         });
+        detectObject(this.fileReader.result)
+        .then(rectangles => console.log(rectangles))
+        .catch(error => console.log(error));
         this.props.onComplete({...this.state, readed:100, image: this.fileReader.result});
     }
 
