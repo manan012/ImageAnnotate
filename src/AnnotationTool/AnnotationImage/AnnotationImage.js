@@ -30,9 +30,7 @@ class AnnotationImage extends React.Component {
   handleMouseDown = (event) => {
     const { zoomed_in } = this.state;
     const image = event.target;
-    const layer = image.getLayer();
     const stage = image.getStage();
-    console.log("Layer = " + layer);
     image.getStage().container().style.cursor = "default";
     var pos = stage.getPointerPosition();
 
@@ -41,24 +39,25 @@ class AnnotationImage extends React.Component {
       this.props.circle === false &&
       this.props.rector === false
     ) {
-      layer.x(-pos.x);
-      layer.y(-pos.y);
-      layer.scale({
+      stage.x(-pos.x);
+      stage.y(-pos.y);
+      stage.scale({
         x: 2,
         y: 2,
       });
+      stage.getLayers().draw();
+
       this.setState({ zoomed_in: true });
     } else if (zoomed_in == true) {
-      layer.x(0);
-      layer.y(0);
-      layer.scale({
+      stage.x(0);
+      stage.y(0);
+      stage.scale({
         x: 1,
         y: 1,
       });
+      stage.getLayers().draw();
       this.setState({ zoomed_in: false });
     }
-    // this.rect.draw();
-    // this.rect.getLayer().draw();
   };
 
   handleMouseUp = (event) => {
@@ -73,6 +72,7 @@ class AnnotationImage extends React.Component {
       handleMouseDown,
       handleMouseUp,
     } = this;
+    console.log("anotate");
     return (
       <Image
         image={this.state.image}
