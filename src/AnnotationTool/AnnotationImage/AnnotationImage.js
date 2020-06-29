@@ -76,8 +76,6 @@ class AnnotationImage extends React.Component {
     return (
       <Image
         image={this.state.image}
-        width={window.innerWidth * 0.763}
-        height={window.innerHeight * 0.88}
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}
         onMouseDown={handleMouseDown}
