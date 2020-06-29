@@ -27,8 +27,9 @@ class ReadImage extends Component {
       readed: 100,
       image: this.fileReader.result,
     });
-    detectObject(this.fileReader.result)
-      .then((rectangles) =>
+    this.props.addObjectDetectionTaskToQueue(async () => {
+      try {
+        const rectangles = await detectObject(this.fileReader.result)
         this.props.onComplete({
           ...this.state,
           image: this.fileReader.result,
@@ -37,8 +38,12 @@ class ReadImage extends Component {
             rectangles: [...this.state.annotations, ...rectangles],
           },
         })
-      )
-      .catch((error) => console.log(error));
+      }
+      catch(e) {
+        console.log("Object detection error", console.log(e.message));
+      }
+    })
+    console.log("game");
     this.props.onComplete({...this.state, readed:100, image: this.fileReader.result});
   };
 
