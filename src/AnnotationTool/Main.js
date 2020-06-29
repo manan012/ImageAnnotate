@@ -7,7 +7,7 @@ import DrawRect from "./Rectangle/DrawRect";
 import { Button } from "reactstrap";
 import DrawCircle from "./Circle/DrawCircle";
 import ImageSelector from "../Images/ImageSelector";
-import {Container, Row, Col} from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 import NameAnnotations from "./Names/NameAnnotations";
 import { omit } from "ramda";
 
@@ -159,8 +159,6 @@ class App extends React.Component {
     }));
   }
 
-
-
   // Calling child functions inside parent
   handleNewShapeChange = (event) => {
     //For rectangle
@@ -237,12 +235,18 @@ class App extends React.Component {
     return (
       <Container fuild>
         <Row className="border-bottom">
-          <Col xs={12} >
-            <ImageSelector images={this.state.images} onComplete={(idx, image) => this.updateImage(idx, image)} onSelect={(idx) => this.selectImage(idx)}/>
+          <Col xs={12}>
+            <ImageSelector
+              images={this.state.images}
+              onComplete={(idx, image) => this.updateImage(idx, image)}
+              onSelect={(idx) => this.selectImage(idx)}
+            />
           </Col>
           <div className="col-md-2 "></div>
-          <div className="col-md-8 name " style={{ color: '#08c751' }}>
-            <h1><b>Image Annotator</b></h1>
+          <div className="col-md-8 name " style={{ color: "#08c751" }}>
+            <h1>
+              <b>Image Annotator</b>
+            </h1>
           </div>
           <div className="col-md-2 name1">
             <Button color="primary" type="submit" onClick={this.handleSubmit}>
@@ -252,7 +256,13 @@ class App extends React.Component {
         </Row>
         <Row>
           <div className="my-2 border">
-            <Sidebar buttonClick={this.buttonClick} imageSet={this.imageSet} rectangles={this.state.rectangles} circles={this.state.circles} addImages={this.addImages} />
+            <Sidebar
+              buttonClick={this.buttonClick}
+              imageSet={this.imageSet}
+              rectangles={this.state.rectangles}
+              circles={this.state.circles}
+              addImages={this.addImages}
+            />
           </div>
           <div id="app" className="col-md-9 m-2 p-0 border overflow-hidden">
             <Stage
@@ -286,34 +296,42 @@ class App extends React.Component {
               </Layer>
 
               <Layer>
-                {
-                  this.state.selectedImage ?
-                  <DrawCircle ref="child" 
+                {this.state.selectedImage ? (
+                  <DrawCircle
+                    ref="child"
                     circles={this.state.selectedImage.annotations.circles}
                     addCircle={(newCircle) => this.addCircle(newCircle)}
-                    updateCircle={this.updateCircle} 
-                    handleInput={this.handleInputValueCirc} /> :
-                    null
-                }
+                    updateCircle={this.updateCircle}
+                    handleInput={this.handleInputValueCirc}
+                  />
+                ) : null}
 
-                {
-                  this.state.selectedImage ?
-                  <DrawRect ref="child1" 
-                    rectangles={this.state.selectedImage ? this.state.selectedImage.annotations.rectangles: []}
+                {this.state.selectedImage ? (
+                  <DrawRect
+                    ref="child1"
+                    rectangles={
+                      this.state.selectedImage
+                        ? this.state.selectedImage.annotations.rectangles
+                        : []
+                    }
                     addRectangle={this.addRectangle}
                     updateRectangle={this.updateRectangle}
-                    handleInput={this.handleInputValueRect} /> :
-                    null
-                }
-                
+                    handleInput={this.handleInputValueRect}
+                  />
+                ) : null}
               </Layer>
             </Stage>
           </div>
           <div className="col-md-2 p-0 border my-2">
-            <NameAnnotations 
-              annotations={this.state.selectedImage ? this.state.selectedImage.annotations : {}}
+            <NameAnnotations
+              annotations={
+                this.state.selectedImage
+                  ? this.state.selectedImage.annotations
+                  : {}
+              }
               updateCircle={this.updateCircle}
-              updateRectangle={this.updateRectangle} />
+              updateRectangle={this.updateRectangle}
+            />
           </div>
         </Row>
       </Container>
