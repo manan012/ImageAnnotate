@@ -21,26 +21,12 @@ class Sidebar extends Component {
 
   //Add new images to read
   newImages = (e) => {
-    const images = [...e.target.files].map(imageFile => ({file: imageFile, readed: 0, image: "", annotations:{rectangles: [], circles: []}}))
+    const images = [...e.target.files]
+    .filter(imageFile => imageFile.type.split("/")[0] === 'image')
+    .map(imageFile => ({file: imageFile, readed: 0, image: "", annotations:{rectangles: [], circles: []}}))
     this.props.addImages(images)
   }
 
-  // Image uploading on Canvas
-  // uploadImage = () => {
-  //   var file = document.querySelector('input[type=file]').files[0];
-  //   var reader = new FileReader();
-  //   reader.onload = () => {
-  //     this.setState(() => { this.props.imageSet(reader.result) });
-  //   }
-
-  //   if (file) {
-  //     reader.readAsDataURL(file);
-  //     var data = JSON.stringify({ "name": file.name, "Image type": file.type, "Image Size(KB)": (file.size) / 1024, "Last Modified Date": file.lastModifiedDate });
-  //     this.setState({ dta: data });
-  //     this.setState({ varx: true });
-  //     // console.log(reader.result);
-  //   }
-  // }
 
   // Downloading the Json File
   DataSend() {
