@@ -22,6 +22,7 @@ class ReadImage extends Component {
     });
   };
 
+<<<<<<< HEAD
   completed = () => {
     this.setState({
       readed: 100,
@@ -44,6 +45,25 @@ class ReadImage extends Component {
       image: this.fileReader.result,
     });
   };
+=======
+    completed = () => {
+        this.setState({
+            readed: 100,
+            image: this.fileReader.result
+        });
+        detectObject(this.fileReader.result)
+        .then(rectangles => this.props.onComplete({
+            ...this.state,
+            image: this.fileReader.result,
+            annotations: {
+                ...this.state.annotations,
+                rectangles: [...this.state.annotations, ...rectangles]
+            }
+        }))
+        .catch(error => console.log(error));
+        //this.props.onComplete({...this.state, readed:100, image: this.fileReader.result});
+    }
+>>>>>>> 7ca16ad8d6774a1db4105d49bfbd46288536f0dd
 
   render() {
     return (

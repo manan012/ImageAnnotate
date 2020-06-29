@@ -83,7 +83,7 @@ class DrawRect extends React.Component{
       handleStageMouseUp = () => {
         const {mouseDraw, width, height} = this.state
         if (mouseDraw && Math.abs(width) > 3 && Math.abs(height) > 3) {
-          this.props.addRectangle(omit(['mouseDown', 'mouseDrawn', 'selectedShapeName'], this.state));
+          this.props.addRectangle(omit(['mouseDown', 'mouseDraw', 'selectedShapeName'], this.state));
         }
     
         //console.log(this1.state.rectangles);
@@ -114,7 +114,7 @@ class DrawRect extends React.Component{
                 this.state.x !== null && this.state.y != null
                   ? <Rectangle id="annotate"
                       sclassName="rect"
-                      {...omit(['mouseDown', 'mouseDrawn', 'selectedShapeName'], this.state)}
+                      {...omit(['mouseDown', 'mouseDraw', 'selectedShapeName'], this.state)}
                     />
                   : null
               }
