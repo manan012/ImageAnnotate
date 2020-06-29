@@ -1,7 +1,5 @@
 import React from "react";
 import { Image } from "react-konva";
-const tf = require("@tensorflow/tfjs");
-const cocoSsd = require("@tensorflow-models/coco-ssd");
 
 class AnnotationImage extends React.Component {
   state = {
