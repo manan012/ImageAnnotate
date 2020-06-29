@@ -31,8 +31,6 @@ class AnnotationImage extends React.Component {
     const { zoomed_in } = this.state;
     const image = event.target;
     const stage = image.getStage();
-    const layers = stage.getChildren();
-    // console.log("Children = " + JSON.stringify(layers));
     image.getStage().container().style.cursor = "default";
     var pos = stage.getPointerPosition();
 
@@ -47,8 +45,7 @@ class AnnotationImage extends React.Component {
         x: 2,
         y: 2,
       });
-
-   
+      stage.getLayers().draw();
 
       this.setState({ zoomed_in: true });
     } else if (zoomed_in == true) {
@@ -58,26 +55,9 @@ class AnnotationImage extends React.Component {
         x: 1,
         y: 1,
       });
-      // function zoom_out_children(node) {
-      //   if (node) {
-      //     console.log(JSON.stringify(node));
-      //     node.x(0);
-      //     node.y(0);
-      //     node.scale({
-      //       x: 1,
-      //       y: 1,
-      //     });
-      //     node.getChildren(function (child) {
-      //       zoom_out_children(child);
-      //     });
-      //   }
-      // }
-
-     
-
+      stage.getLayers().draw();
       this.setState({ zoomed_in: false });
     }
-   
   };
 
   handleMouseUp = (event) => {
@@ -92,6 +72,7 @@ class AnnotationImage extends React.Component {
       handleMouseDown,
       handleMouseUp,
     } = this;
+    console.log("anotate");
     return (
       <Image
         image={this.state.image}
