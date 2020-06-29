@@ -1,5 +1,7 @@
 import React from "react";
 import { Image } from "react-konva";
+const tf = require("@tensorflow/tfjs");
+const cocoSsd = require("@tensorflow-models/coco-ssd");
 
 class AnnotationImage extends React.Component {
   state = {
@@ -7,7 +9,7 @@ class AnnotationImage extends React.Component {
     zoomed_in: true,
   };
 
-  componentDidUpdate() {
+  async componentDidUpdate() {
     const image = new window.Image();
     image.src = this.props.image;
     image.onload = () => {
