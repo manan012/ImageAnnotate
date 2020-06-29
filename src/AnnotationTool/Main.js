@@ -6,8 +6,6 @@ import Sidebar from "./Sidebar/Sidebar";
 import DrawRect from "./Rectangle/DrawRect";
 import { Button } from "reactstrap";
 import DrawCircle from "./Circle/DrawCircle";
-import { useHistory } from "react-router-dom";
-import ReadImage from "../Images/ReadImage";
 import ImageSelector from "../Images/ImageSelector";
 import {Container, Row, Col} from "reactstrap";
 import NameAnnotations from "./Names/NameAnnotations";
@@ -24,7 +22,6 @@ class App extends React.Component {
     this.state = {
       images: [],
       selectedImage: undefined,
-      image: "",
       stageWidth: 1000,
       mouseDown: false,
       rector: false,
@@ -32,8 +29,6 @@ class App extends React.Component {
       line: false,
       polygon: false,
       point: false,
-      rectangles: [],
-      circles: [],
     };
     this.handleInputValueRect = this.handleInputValueRect.bind(this);
     this.handleInputValueCirc = this.handleInputValueCirc.bind(this);
@@ -164,10 +159,7 @@ class App extends React.Component {
     }));
   }
 
-  //Setting background image
-  imageSet = (file) => {
-    this.setState({ image: file });
-  };
+
 
   // Calling child functions inside parent
   handleNewShapeChange = (event) => {
@@ -262,7 +254,7 @@ class App extends React.Component {
           <div className="my-2 border">
             <Sidebar buttonClick={this.buttonClick} imageSet={this.imageSet} rectangles={this.state.rectangles} circles={this.state.circles} addImages={this.addImages} />
           </div>
-          <div id="app" className="col-md-9 m-2 border overflow-hidden">
+          <div id="app" className="col-md-9 m-2 p-0 border overflow-hidden">
             <Stage
               ref={(node) => {
                 this.stage = node;

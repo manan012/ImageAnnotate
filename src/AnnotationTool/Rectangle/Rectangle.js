@@ -29,8 +29,7 @@ class Rectangle extends React.Component {
         const shape = event.target;
         shape.stroke('#3DF6FF');
         shape.getStage().container().style.cursor = 'move';
-        // this.rect.draw();
-        this.rect.getLayer().draw();
+        this.rect.getLayer().batchDraw();
     };
 
     //When mouse is leaved from rectangle
@@ -38,8 +37,7 @@ class Rectangle extends React.Component {
         const shape = event.target;
         shape.stroke('#00A3AA');
         shape.getStage().container().style.cursor = 'crosshair';
-        // this.rect.draw();
-        this.rect.getLayer().draw();
+        this.rect.getLayer().batchDraw();
     };
 
     render() {
@@ -83,10 +81,13 @@ class Rectangle extends React.Component {
                 <Text
                 // Text on rectangle when annotating name is done
                     text={this.props.name}
-                    x={this.props.x}
-                    y={this.props.y}
+                    x={ (this.props.x + this.props.width/2)}
+                    y={ (this.props.y + this.props.height/2)}
+                    offsetY={7}
+                    offsetX={this.props.name.length*15/5}
                     fill={'white'}
                     fontSize={'15'}
+                    align={'center'}
                 />
             </Fragment>
         );

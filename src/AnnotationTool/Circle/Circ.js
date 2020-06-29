@@ -33,8 +33,7 @@ class Circ extends React.Component {
         //console.log('shape', shape);
         shape.stroke('#3DF6FF');
         shape.getStage().container().style.cursor = 'move';
-        // this.rect.draw();
-        this.circ.getLayer().draw();
+        this.circ.getLayer().batchDraw();
     };
 
     // When mouse leaves the circle, style of the cursor gets back to default
@@ -42,8 +41,7 @@ class Circ extends React.Component {
         const shape = event.target;
         shape.stroke('#00A3AA');
         shape.getStage().container().style.cursor = 'crosshair';
-        // this.rect.draw();
-        this.circ.getLayer().draw();
+        this.circ.getLayer().batchDraw();
     };
 
     render() {
@@ -92,6 +90,8 @@ class Circ extends React.Component {
                     text={this.props.name}
                     x={this.props.x}
                     y={this.props.y}
+                    offsetY={7}
+                    offsetX={this.props.name.length*15/5}
                     fill={'white'}
                     fontSize={'15'}
                 />

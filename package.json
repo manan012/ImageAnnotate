@@ -5,7 +5,8 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
     "@tensorflow-models/coco-ssd": "^2.0.3",
-    "@tensorflow/tfjs": "^1.5.1",
+    "@tensorflow/tfjs-converter": "^1.2.5",
+    "@tensorflow/tfjs-core": "^1.2.6",
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "font-awesome": "^4.7.0",
