@@ -11,7 +11,8 @@ const detectObject = async (img) => {
             x:prediction.bbox[0], 
             y:prediction.bbox[1],
             width: prediction.bbox[2],
-            height: prediction.bbox[3]
+            height: prediction.bbox[3],
+            stroke: "#00A3AA",
         }));
 }
 

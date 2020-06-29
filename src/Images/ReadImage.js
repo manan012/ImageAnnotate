@@ -28,13 +28,14 @@ class ReadImage extends Component {
         detectObject(this.fileReader.result)
         .then(rectangles => this.props.onComplete({
             ...this.state,
+            image: this.fileReader.result,
             annotations: {
                 ...this.state.annotations,
                 rectangles: [...this.state.annotations, ...rectangles]
             }
         }))
         .catch(error => console.log(error));
-        this.props.onComplete({...this.state, readed:100, image: this.fileReader.result});
+        //this.props.onComplete({...this.state, readed:100, image: this.fileReader.result});
     }
 
     render() {
