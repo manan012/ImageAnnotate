@@ -10,6 +10,7 @@ import ImageSelector from "../Images/ImageSelector";
 import { Container, Row, Col } from "reactstrap";
 import NameAnnotations from "./Names/NameAnnotations";
 import { omit } from "ramda";
+import GoogleDrive from "../GoogleDrive/GoogleDrive";
 
 //  This is the main page for Image Annotation.
 //  It has a Sidebar component which has buttons which serves different purposes
@@ -26,6 +27,8 @@ class App extends React.Component {
       mouseDown: false,
       rector: false,
       circle: false,
+      drawingAreaWidth: 0,
+      drawingAreaHeight: 0,
       line: false,
       polygon: false,
       point: false,
@@ -35,7 +38,23 @@ class App extends React.Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    console.log(nextState);
+   // console.log(this.state);
+  }
+
+  componentDidMount = () => {
+    this.setState({
+      drawingAreaHeight: this.drawingArea.getBoundingClientRect().height,
+      drawingAreaWidth: this.drawingArea.getBoundingClientRect().width,
+    })
+    window.addEventListener('resize', this.updateDrawingAreaSize);
+    window.addEventListener('resize', this.correctScaleOfSelectedImage);
+  }
+
+  updateDrawingAreaSize = () => {
+    this.setState({
+      drawingAreaHeight: this.drawingArea.getBoundingClientRect().height,
+      drawingAreaWidth: this.drawingArea.getBoundingClientRect().width,
+    })
   }
 
   addImages = (newImages) => {
@@ -64,20 +83,44 @@ class App extends React.Component {
   };
 
   selectImage = (idx) => {
-    if (this.state.selectedImage == undefined) {
-      this.setState({ selectedImage: { idx: idx, ...this.state.images[idx] } });
-      return;
+    if (this.state.selectedImage && this.state.selectedImage.idx === idx) return;
+    const img = document.createElement('img');
+    img.src=this.state.images[idx].image;
+    img.onload = () => {
+      const scaleX = img.width <= this.state.drawingAreaWidth ? 1 : this.state.drawingAreaWidth/img.width;
+      const scaleY = img.height <= this.state.drawingAreaHeight ? 1 : this.state.drawingAreaHeight/img.height;
+      const commScale = Math.max(scaleX, scaleY);
+      if (this.state.selectedImage == undefined) {
+        this.setState({ selectedImage: { idx: idx, scaleX: commScale, scaleY: commScale, width: img.width, height: img.height, ...this.state.images[idx] } });
+        return;
+      }
+      this.setState({
+        images: this.state.images.map((img, i) =>
+          i === this.state.selectedImage.idx
+            ? omit(["idx", "scaleX", "scaleY"], this.state.selectedImage)
+            : img
+        ),
+        selectedImage: { idx: idx, scaleX: commScale, scaleY: commScale, width: img.width, height: img.height, ...this.state.images[idx] },
+      });
     }
-    if (this.state.selectedImage.idx === idx) return;
-    this.setState({
-      images: this.state.images.map((img, i) =>
-        i === this.state.selectedImage.idx
-          ? omit(["idx"], this.state.selectedImage)
-          : img
-      ),
-      selectedImage: { idx: idx, ...this.state.images[idx] },
-    });
   };
+
+  correctScaleOfSelectedImage = () => {
+    if (!this.state.selectedImage) return;
+    const height = this.state.selectedImage.height;
+    const width = this.state.selectedImage.width;
+    const drawingAreaHeight = this.state.drawingAreaHeight;
+    const drawingAreaWidth = this.state.drawingAreaWidth;
+    const commScale = Math.max(drawingAreaHeight/height, drawingAreaWidth/width);
+    this.setState({
+      ...this.state,
+      selectedImage: {
+        ...this.state.selectedImage,
+        scaleX: commScale,
+        scaleY: commScale
+      }
+    })
+  }
 
   addCircle = (newCircle) => {
     this.setState((state) => {
@@ -162,7 +205,6 @@ class App extends React.Component {
 
   // When a circle is added
   handleInputValueCirc(val) {
-    console.log(val);
     if (this.state.selectedImage === undefined) return;
     this.setState((state) => ({
       selectedImage: {
@@ -277,7 +319,7 @@ class App extends React.Component {
               addImages={this.addImages}
             />
           </div>
-          <div id="app" className="col-md-9 m-2 p-0 border overflow-hidden">
+          <div id="app" ref={(ref) => this.drawingArea = ref} className="col-md-9 m-2 p-0 border overflow-hidden">
             <Stage
               ref={(node) => {
                 this.stage = node;
@@ -303,6 +345,8 @@ class App extends React.Component {
                       ? this.state.selectedImage.image
                       : ""
                   }
+                  scaleX={this.state.selectedImage ? this.state.selectedImage.scaleX: 1}
+                  scaleY={this.state.selectedImage ? this.state.selectedImage.scaleY : 1} 
                   rector={this.state.rector}
                   circle={this.state.circle}
                 />
@@ -330,6 +374,8 @@ class App extends React.Component {
                     addRectangle={this.addRectangle}
                     updateRectangle={this.updateRectangle}
                     handleInput={this.handleInputValueRect}
+                    scaleX={this.state.selectedImage.scaleX}
+                    scaleY={this.state.selectedImage.scaleY}
                   />
                 ) : null}
               </Layer>

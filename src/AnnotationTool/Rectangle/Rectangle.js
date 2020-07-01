@@ -49,6 +49,8 @@ class Rectangle extends React.Component {
                 height,
                 name,
                 stroke,
+                scaleX,
+                scaleY
             },
             handleChange,
             handleMouseEnter,
@@ -56,10 +58,10 @@ class Rectangle extends React.Component {
         } = this;
         return (
             <Fragment>
-                <Rect x={x}
-                    y={y}
-                    width={width}
-                    height={height}
+                <Rect x={x*scaleX}
+                    y={y*scaleY}
+                    width={width*scaleX}
+                    height={height*scaleX}
                     // force no scaling
                     // otherwise Transformer will change it
                     scaleX={1}
@@ -81,8 +83,8 @@ class Rectangle extends React.Component {
                 <Text
                 // Text on rectangle when annotating name is done
                     text={this.props.name}
-                    x={ (this.props.x + this.props.width/2)}
-                    y={ (this.props.y + this.props.height/2)}
+                    x={ (this.props.x + this.props.width/2)*scaleX}
+                    y={ (this.props.y + this.props.height/2)*scaleY}
                     offsetY={7}
                     offsetX={this.props.name.length*15/5}
                     fill={'white'}

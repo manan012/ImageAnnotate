@@ -8,3 +8,13 @@ body {
   border: 2px solid blue;
 } 
 
+.img-sel-inner-container {
+  display: flex;
+  padding: 0;
+  transition: 1s;
+}
+
+
+.img-sel-inner-container .card {
+  min-width: 75px;
+}

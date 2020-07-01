@@ -1,5 +1,6 @@
 import React from "react";
 import { Image } from "react-konva";
+import { max } from "ramda";
 
 class AnnotationImage extends React.Component {
   state = {
@@ -75,6 +76,8 @@ class AnnotationImage extends React.Component {
     return (
       <Image
         image={this.state.image}
+        height={this.state.image.height*this.props.scaleY}
+        width={this.state.image.width*this.props.scaleX}
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}
         onMouseDown={handleMouseDown}
