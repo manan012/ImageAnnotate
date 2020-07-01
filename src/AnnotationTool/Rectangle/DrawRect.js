@@ -26,7 +26,6 @@ class DrawRect extends React.Component{
         
         // clicked on stage - clear selection or ready to generate new rectangle
         if (event.target.className === 'Image') {
-          console.log("image is clicked")
           const stage = event.target.getStage();
           const mousePos = stage.getPointerPosition();
           this.setState({
@@ -45,7 +44,6 @@ class DrawRect extends React.Component{
     
         // find clicked rect by its name for its modification
         const name = event.target.name();
-        console.log(name);
         const rect = this.props.rectangles.find(r => r.name === name);
         if (rect) {
           this.setState({
@@ -101,9 +99,10 @@ class DrawRect extends React.Component{
             <Fragment>
                 {this.props.rectangles.map((rect, i) => (
                 <Rectangle id="annotate"
-                    
+                  scaleX={this.props.scaleX || 1}
+                  scaleY={this.props.scaleY || 1}
                   sclassName="rect"
-                  key={rect.key}
+                  key={i}
                   {...rect}
                   onTransform={(newProps) => {
                     handleRectChange(i, newProps);

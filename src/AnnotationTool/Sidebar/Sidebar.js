@@ -108,6 +108,17 @@ class Sidebar extends Component {
             className="submitButton"
             title="Draw Rectangle"
             onClick={() => {
+              this.props.anotateSeletedImage();
+            }}
+          >
+            <i className="fas fa-pencil-ruler fa-3x"></i>
+          </button>
+        </div>
+        <div>
+          <button
+            className="submitButton"
+            title="Draw Rectangle"
+            onClick={() => {
               this.props.buttonClick(true, false, false, false, false);
             }}
           >

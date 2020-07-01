@@ -27,39 +27,42 @@ class ReadImage extends Component {
       readed: 100,
       image: this.fileReader.result,
     });
-    this.props.addObjectDetectionTaskToQueue(async () => {
-      try {
-        const rectangles = await detectObject(this.fileReader.result)
-        this.props.onComplete({
-          ...this.state,
-          image: this.fileReader.result,
-          annotations: {
-            ...this.state.annotations,
-            rectangles: [...this.state.annotations, ...rectangles],
-          },
-        })
-      }
-      catch(e) {
-        console.log("Object detection error", console.log(e.message));
-      }
-    })
-    console.log("game");
-    this.props.onComplete({...this.state, readed:100, image: this.fileReader.result});
+    const img = document.createElement('img');
+    img.src=this.fileReader.result;
+    img.onload = () => {
+      const height = img.height;
+      const width = img.width;
+      const drawingAreaHeight = this.props.drawingAreaHeight;
+      const drawingAreaWidth = this.props.drawingAreaWidth;
+      const commScale = Math.max(
+        (width <= drawingAreaWidth ? 1 : drawingAreaWidth/width),
+        (height <= drawingAreaHeight ? 1 : drawingAreaHeight/height)
+      )
+      console.log(drawingAreaHeight, drawingAreaWidth);
+      this.props.onComplete({
+        ...this.state,
+        readed:100, 
+        height: height, 
+        width: width, 
+        scaleX: commScale,
+        scaleY: commScale,
+        image: this.fileReader.result
+      });
+    }
   };
 
   render() {
     return (
       <Card
-        width={70}
         className={"mx-1 my-1 " + (this.props.active ? "active" : "")}
         onClick={this.props.onClick}
       >
         <CardImg
-          style={{ width: 70 }}
+          style={{ width: "70px" }}
           src={this.state.readed != 100 ? "./img/images.jpg" : this.state.image}
           alt={this.state.file.name}
         />
-        <CardImgOverlay className="p-0 d-flex justify-content-center align-items-center">
+        <CardImgOverlay style={{ width: "70px" }} className="p-0 d-flex justify-content-center align-items-center">
           <small className="text-muted">{this.state.readed} %</small>
         </CardImgOverlay>
       </Card>

@@ -23,26 +23,26 @@ class App extends Component {
     };
   }
 
-  verifyUser = () => {
-    if (this.state.token) {
-      axios
-        .get("")
-        .then((user) => {
-          return true;
-        })
-        .catch((err) => {
-          localStorage.removeItem("token");
+  // verifyUser = () => {
+  //   if (this.state.token) {
+  //     axios
+  //       .get("")
+  //       .then((user) => {
+  //         return true;
+  //       })
+  //       .catch((err) => {
+  //         localStorage.removeItem("token");
 
-          this.setState({
-            loggedInUser: "",
-            token: null,
-          });
-          return false;
-        });
-    } else {
-      return false;
-    }
-  };
+  //         this.setState({
+  //           loggedInUser: "",
+  //           token: null,
+  //         });
+  //         return false;
+  //       });
+  //   } else {
+  //     return false;
+  //   }
+  // };
 
   signInUser = (user) => {
     this.setState({
@@ -79,6 +79,7 @@ class App extends Component {
             ) : (
               <Route exact path="/" component={() => <Redirect to="/" />} />
             )}
+            <Route exact path="/project" component={ProjectDashBoard} />
           </Switch>
         </div>
       </Router>

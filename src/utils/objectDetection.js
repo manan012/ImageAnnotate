@@ -5,7 +5,6 @@ const detectObject = async (img) => {
   imgEle.src = img;
   const model = await cocoSsd.load();
   const predictions = await model.detect(imgEle);
-  console.log(predictions);
   return predictions.map((prediction) => ({
     name: prediction.class,
     x: prediction.bbox[0],
