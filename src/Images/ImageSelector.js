@@ -41,11 +41,11 @@ class ImageSelector extends Component {
 
   render() {
     return (
-      <Container className="d-flex align-items-center mt-3">
+      <Container className="d-flex align-items-center">
         <div className="mr-2">
           <Button disabled={this.state.seleted <= 0} onClick={this.moveBackward}><i class="fas fa-long-arrow-alt-left"></i></Button>
         </div>
-        <div style={{minWidth: "80%", minHeight: "60px"}} className="overflow-hidden p-0 border">
+        <div style={{minWidth: "80%", minHeight: "60px"}} className="overflow-hidden p-0 border m-0">
           <div style={{transform:`translate(${-this.state.seleted*(75 + 2*4)}px, 0px)`}} className="img-sel-inner-container p-0 position-aboslute">
             {this.props.images.map((image, i) => (
               <ReadImage
@@ -53,6 +53,8 @@ class ImageSelector extends Component {
                 active={i == this.state.seleted}
                 onClick={() => this.handleClick(i)}
                 addObjectDetectionTaskToQueue={this.addObjectDetectionTaskToQueue}
+                drawingAreaWidth={this.props.drawingAreaWidth}
+                drawingAreaHeight={this.props.drawingAreaHeight}
                 onComplete={(image) => {
                   this.props.onComplete(i, image);
                 }}

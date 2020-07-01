@@ -9,6 +9,7 @@ import {
 import Main from './AnnotationTool/Main';
 import Start from './AnnotationTool/landingPage/Start';
 import Signin from './AnnotationTool/landingPage/Signin';
+import ProjectDashBoard from './Dashboards/ProjectDashBoard';
 
 
 class App extends Component {
@@ -65,10 +66,8 @@ class App extends Component {
 
               
 
+              <Route exact path="/project" component={ProjectDashBoard}/>
               
-              
-
-
             </Switch>
           </div>
         </Router>

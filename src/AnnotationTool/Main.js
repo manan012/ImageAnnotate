@@ -11,6 +11,7 @@ import { Container, Row, Col } from "reactstrap";
 import NameAnnotations from "./Names/NameAnnotations";
 import { omit } from "ramda";
 import GoogleDrive from "../GoogleDrive/GoogleDrive";
+import detectObject from "../utils/objectDetection";
 
 //  This is the main page for Image Annotation.
 //  It has a Sidebar component which has buttons which serves different purposes
@@ -38,7 +39,7 @@ class App extends React.Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-   // console.log(this.state);
+    //console.log(this.state);
   }
 
   componentDidMount = () => {
@@ -62,11 +63,9 @@ class App extends React.Component {
   };
 
   updateImage = (idx, updatedImages) => {
+    console.log(updatedImages);
     if (this.state.selectedImage && this.state.selectedImage.idx === idx) {
       this.setState({
-        images: this.state.images.map((image, i) =>
-          i === idx ? {...image, ...updatedImages} : image
-        ),
         selectedImage: {
           idx: idx,
           ...this.state.images[idx],
@@ -84,25 +83,18 @@ class App extends React.Component {
 
   selectImage = (idx) => {
     if (this.state.selectedImage && this.state.selectedImage.idx === idx) return;
-    const img = document.createElement('img');
-    img.src=this.state.images[idx].image;
-    img.onload = () => {
-      const scaleX = img.width <= this.state.drawingAreaWidth ? 1 : this.state.drawingAreaWidth/img.width;
-      const scaleY = img.height <= this.state.drawingAreaHeight ? 1 : this.state.drawingAreaHeight/img.height;
-      const commScale = Math.max(scaleX, scaleY);
       if (this.state.selectedImage == undefined) {
-        this.setState({ selectedImage: { idx: idx, scaleX: commScale, scaleY: commScale, width: img.width, height: img.height, ...this.state.images[idx] } });
+        this.setState({ selectedImage: { idx: idx, ...this.state.images[idx] } });
         return;
       }
       this.setState({
         images: this.state.images.map((img, i) =>
           i === this.state.selectedImage.idx
-            ? omit(["idx", "scaleX", "scaleY"], this.state.selectedImage)
+            ? omit(["idx"], this.state.selectedImage)
             : img
         ),
-        selectedImage: { idx: idx, scaleX: commScale, scaleY: commScale, width: img.width, height: img.height, ...this.state.images[idx] },
+        selectedImage: { idx: idx, ...this.state.images[idx] },
       });
-    }
   };
 
   correctScaleOfSelectedImage = () => {
@@ -120,6 +112,23 @@ class App extends React.Component {
         scaleY: commScale
       }
     })
+  }
+
+  anotateSeletedImage = () => {
+    if (!this.state.selectedImage) return;
+      (async (selectedImage) => {
+          detectObject(selectedImage.image)
+          .then((newRectangles) => {
+            console.log(newRectangles)
+            this.updateImage(selectedImage.idx, {
+            ...omit(['idx'], selectedImage),
+            annotations: {
+              ...selectedImage.annotations,
+              rectangles: [...selectedImage.annotations.rectangles, ...newRectangles]
+            }
+          })})
+          console.log(selectedImage)
+      })(this.state.selectedImage)
   }
 
   addCircle = (newCircle) => {
@@ -290,24 +299,26 @@ class App extends React.Component {
     return (
       <Container fuild>
         <Row className="border-bottom">
-          <Col xs={12}>
-            <ImageSelector
-              images={this.state.images}
-              onComplete={(idx, image) => this.updateImage(idx, image)}
-              onSelect={(idx) => this.selectImage(idx)}
-            />
-          </Col>
           <div className="col-md-2 "></div>
           <div className="col-md-8 name " style={{ color: "#08c751" }}>
             <h1>
               <b>Image Annotator</b>
             </h1>
           </div>
-          <div className="col-md-2 name1">
+          {/* <div className="col-md-2 name1">
             <Button color="primary" type="submit" onClick={this.handleSubmit}>
               Log out
             </Button>
-          </div>
+          </div> */}
+          <Col xs={12} className={"py-2"}>
+            <ImageSelector
+              images={this.state.images}
+              onComplete={(idx, image) => this.updateImage(idx, image)}
+              onSelect={(idx) => this.selectImage(idx)}
+              drawingAreaWidth={this.state.drawingAreaWidth}
+              drawingAreaHeight={this.state.drawingAreaHeight}
+            />
+          </Col>
         </Row>
         <Row>
           <div className="my-2 border">
@@ -317,6 +328,7 @@ class App extends React.Component {
               rectangles={this.state.rectangles}
               circles={this.state.circles}
               addImages={this.addImages}
+              anotateSeletedImage={this.anotateSeletedImage}
             />
           </div>
           <div id="app" ref={(ref) => this.drawingArea = ref} className="col-md-9 m-2 p-0 border overflow-hidden">
@@ -346,7 +358,7 @@ class App extends React.Component {
                       : ""
                   }
                   scaleX={this.state.selectedImage ? this.state.selectedImage.scaleX: 1}
-                  scaleY={this.state.selectedImage ? this.state.selectedImage.scaleY : 1} 
+                  scaleY={this.state.selectedImage ? this.state.selectedImage.scaleY : 1}
                   rector={this.state.rector}
                   circle={this.state.circle}
                 />

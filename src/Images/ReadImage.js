@@ -27,25 +27,28 @@ class ReadImage extends Component {
       readed: 100,
       image: this.fileReader.result,
     });
-    this.props.addObjectDetectionTaskToQueue(async () => {
-      try {
-        const rectangles = await detectObject(this.fileReader.result)
-        this.props.onComplete({
-          ...this.state,
-          image: this.fileReader.result,
-          annotations: {
-            ...this.state.annotations,
-            rectangles: [...this.state.annotations, ...rectangles],
-          },
-        })
-      }
-      catch(e) {
-        console.log("Object detection error", console.log(e.message));
-      }
-    })
     const img = document.createElement('img');
     img.src=this.fileReader.result;
-    this.props.onComplete({...this.state, readed:100, height: img.height, width: img.width, image: this.fileReader.result});
+    img.onload = () => {
+      const height = img.height;
+      const width = img.width;
+      const drawingAreaHeight = this.props.drawingAreaHeight;
+      const drawingAreaWidth = this.props.drawingAreaWidth;
+      const commScale = Math.max(
+        (width <= drawingAreaWidth ? 1 : drawingAreaWidth/width),
+        (height <= drawingAreaHeight ? 1 : drawingAreaHeight/height)
+      )
+      console.log(drawingAreaHeight, drawingAreaWidth);
+      this.props.onComplete({
+        ...this.state,
+        readed:100, 
+        height: height, 
+        width: width, 
+        scaleX: commScale,
+        scaleY: commScale,
+        image: this.fileReader.result
+      });
+    }
   };
 
   render() {
