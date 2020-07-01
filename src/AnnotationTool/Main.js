@@ -46,13 +46,13 @@ class App extends React.Component {
     if (this.state.selectedImage && this.state.selectedImage.idx === idx) {
       this.setState({
         images: this.state.images.map((image, i) =>
-          i === idx ? {...image, ...updatedImages} : image
+          i === idx ? { ...image, ...updatedImages } : image
         ),
         selectedImage: {
           idx: idx,
           ...this.state.images[idx],
-          ...updatedImages
-        }
+          ...updatedImages,
+        },
       });
       return;
     }
