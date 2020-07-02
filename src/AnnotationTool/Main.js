@@ -47,17 +47,17 @@ class App extends React.Component {
     this.setState({
       drawingAreaHeight: this.drawingArea.getBoundingClientRect().height,
       drawingAreaWidth: this.drawingArea.getBoundingClientRect().width,
-    })
-    window.addEventListener('resize', this.updateDrawingAreaSize);
-    window.addEventListener('resize', this.correctScaleOfSelectedImage);
-  }
+    });
+    window.addEventListener("resize", this.updateDrawingAreaSize);
+    window.addEventListener("resize", this.correctScaleOfSelectedImage);
+  };
 
   updateDrawingAreaSize = () => {
     this.setState({
       drawingAreaHeight: this.drawingArea.getBoundingClientRect().height,
       drawingAreaWidth: this.drawingArea.getBoundingClientRect().width,
-    })
-  }
+    });
+  };
 
   addImages = (newImages) => {
     this.setState((state) => ({ images: [...state.images, ...newImages] }));
@@ -70,8 +70,8 @@ class App extends React.Component {
         selectedImage: {
           idx: idx,
           ...this.state.images[idx],
-          ...updatedImages
-        }
+          ...updatedImages,
+        },
       });
       return;
     }
@@ -83,19 +83,20 @@ class App extends React.Component {
   };
 
   selectImage = (idx) => {
-    if (this.state.selectedImage && this.state.selectedImage.idx === idx) return;
-      if (this.state.selectedImage == undefined) {
-        this.setState({ selectedImage: { idx: idx, ...this.state.images[idx] } });
-        return;
-      }
-      this.setState({
-        images: this.state.images.map((img, i) =>
-          i === this.state.selectedImage.idx
-            ? omit(["idx"], this.state.selectedImage)
-            : img
-        ),
-        selectedImage: { idx: idx, ...this.state.images[idx] },
-      });
+    if (this.state.selectedImage && this.state.selectedImage.idx === idx)
+      return;
+    if (this.state.selectedImage == undefined) {
+      this.setState({ selectedImage: { idx: idx, ...this.state.images[idx] } });
+      return;
+    }
+    this.setState({
+      images: this.state.images.map((img, i) =>
+        i === this.state.selectedImage.idx
+          ? omit(["idx"], this.state.selectedImage)
+          : img
+      ),
+      selectedImage: { idx: idx, ...this.state.images[idx] },
+    });
   };
 
   correctScaleOfSelectedImage = () => {
@@ -104,33 +105,39 @@ class App extends React.Component {
     const width = this.state.selectedImage.width;
     const drawingAreaHeight = this.state.drawingAreaHeight;
     const drawingAreaWidth = this.state.drawingAreaWidth;
-    const commScale = Math.max(drawingAreaHeight/height, drawingAreaWidth/width);
+    const commScale = Math.max(
+      drawingAreaHeight / height,
+      drawingAreaWidth / width
+    );
     this.setState({
       ...this.state,
       selectedImage: {
         ...this.state.selectedImage,
         scaleX: commScale,
-        scaleY: commScale
-      }
-    })
-  }
+        scaleY: commScale,
+      },
+    });
+  };
 
   anotateSeletedImage = () => {
     if (!this.state.selectedImage) return;
-      (async (selectedImage) => {
-          detectObject(selectedImage.image)
-          .then((newRectangles) => {
-            console.log(newRectangles)
-            this.updateImage(selectedImage.idx, {
-            ...omit(['idx'], selectedImage),
-            annotations: {
-              ...selectedImage.annotations,
-              rectangles: [...selectedImage.annotations.rectangles, ...newRectangles]
-            }
-          })})
-          console.log(selectedImage)
-      })(this.state.selectedImage)
-  }
+    (async (selectedImage) => {
+      detectObject(selectedImage.image).then((newRectangles) => {
+        console.log(newRectangles);
+        this.updateImage(selectedImage.idx, {
+          ...omit(["idx"], selectedImage),
+          annotations: {
+            ...selectedImage.annotations,
+            rectangles: [
+              ...selectedImage.annotations.rectangles,
+              ...newRectangles,
+            ],
+          },
+        });
+      });
+      console.log(selectedImage);
+    })(this.state.selectedImage);
+  };
 
   addCircle = (newCircle) => {
     this.setState((state) => {
@@ -344,7 +351,11 @@ class App extends React.Component {
               saveAnnotationsAsJson={this.saveAnnotationsAsJson}
             />
           </div>
-          <div id="app" ref={(ref) => this.drawingArea = ref} className="col-md-9 m-2 p-0 border overflow-hidden">
+          <div
+            id="app"
+            ref={(ref) => (this.drawingArea = ref)}
+            className="col-md-9 m-2 p-0 border overflow-hidden"
+          >
             <Stage
               ref={(node) => {
                 this.stage = node;
@@ -370,8 +381,16 @@ class App extends React.Component {
                       ? this.state.selectedImage.image
                       : ""
                   }
-                  scaleX={this.state.selectedImage ? this.state.selectedImage.scaleX: 1}
-                  scaleY={this.state.selectedImage ? this.state.selectedImage.scaleY : 1}
+                  scaleX={
+                    this.state.selectedImage
+                      ? this.state.selectedImage.scaleX
+                      : 1
+                  }
+                  scaleY={
+                    this.state.selectedImage
+                      ? this.state.selectedImage.scaleY
+                      : 1
+                  }
                   rector={this.state.rector}
                   circle={this.state.circle}
                 />

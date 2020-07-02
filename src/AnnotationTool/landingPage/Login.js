@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
 import axios from "axios";
 import "../../../node_modules/@fortawesome/fontawesome-free/css/all.css";
-import "./Signin.css";
-class Signin extends React.Component {
+import "./Login.css";
+class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,7 +22,7 @@ class Signin extends React.Component {
   };
 
   // Sign up form is submitted
-  onSubmitSignUp = (e) => {
+  onSubmit = (e) => {
     e.preventDefault();
     // get our form data out of state
     var data = JSON.stringify({
@@ -37,13 +37,12 @@ class Signin extends React.Component {
     var this1 = this;
 
     axios
-      .post("https://edunomics.in/api/labelImg/user/signup", data, {
+      .post("http://rachitpahwa.codes/api/labelImg/user/signup", data, {
         headers: { "Content-Type": "application/json" },
       })
       .then(function (response) {
-        // console.log(response);
-        // alert("Please login with your credentials");
-        alert(response.data.msg + ". Now Login");
+        console.log(response);
+        alert("Please login with your credentials");
       })
       .catch((err) => {
         console.log("error1", err);
@@ -51,28 +50,28 @@ class Signin extends React.Component {
   };
 
   // When login form is submitted
-  onSubmitLogin = (e) => {
+  onSubmit1 = (e) => {
     e.preventDefault();
     var this1 = this;
     var email = this.state.email;
     var password = this.state.password;
     var data = JSON.stringify({ email: email, password: password });
     var x = axios
-      .post("https://edunomics.in/api/labelImg/user/login", data, {
+      .post("http://rachitpahwa.codes/api/labelImg/user/login", data, {
         headers: { "Content-Type": "application/json" },
       })
       .then(function (response) {
-        console.log(response.data.token);
         localStorage.setItem("token", response.data.token);
+
         this1.props.history.push("/label");
         //console.log(response.data.token);
       })
       .catch((err) => {
         //Uncomment to bypass login
-        // localStorage.setItem("token", 65515631);
+        localStorage.setItem("token", 65515631);
 
-        // this1.props.history.push("/label");
-        // alert("Enter valid credentials");
+        this1.props.history.push("/label");
+        alert("Enter valid credentials");
         console.log("error2", err);
       });
     //console.log(data);
@@ -119,16 +118,44 @@ class Signin extends React.Component {
         }}
       >
         <div class="form-structor">
+          <div class="login slide-up ">
+            <div class="center">
+              <h2 class="form-title" id="login">
+                <span>or</span>Log in
+              </h2>
+              <form
+                action=""
+                method="POST"
+                name="form2"
+                onSubmit={this.onSubmit1}
+              >
+                <div class="form-holder">
+                  <input
+                    type="email"
+                    class="input"
+                    placeholder="Email"
+                    required
+                    onChange={this.onChange}
+                    name="email"
+                  />
+                  <input
+                    type="password"
+                    class="input"
+                    placeholder="Password"
+                    name="password"
+                    onChange={this.onChange}
+                    required
+                  />
+                </div>
+                <button class="submit-btn">Log in</button>
+              </form>
+            </div>
+          </div>
           <div class="signup ">
             <h2 class="form-title" id="signup">
               <span>or</span>Sign up
             </h2>
-            <form
-              action=""
-              method="POST"
-              name="form1"
-              onSubmit={this.onSubmitSignUp}
-            >
+            <form action="" method="POST" name="form1" onSubmit={this.onSubmit}>
               <div class="form-holder">
                 <input
                   type="text"
@@ -183,44 +210,10 @@ class Signin extends React.Component {
               </button>
             </form>
           </div>
-
-          <div class="login slide-up">
-            <div class="center">
-              <h2 class="form-title" id="login">
-                <span>or</span>Log in
-              </h2>
-              <form
-                action=""
-                method="POST"
-                name="form2"
-                onSubmit={this.onSubmitLogin}
-              >
-                <div class="form-holder">
-                  <input
-                    type="email"
-                    class="input"
-                    placeholder="Email"
-                    required
-                    onChange={this.onChange}
-                    name="email"
-                  />
-                  <input
-                    type="password"
-                    class="input"
-                    placeholder="Password"
-                    name="password"
-                    onChange={this.onChange}
-                    required
-                  />
-                </div>
-                <button class="submit-btn">Log in</button>
-              </form>
-            </div>
-          </div>
         </div>
       </div>
     );
   }
 }
 
-export default Signin;
+export default Login;
