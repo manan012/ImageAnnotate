@@ -13,7 +13,6 @@ import { omit } from "ramda";
 import GoogleDrive from "../GoogleDrive/GoogleDrive";
 import detectObject from "../utils/objectDetection";
 import saveObjectAsJSONFfile from "../utils/saveObjectAsJSONFile";
-import Draw from "./DrawingActions/Draw";
 
 //  This is the main page for Image Annotation.
 //  It has a Sidebar component which has buttons which serves different purposes
@@ -456,7 +455,6 @@ class App extends React.Component {
                   />
                 ) : null}
               </Layer>
-              <Draw drawingMode={this.state.drawingMode} />
             </Stage>
           </div>
           <div className="col-md-2 p-0 border my-2">

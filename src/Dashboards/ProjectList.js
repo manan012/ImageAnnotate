@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import List from "./List";
 import ListItem from './ListItem';
+import { Link } from 'react-router-dom';
 
 class ProjectList extends Component {
     constructor(props) {
@@ -10,7 +11,9 @@ class ProjectList extends Component {
     render() {
         return (
             <List className="project-list">
-                <ListItem title={"Cars"} infos={['17-label', 'Active 4 hours ago']}/>
+                <a href="/#/overview">
+                    <ListItem title={"Cars"} infos={['17-label', 'Active 4 hours ago']}/>
+                </a>
             </List>
         )
     }

@@ -10,7 +10,9 @@ class MembersTab extends Component {
         return (
             <Fragment>
                 <div className="py-3">
-                    <Button color="primary" className="d-block ml-auto">Add Members</Button>
+                    <a href="/#/label">
+                        <Button color="primary" className="d-block ml-auto">Add Members</Button>
+                    </a>
                 </div>
                 <Table borderless className="border">
                     <thead className="border-bottom">
