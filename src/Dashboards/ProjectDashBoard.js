@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import {Row, Nav, NavItem, NavLink, TabContent, TabPane, Container, Form, Input, Button, Col} from "reactstrap";
 import ProjectList from './ProjectList';
+import MembersTab from './MembersTab';
+import AddDatasetTab from './AddDatasetTab';
 class ProjectDashBoard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeTab: 'projects',
+            activeTab: 'members',
         }
     }
     
@@ -24,6 +26,22 @@ class ProjectDashBoard extends Component {
                                 Projects
                             </NavLink>
                         </NavItem>
+                        <NavItem>
+                            <NavLink
+                                className={this.state.activeTab==="members" ? "active" : ""}
+                                onClick={() => { this.toggle('members'); }}
+                            >
+                                Members
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink
+                                className={this.state.activeTab==="datasets" ? "active" : ""}
+                                onClick={() => { this.toggle('datasets'); }}
+                            >
+                                Datasets
+                            </NavLink>
+                        </NavItem>
                     </Nav>
                     <TabContent activeTab={this.state.activeTab}>
                         <TabPane className="" tabId="projects">
@@ -40,6 +58,12 @@ class ProjectDashBoard extends Component {
                                 </from>
                             </div>
                             <ProjectList />
+                        </TabPane>
+                        <TabPane tabId="members">
+                            <MembersTab />
+                        </TabPane>
+                        <TabPane tabId="datasets">
+                            <AddDatasetTab />
                         </TabPane>
                     </TabContent>
                 </div>

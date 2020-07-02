@@ -120,6 +120,7 @@ class Sidebar extends Component {
             title="Draw Rectangle"
             onClick={() => {
               this.props.buttonClick(true, false, false, false, false);
+              this.props.setDrawingMode('rectangle');
             }}
           >
             <i className="fas fa-vector-square fa-3x"></i>
@@ -131,6 +132,7 @@ class Sidebar extends Component {
             title="Draw Circle"
             onClick={() => {
               this.props.buttonClick(false, true, false, false, false);
+              this.props.setDrawingMode('circle');
             }}
           >
             <i className="far fa-circle fa-3x"></i>
@@ -139,9 +141,21 @@ class Sidebar extends Component {
         <div>
           <button
             className="submitButton"
+            title="Delete Shape"
+            onClick={() => {
+              this.props.setDrawingMode('delete');
+            }}
+          >
+            <i class="fas fa-minus-circle fa-3x"></i>
+          </button>
+        </div>
+        <div>
+          <button
+            className="submitButton"
             title="Draw Line"
             onClick={() => {
               this.props.buttonClick(false, false, true, false, false);
+              this.props.setDrawingMode('line');
             }}
           >
             <i className="fas fa-pen fa-3x"></i>
@@ -153,6 +167,7 @@ class Sidebar extends Component {
             title="Draw Polygon"
             onClick={() => {
               this.props.buttonClick(false, false, false, true, false);
+              this.props.setDrawingMode('polygon');
             }}
           >
             <i className="fas fa-draw-polygon fa-3x"></i>

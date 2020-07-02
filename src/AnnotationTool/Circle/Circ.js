@@ -63,7 +63,6 @@ class Circ extends React.Component {
                 <Circle x={x}
                     y={y}
                     width={width}
-                    
                     // force no scaling
                     // otherwise Transformer will change it
                     scaleX={1}
@@ -71,8 +70,8 @@ class Circ extends React.Component {
                     stroke={stroke}
                     strokeWidth={5}
                     name={name}
-                    
-                    
+                    className="Circ"
+                    id={this.props.id}
                     // save state on dragend or transformend
                     onDragEnd={handleChange}
                     onTransformEnd={handleChange}

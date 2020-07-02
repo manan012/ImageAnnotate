@@ -103,6 +103,7 @@ class DrawCircle extends React.Component {
                         sclassName="circ"
                         key={circ.key}
                         {...circ}
+                        id={i}
                         onTransform={(newProps) => {
                             handleCircleChange(i, newProps);
                         }}

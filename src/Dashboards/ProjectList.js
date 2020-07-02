@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import ProjectItem from './ProjectItem';
+import List from "./List";
+import ListItem from './ListItem';
 
 class ProjectList extends Component {
     constructor(props) {
@@ -8,12 +9,10 @@ class ProjectList extends Component {
     
     render() {
         return (
-            <div className="project-list w-100">
-                <ProjectItem />
-                <ProjectItem />
-                <ProjectItem />
-            </div>
-    )
+            <List className="project-list">
+                <ListItem title={"Cars"} infos={['17-label', 'Active 4 hours ago']}/>
+            </List>
+        )
     }
 }
 

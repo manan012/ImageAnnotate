@@ -25,10 +25,15 @@ body {
 .nav.nav-tabs .nav-link {
   position: relative;
 }
-.nav.nav-tabs .nav-link.active {
+.nav.nav-tabs .nav-link.active,
+.nav.nav-tabs .nav-link:hover {
   border: none;
+}
+
+.nav.nav-tabs .nav-link.active {
   color: var(--primary);
 }
+
 .nav.nav-tabs .nav-link.active::after {
   content: "";
   display: block;
@@ -69,22 +74,22 @@ body {
   border-top: 2px solid rgb(221, 219, 219);
 }
 
-.project-list .btn {
+.list .btn {
   border-radius: 50%;
   width: 40px;
   height: 40px;
 }
 
-.project-list .btn:focus {
+.list .btn:focus {
   outline: none !important;
    box-shadow: none;
 }
 
-.project-list .btn:hover {
+.list .btn:hover {
   background-color: rgb(219, 219, 219);
 }
 
-.project-list-item {
+.list-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -92,20 +97,20 @@ body {
   border-bottom: 2px solid var(--light);
 }
 
-.project-list-item:hover {
+.list-item:hover {
   background-color: var(--light);
 }
 
-.project-list-title {
+.list-title {
   display: flex;
   align-items: center;
 }
 
-.project-list-item-text {
+.item-text {
   font-weight: 600;
 }
 
-.project-list-tiem-icon {
+.list-tiem-icon {
   border-radius: 50%;
   margin-right: 5px;
   width: 4rem;
@@ -116,22 +121,42 @@ body {
   background-color: var(--light);
 }
 
-.project-list-item:hover .project-list-tiem-icon {
+.list-item:hover .list-tiem-icon {
   background-color: white;
 }
 
-.project-list-description {
+.list-description {
   display: flex;
 }
 
-.project-list-item-status {
+.list-item-status {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   text-align: end;
   margin-right: 10px;
 }
 
-.project-list-item-status span {
+.list-item-status span {
   font-size: .8rem;
   color: grey;
 }
+
+.table {
+  color: grey;
+}
+
+.table td:not(:first-of-type),
+.table th:not(:first-of-type) {
+  text-align: center;
+}
+
+.table td, .table th {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.table th {
+  font-size: 14px;
+}
+

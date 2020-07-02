@@ -70,9 +70,11 @@ class Rectangle extends React.Component {
                     scaleY={1}
                     stroke={stroke}
                     fill={fill}
+                    id={this.props.id}
                     opacity={opacity}
                     strokeWidth={5}
                     name={name}
+                    className="Rect"
                     // save state on dragend or transformend
                     onDragEnd={handleChange}
                     onTransformEnd={handleChange}

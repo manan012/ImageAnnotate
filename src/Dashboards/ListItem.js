@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class ProjectItem extends Component {
+class ListItem extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -11,21 +11,22 @@ class ProjectItem extends Component {
     dropDrownToggle = () => this.setState({dropdownOpen: !this.state.dropdownOpen});
     render() {
         return (
-            <div className="project-list-item">
-                <div className="project-list-title">
-                    <div className="project-list-tiem-icon">
-                        M
+            <div className="list-item">
+                <div className="list-title">
+                    <div className="list-tiem-icon">
+                        {this.props.title.split("")[0]}
                     </div>
-                    <div className="project-list-item-text">
-                        M project
+                    <div className="list-item-text">
+                        {this.props.title}
                     </div>
                 </div>
-                <div className="project-list-description">
-                    <div className="project-list-item-status">
-                        <span className="label-count">17-label</span>
-                        <span className="active-status">Active 4 hours ago</span>
+                <div className="list-description">
+                    <div className="list-item-status">
+                        {
+                            this.props.infos.map(info => <span className="label-count">{info}</span>)
+                        }
                     </div>
-                    <div className="project-list-drop-down">
+                    <div className="list-drop-down">
                         <div className="dropdown">
                             <button className="btn" type="button" onClick={this.dropDrownToggle} data-toggle="dropdown">
                                 <i className="fas fa-ellipsis-v"></i>
@@ -41,4 +42,4 @@ class ProjectItem extends Component {
     }
 }
 
-export default ProjectItem;
+export default ListItem;
