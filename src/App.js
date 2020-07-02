@@ -11,6 +11,7 @@ import Main from "./AnnotationTool/Main";
 import Start from "./AnnotationTool/landingPage/Start";
 import Signin from "./AnnotationTool/landingPage/Signin";
 import ProjectDashBoard from "../src/Dashboards/ProjectDashBoard";
+import OverviewDashBoard from "../src/Dashboards/OverviewDashBoard";
 
 // import Axios from "axios";
 
@@ -82,6 +83,7 @@ class App extends Component {
               <Route exact path="/" component={() => <Redirect to="/" />} />
             )}
             <Route exact path="/project" component={ProjectDashBoard} />
+            <Route exact path="/overview" component={OverviewDashBoard} />
           </Switch>
         </div>
       </Router>

@@ -1,0 +1,140 @@
+.project_info_div {
+  margin: 1rem;
+  /* width: 100%; */
+}
+
+.project_desc {
+  margin-top: 0.5rem;
+  color: gray;
+}
+
+.export_first_row,
+.export_second_row,
+.export_third_row {
+  margin-top: 2rem;
+}
+
+.subheading {
+  font-size: medium;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.subheading_desc {
+  font-size: small;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.progress_title {
+  font-size: 1.2rem;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.progress_metrics {
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
+}
+
+.progress_metrics_value {
+  font-size: 1.5rem;
+  color: #6ab9e6;
+  text-align: center;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.progress_metrics_name {
+  font-size: 1rem;
+  color: gray;
+  text-align: center;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+.overview_first_row,
+.overview_second_row {
+  margin-top: 2rem;
+}
+
+.vertical_navbar {
+  display: block;
+}
+
+.vertical_navbar_navlinks {
+  padding: 0rem !important;
+  margin: 0rem !important;
+}
+
+.card_body_title {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.card_body_text {
+  margin-top: 0rem !important;
+  padding-top: 0rem !important;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 20px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 20px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
