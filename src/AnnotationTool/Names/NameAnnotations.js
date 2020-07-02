@@ -19,6 +19,7 @@ class NameAnnotations extends Component {
                         <RectangleAnnotationName 
                         rectangles={this.props.annotations.rectangles} 
                         updateName={(i, name) => this.props.updateRectangle(i, {name: name})}
+                        fillColor={(i, color) => this.props.updateRectangle(i, {fill: color, opacity: 0.7})}
                         /> :
                         null
                     }

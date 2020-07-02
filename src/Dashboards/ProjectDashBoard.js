@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import {Nav, NavItem, NavLink, TabContent, TabPane, Container, } from "reactstrap";
+import {Row, Nav, NavItem, NavLink, TabContent, TabPane, Container, Form, Input, Button, Col} from "reactstrap";
+import ProjectList from './ProjectList';
+import MembersTab from './MembersTab';
+import AddDatasetTab from './AddDatasetTab';
 class ProjectDashBoard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeTab: 'projects',
+            activeTab: 'members',
         }
     }
     
     setActiveTab = (tab) => this.setState({activeTab:tab});
     toggle = (tab) => {if (this.state.activeTab !=tab) this.setActiveTab(tab)}
-
     render() {
         return (
             <Container>
@@ -24,10 +26,44 @@ class ProjectDashBoard extends Component {
                                 Projects
                             </NavLink>
                         </NavItem>
+                        <NavItem>
+                            <NavLink
+                                className={this.state.activeTab==="members" ? "active" : ""}
+                                onClick={() => { this.toggle('members'); }}
+                            >
+                                Members
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink
+                                className={this.state.activeTab==="datasets" ? "active" : ""}
+                                onClick={() => { this.toggle('datasets'); }}
+                            >
+                                Datasets
+                            </NavLink>
+                        </NavItem>
                     </Nav>
-                    <TabContent className="mt-2" activeTab={this.state.activeTab}>
-                        <TabPane className="d-flex flex-col align-items-stretch" tabId="projects">
-                            <div style={{ height: 10, backgroundColor: "red"}}></div>
+                    <TabContent activeTab={this.state.activeTab}>
+                        <TabPane className="" tabId="projects">
+                            <div className="my-3">
+                                <from>
+                                    <Row className="search-form">
+                                        <Col xs={6}>
+                                            <i className="" class="fas fa-search"></i>
+                                            <label className="px-1">Search</label>
+                                            <Input type="text"/>
+                                        </Col>
+                                        <Button className="ml-auto" color="primary">New Project</Button>
+                                    </Row>
+                                </from>
+                            </div>
+                            <ProjectList />
+                        </TabPane>
+                        <TabPane tabId="members">
+                            <MembersTab />
+                        </TabPane>
+                        <TabPane tabId="datasets">
+                            <AddDatasetTab />
                         </TabPane>
                     </TabContent>
                 </div>

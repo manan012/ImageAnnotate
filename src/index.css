@@ -25,10 +25,15 @@ body {
 .nav.nav-tabs .nav-link {
   position: relative;
 }
-.nav.nav-tabs .nav-link.active {
+.nav.nav-tabs .nav-link.active,
+.nav.nav-tabs .nav-link:hover {
   border: none;
+}
+
+.nav.nav-tabs .nav-link.active {
   color: var(--primary);
 }
+
 .nav.nav-tabs .nav-link.active::after {
   content: "";
   display: block;
@@ -40,3 +45,118 @@ body {
   background-color: var(--primary);
   border-bottom: 3px solid var(--primary);
 }
+
+.search-form {
+  position: relative;
+}
+
+.search-form i {
+  position: absolute;
+  top: 10px;
+  left: 25px;
+}
+
+.search-form label {
+  position: absolute;
+  background-color: white;
+  top: -8px;
+  left: 25px;
+  font-size: 12px;
+}
+
+.search-form:focus label {}
+
+.search-form input {
+  padding-left: 40px;
+}
+
+.project-list {
+  border-top: 2px solid rgb(221, 219, 219);
+}
+
+.list .btn {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.list .btn:focus {
+  outline: none !important;
+   box-shadow: none;
+}
+
+.list .btn:hover {
+  background-color: rgb(219, 219, 219);
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem .8rem;
+  border-bottom: 2px solid var(--light);
+}
+
+.list-item:hover {
+  background-color: var(--light);
+}
+
+.list-title {
+  display: flex;
+  align-items: center;
+}
+
+.item-text {
+  font-weight: 600;
+}
+
+.list-tiem-icon {
+  border-radius: 50%;
+  margin-right: 5px;
+  width: 4rem;
+  height: 4rem;
+  margin-right: 20px;
+  text-align: center;
+  line-height: 4rem;
+  background-color: var(--light);
+}
+
+.list-item:hover .list-tiem-icon {
+  background-color: white;
+}
+
+.list-description {
+  display: flex;
+}
+
+.list-item-status {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: end;
+  margin-right: 10px;
+}
+
+.list-item-status span {
+  font-size: .8rem;
+  color: grey;
+}
+
+.table {
+  color: grey;
+}
+
+.table td:not(:first-of-type),
+.table th:not(:first-of-type) {
+  text-align: center;
+}
+
+.table td, .table th {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.table th {
+  font-size: 14px;
+}
+

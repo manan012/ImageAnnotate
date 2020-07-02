@@ -6,6 +6,8 @@ import { omit } from 'ramda';
 // It imports 2 files from the same directory
 // first is Rectangle.js which draws the rectangle
 // second is RectTransformer.js which transforms/modifies the rectangle
+//TODO: fix the bug where shape get smaller on each drag in scaled images.
+//TODO: fix the bug where mouse leaves the edge of the rectangle in scaled images.
 class DrawRect extends React.Component{
     state = {
         selectedShapeName: '',
@@ -19,7 +21,9 @@ class DrawRect extends React.Component{
         stroke: "#00A3AA", 
     }
 
-
+    componentWillUpdate = () => {
+      console.log(this.state);
+    }
     //When mouse key is pressed down
     handleStageMouseDown = (event) => {
         const { rectangles } = this.state;
@@ -71,8 +75,8 @@ class DrawRect extends React.Component{
         const mousePos = stage.getPointerPosition();    // get mouse position
         if (this.state.mouseDown) {
           return this.setState({mouseDraw: true,
-              width: mousePos.x - x,
-              height: mousePos.y - y,
+              width: (mousePos.x - x)*(1/this.props.scaleX),
+              height: (mousePos.y - y)*(1/this.props.scaleY),
           });
         }
       };
@@ -98,7 +102,7 @@ class DrawRect extends React.Component{
         return(
             <Fragment>
                 {this.props.rectangles.map((rect, i) => (
-                <Rectangle id="annotate"
+                <Rectangle id={i}
                   scaleX={this.props.scaleX || 1}
                   scaleY={this.props.scaleY || 1}
                   sclassName="rect"
@@ -113,6 +117,8 @@ class DrawRect extends React.Component{
                 this.state.x !== null && this.state.y != null
                   ? <Rectangle id="annotate"
                       sclassName="rect"
+                      scaleX={this.props.scaleX || 1}
+                      scaleY={this.props.scaleY || 1}
                       {...omit(['mouseDown', 'mouseDraw', 'selectedShapeName'], this.state)}
                     />
                   : null

@@ -12,6 +12,8 @@ import NameAnnotations from "./Names/NameAnnotations";
 import { omit } from "ramda";
 import GoogleDrive from "../GoogleDrive/GoogleDrive";
 import detectObject from "../utils/objectDetection";
+import saveObjectAsJSONFfile from "../utils/saveObjectAsJSONFile";
+import Draw from "./DrawingActions/Draw";
 
 //  This is the main page for Image Annotation.
 //  It has a Sidebar component which has buttons which serves different purposes
@@ -26,6 +28,7 @@ class App extends React.Component {
       selectedImage: undefined,
       stageWidth: 1000,
       mouseDown: false,
+      drawingMode: 'circle',
       rector: false,
       circle: false,
       drawingAreaWidth: 0,
@@ -39,7 +42,7 @@ class App extends React.Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    //console.log(this.state);
+    console.log(this.state);
   }
 
   componentDidMount = () => {
@@ -57,6 +60,8 @@ class App extends React.Component {
       drawingAreaWidth: this.drawingArea.getBoundingClientRect().width,
     });
   };
+
+  setDrawingMode = (mode) => this.setState((state) => ({drawingMode: mode}));
 
   addImages = (newImages) => {
     this.setState((state) => ({ images: [...state.images, ...newImages] }));
@@ -198,6 +203,30 @@ class App extends React.Component {
     }));
   };
 
+  deleteShape = (type, idx) => {
+    this.setState((state) => ({
+      ...state,
+      selectedImage: {
+        ...state.selectedImage,
+        annotations: {
+          ...state.selectedImage.annotations,
+          [type]: state.selectedImage.annotations[type].filter((shape, i) => i !== idx)
+        }
+      }
+    }))
+  }
+
+  saveAnnotationsAsJson = () => {
+    const data = {};
+    this.state.images.map(img => {
+      data[img.file.name] = img.annotations;
+    })
+    if (this.state.selectedImage) {
+      data[this.state.selectedImage.file.name] = this.state.selectedImage.annotations;
+    }
+    saveObjectAsJSONFfile(data, 'annotations');
+  }
+
   //Signout Button Action
   handleSubmit(event) {
     event.preventDefault();
@@ -262,6 +291,17 @@ class App extends React.Component {
   handleStageMouseDown = (event) => {
     //For rectangle
     if (!this.state.selectedImage) return;
+    if (this.state.drawingMode === 'delete') {
+      const className = event.target.attrs.className;
+      const id = event.target.attrs.id;
+      if (className=="Rect") {
+        this.deleteShape('rectangles', id);
+      }
+      if (className=='Circ') {
+        this.deleteShape('circles', id);
+      }
+      return;
+    }
     if (this.state.rector) {
       this.refs.child1.handleStageMouseDown(event);
       this.setState({ mouseDown: this.refs.child1.state.mouseDown });
@@ -336,6 +376,8 @@ class App extends React.Component {
               circles={this.state.circles}
               addImages={this.addImages}
               anotateSeletedImage={this.anotateSeletedImage}
+              saveAnnotationsAsJson={this.saveAnnotationsAsJson}
+              setDrawingMode={this.setDrawingMode}
             />
           </div>
           <div
@@ -410,6 +452,7 @@ class App extends React.Component {
                   />
                 ) : null}
               </Layer>
+              <Draw drawingMode={this.state.drawingMode}/>
             </Stage>
           </div>
           <div className="col-md-2 p-0 border my-2">

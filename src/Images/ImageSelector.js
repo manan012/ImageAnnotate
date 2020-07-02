@@ -2,14 +2,12 @@ import React, { Component } from "react";
 // import {Container} from "react-bootstrap";
 import ReadImage from "./ReadImage";
 import { Container, Button } from "reactstrap";
-import Pq from "p-queue";
 
 class ImageSelector extends Component {
   constructor(props) {
     super(props);
     this.state = {
       seleted: -1,
-      objectDetectionQueue: new Pq({concurrency:1})
     };
   }
 
@@ -33,10 +31,6 @@ class ImageSelector extends Component {
   moveBackward = () => {
     this.props.onSelect(this.state.seleted-1);
     this.setState({seleted: this.state.seleted-1});
-  }
-
-  addObjectDetectionTaskToQueue = (task) => {
-    this.state.objectDetectionQueue.add(task);
   }
 
   render() {
