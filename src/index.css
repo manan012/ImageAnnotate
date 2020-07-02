@@ -40,3 +40,98 @@ body {
   background-color: var(--primary);
   border-bottom: 3px solid var(--primary);
 }
+
+.search-form {
+  position: relative;
+}
+
+.search-form i {
+  position: absolute;
+  top: 10px;
+  left: 25px;
+}
+
+.search-form label {
+  position: absolute;
+  background-color: white;
+  top: -8px;
+  left: 25px;
+  font-size: 12px;
+}
+
+.search-form:focus label {}
+
+.search-form input {
+  padding-left: 40px;
+}
+
+.project-list {
+  border-top: 2px solid rgb(221, 219, 219);
+}
+
+.project-list .btn {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.project-list .btn:focus {
+  outline: none !important;
+   box-shadow: none;
+}
+
+.project-list .btn:hover {
+  background-color: rgb(219, 219, 219);
+}
+
+.project-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem .8rem;
+  border-bottom: 2px solid var(--light);
+}
+
+.project-list-item:hover {
+  background-color: var(--light);
+}
+
+.project-list-title {
+  display: flex;
+  align-items: center;
+}
+
+.project-list-item-text {
+  font-weight: 600;
+}
+
+.project-list-tiem-icon {
+  border-radius: 50%;
+  margin-right: 5px;
+  width: 4rem;
+  height: 4rem;
+  margin-right: 20px;
+  text-align: center;
+  line-height: 4rem;
+  background-color: var(--light);
+}
+
+.project-list-item:hover .project-list-tiem-icon {
+  background-color: white;
+}
+
+.project-list-description {
+  display: flex;
+}
+
+.project-list-item-status {
+  display: flex;
+  flex-direction: column;
+  text-align: end;
+  margin-right: 10px;
+}
+
+.project-list-item-status span {
+  font-size: .8rem;
+  color: grey;
+}

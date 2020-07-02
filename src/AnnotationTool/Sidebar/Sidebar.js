@@ -34,36 +34,36 @@ class Sidebar extends Component {
   // Downloading the Json File
   DataSend() {
     //this.state.rectangles=this.props.rectangles;
-    var data = JSON.stringify(this.props.rectangles);
-    this.setState({ dta: data });
-    if (this.state.varx) {
-      //console.log('hello');
-      axios
-        .post("https://labell.herokuapp.com/api/generate", data)
-        .then(console.log("data send!"))
-        .then(
-          axios({
-            url: "https://labell.herokuapp.com/api/getfile",
-            method: "GET",
-            responseType: "blob",
-          })
-            .then((response) => {
-              console.log(response.data);
-              const url = window.URL.createObjectURL(new Blob([response.data]));
-              const link = document.createElement("a");
-              link.href = url;
-              link.setAttribute("download", "file.json"); //or any other extension
-              document.body.appendChild(link);
-              link.click();
-            })
-            .catch((err) => {
-              console.log("error1", err);
-            })
-        )
-        .catch((err) => {
-          console.log("error2", err);
-        });
-    }
+    this.props.saveAnnotationsAsJson();
+    // this.setState({ dta: data });
+    // if (this.state.varx) {
+    //   //console.log('hello');
+    //   axios
+    //     .post("https://labell.herokuapp.com/api/generate", data)
+    //     .then(console.log("data send!"))
+    //     .then(
+    //       axios({
+    //         url: "https://labell.herokuapp.com/api/getfile",
+    //         method: "GET",
+    //         responseType: "blob",
+    //       })
+    //         .then((response) => {
+    //           console.log(response.data);
+    //           const url = window.URL.createObjectURL(new Blob([response.data]));
+    //           const link = document.createElement("a");
+    //           link.href = url;
+    //           link.setAttribute("download", "file.json"); //or any other extension
+    //           document.body.appendChild(link);
+    //           link.click();
+    //         })
+    //         .catch((err) => {
+    //           console.log("error1", err);
+    //         })
+    //     )
+    //     .catch((err) => {
+    //       console.log("error2", err);
+    //     });
+    // }
   }
 
   render() {

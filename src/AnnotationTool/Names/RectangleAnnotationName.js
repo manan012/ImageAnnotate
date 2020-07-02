@@ -7,7 +7,7 @@ class RectangleAnnotationName extends Component {
             <Fragment>
                 <div className="p-1 bg-dark text-light">Rectangle</div>
                 {this.props.rectangles.map((rect, i) => (
-                    <input key={i} type="text" value={rect.name} onChange={(e) => this.props.updateName(i, e.target.value)}/>
+                    <input key={i} type="text" value={rect.name} onFocus={() =>this.props.fillColor(i, '#007bff')} onBlur={() =>this.props.fillColor(i, '')} onChange={(e) => this.props.updateName(i, e.target.value)}/>
                 ))}
             </Fragment>
         )

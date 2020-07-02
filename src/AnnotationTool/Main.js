@@ -12,6 +12,7 @@ import NameAnnotations from "./Names/NameAnnotations";
 import { omit } from "ramda";
 import GoogleDrive from "../GoogleDrive/GoogleDrive";
 import detectObject from "../utils/objectDetection";
+import saveObjectAsJSONFfile from "../utils/saveObjectAsJSONFile";
 
 //  This is the main page for Image Annotation.
 //  It has a Sidebar component which has buttons which serves different purposes
@@ -39,7 +40,7 @@ class App extends React.Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    //console.log(this.state);
+    console.log(this.state);
   }
 
   componentDidMount = () => {
@@ -191,6 +192,17 @@ class App extends React.Component {
     }));
   };
 
+  saveAnnotationsAsJson = () => {
+    const data = {};
+    this.state.images.map(img => {
+      data[img.file.name] = img.annotations;
+    })
+    if (this.state.selectedImage) {
+      data[this.state.selectedImage.file.name] = this.state.selectedImage.annotations;
+    }
+    saveObjectAsJSONFfile(data, 'annotations');
+  }
+
   //Signout Button Action
   handleSubmit(event) {
     event.preventDefault();
@@ -329,6 +341,7 @@ class App extends React.Component {
               circles={this.state.circles}
               addImages={this.addImages}
               anotateSeletedImage={this.anotateSeletedImage}
+              saveAnnotationsAsJson={this.saveAnnotationsAsJson}
             />
           </div>
           <div id="app" ref={(ref) => this.drawingArea = ref} className="col-md-9 m-2 p-0 border overflow-hidden">

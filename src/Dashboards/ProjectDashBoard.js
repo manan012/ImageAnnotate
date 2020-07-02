@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Nav, NavItem, NavLink, TabContent, TabPane, Container, } from "reactstrap";
+import {Row, Nav, NavItem, NavLink, TabContent, TabPane, Container, Form, Input, Button, Col} from "reactstrap";
+import ProjectList from './ProjectList';
 class ProjectDashBoard extends Component {
     constructor(props) {
         super(props);
@@ -10,7 +11,6 @@ class ProjectDashBoard extends Component {
     
     setActiveTab = (tab) => this.setState({activeTab:tab});
     toggle = (tab) => {if (this.state.activeTab !=tab) this.setActiveTab(tab)}
-
     render() {
         return (
             <Container>
@@ -25,9 +25,21 @@ class ProjectDashBoard extends Component {
                             </NavLink>
                         </NavItem>
                     </Nav>
-                    <TabContent className="mt-2" activeTab={this.state.activeTab}>
-                        <TabPane className="d-flex flex-col align-items-stretch" tabId="projects">
-                            <div style={{ height: 10, backgroundColor: "red"}}></div>
+                    <TabContent activeTab={this.state.activeTab}>
+                        <TabPane className="" tabId="projects">
+                            <div className="my-3">
+                                <from>
+                                    <Row className="search-form">
+                                        <Col xs={6}>
+                                            <i className="" class="fas fa-search"></i>
+                                            <label className="px-1">Search</label>
+                                            <Input type="text"/>
+                                        </Col>
+                                        <Button className="ml-auto" color="primary">New Project</Button>
+                                    </Row>
+                                </from>
+                            </div>
+                            <ProjectList />
                         </TabPane>
                     </TabContent>
                 </div>
