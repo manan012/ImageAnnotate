@@ -22,7 +22,7 @@ class DrawRect extends React.Component{
     }
 
     componentWillUpdate = () => {
-      console.log(this.state);
+      //console.log(this.state);
     }
     //When mouse key is pressed down
     handleStageMouseDown = (event) => {

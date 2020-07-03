@@ -90,7 +90,7 @@ class Circ extends React.Component {
                     x={this.props.x}
                     y={this.props.y}
                     offsetY={7}
-                    offsetX={this.props.name.length*15/5}
+                    // offsetX={this.props.name.length*15/5}
                     fill={'white'}
                     fontSize={'15'}
                 />

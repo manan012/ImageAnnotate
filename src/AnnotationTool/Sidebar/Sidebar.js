@@ -26,7 +26,7 @@ class Sidebar extends Component {
         file: imageFile,
         readed: 0,
         image: "",
-        annotations: { rectangles: [], circles: [] },
+        annotations: { rectangles: [], circles: [], polygons: [] },
       }));
     this.props.addImages(images);
   };
