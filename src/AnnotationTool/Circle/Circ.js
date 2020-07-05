@@ -4,8 +4,13 @@ import { Circle, Text } from 'react-konva';
 class Circ extends React.Component {
 
     componentDidUpdate() {
-        this.circ.getLayer().draw();
+        this.circ.getLayer().batchDraw();
         
+    }
+
+    handleClick = (event) => {
+        console.log('clicked');
+        this.props.selectNode(event.target);
     }
 
     handleChange = (event) => {
@@ -57,6 +62,7 @@ class Circ extends React.Component {
             handleChange,
             handleMouseEnter,
             handleMouseLeave,
+            handleClick
         } = this;
         return (
             <Fragment>
@@ -74,6 +80,7 @@ class Circ extends React.Component {
                     id={this.props.id}
                     // save state on dragend or transformend
                     onDragEnd={handleChange}
+                    onClick={handleClick}
                     onTransformEnd={handleChange}
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}

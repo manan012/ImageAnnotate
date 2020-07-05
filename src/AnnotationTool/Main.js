@@ -4,18 +4,17 @@ import AnnotationImage from "./AnnotationImage/AnnotationImage";
 import "./Main.css";
 import Sidebar from "./Sidebar/Sidebar";
 import DrawRect from "./Rectangle/DrawRect";
-import { Button } from "reactstrap";
 import DrawCircle from "./Circle/DrawCircle";
 import ImageSelector from "../Images/ImageSelector";
 import { Container, Row, Col } from "reactstrap";
 import NameAnnotations from "./Names/NameAnnotations";
-import { omit, flatten } from "ramda";
-import GoogleDrive from "../GoogleDrive/GoogleDrive";
+import { omit } from "ramda";
 import detectObject from "../utils/objectDetection";
 import saveObjectAsJSONFfile from "../utils/saveObjectAsJSONFile";
 import Rectangle from "./Rectangle/Rectangle";
-import { abs } from "@tensorflow/tfjs-core";
 import Circ from "./Circle/Circ";
+import DrawPolygons from "./Polygon/DrawPolygons";
+import DisplayLines from "./Line/DisplayLines";
 
 //  This is the main page for Image Annotation.
 //  It has a Sidebar component which has buttons which serves different purposes
@@ -38,6 +37,10 @@ class App extends React.Component {
       line: false,
       //polygon: false,
       point: false,
+      selectedRectangulareNode: null,
+      selectedCircularNode: null,
+      selectedLineNode: null,
+      selectedPolygonNode: null,
       rectangle: {
         x: 0,
         y: 0,
@@ -56,17 +59,22 @@ class App extends React.Component {
       polygon: {
         points: [],
         stroke: "#00A3AA",
+        strokeWidth: 5,
         name: ""
       },
-      mouseX: 0,
-      mouseY: 0,
+      line: {
+        point1: [],
+        point2: [],
+        stroke: "#00A3AA",
+        strokeWidth: 5,
+        name: ""
+      },
+      mousPos: [0, 0],
     };
-    this.handleInputValueRect = this.handleInputValueRect.bind(this);
-    this.handleInputValueCirc = this.handleInputValueCirc.bind(this);
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    //console.log(this.state);
+  componentDidUpdate(nextProps, nextState) {
+    console.log(this.state);
   }
 
   componentDidMount = () => {
@@ -86,7 +94,7 @@ class App extends React.Component {
   };
 
   setDrawingMode = (mode) => {
-    console.log(this.state);
+    //console.log(this.state);
     this.setState((state) => ({ drawingMode: mode }));
   }
 
@@ -95,39 +103,42 @@ class App extends React.Component {
   };
 
   updateImage = (idx, updatedImages) => {
-    console.log(updatedImages);
+    //console.log(updatedImages);
     if (this.state.selectedImage && this.state.selectedImage.idx === idx) {
-      this.setState({
+      this.setState((state) => ({
         selectedImage: {
           idx: idx,
-          ...this.state.images[idx],
+          ...state.images[idx],
           ...updatedImages,
         },
-      });
+      }));
       return;
     }
-    this.setState({
-      images: this.state.images.map((image, i) =>
+    this.setState(state => ({
+      images: state.images.map((image, i) =>
         i === idx ? updatedImages : image
       ),
-    });
+    }));
   };
 
   selectImage = (idx) => {
+    console.log(idx);
     if (this.state.selectedImage && this.state.selectedImage.idx === idx)
       return;
     if (this.state.selectedImage == undefined) {
-      this.setState({ selectedImage: { idx: idx, ...this.state.images[idx] } });
+      this.setState((state =>({ selectedImage: { idx: idx, ...state.images[idx]}})));
       return;
     }
-    this.setState({
-      images: this.state.images.map((img, i) =>
-        i === this.state.selectedImage.idx
-          ? omit(["idx"], this.state.selectedImage)
-          : img
-      ),
-      selectedImage: { idx: idx, ...this.state.images[idx] },
-    });
+    this.setState((state) => {
+      return {
+        images: state.images.map((img, i) =>
+          i === state.selectedImage.idx
+            ? omit(["idx"], state.selectedImage)
+            : img
+        ),
+        selectedImage: { idx: idx, ...this.state.images[idx] },
+      }
+  });
   };
 
   correctScaleOfSelectedImage = () => {
@@ -154,7 +165,7 @@ class App extends React.Component {
     if (!this.state.selectedImage) return;
     (async (selectedImage) => {
       detectObject(selectedImage.image).then((newRectangles) => {
-        console.log(newRectangles);
+        //console.log(newRectangles);
         this.updateImage(selectedImage.idx, {
           ...omit(["idx"], selectedImage),
           annotations: {
@@ -166,7 +177,7 @@ class App extends React.Component {
           },
         });
       });
-      console.log(selectedImage);
+      //console.log(selectedImage);
     })(this.state.selectedImage);
   };
 
@@ -198,23 +209,6 @@ class App extends React.Component {
     }));
   };
 
-  addRectangle = (newRectangle) => {
-    this.setState((state) => {
-      return {
-        selectedImage: {
-          ...state.selectedImage,
-          annotations: {
-            ...state.selectedImage.annotations,
-            rectangles: [
-              ...state.selectedImage.annotations.rectangles,
-              newRectangle,
-            ],
-          },
-        },
-      };
-    });
-  };
-
   updateRectangle = (idx, newRectangleProps) => {
     this.setState((state) => ({
       selectedImage: {
@@ -230,6 +224,35 @@ class App extends React.Component {
     }));
   };
 
+  updateLine = (idx, newLineProps) => {
+    this.setState((state) => ({
+      selectedImage: {
+        ...state.selectedImage,
+        annotations: {
+          ...state.selectedImage.annotations,
+          lines: state.selectedImage.annotations.lines.map(
+            (line, i) => i==idx ? {...line, ...newLineProps} : line
+          )
+        }
+      }
+    }))
+  }
+
+  updatePolygon = (idx, newPolygonProp) => {
+    console.log(idx, newPolygonProp);
+    this.setState((state) => ({
+      selectedImage: {
+        ...state.selectedImage,
+        annotations: {
+          ...state.selectedImage.annotations,
+          polygons: state.selectedImage.annotations.polygons.map(
+            (polygon, i) => i===idx ? {...polygon, ...newPolygonProp} : polygon
+          )
+        }
+      }
+    }))
+  }
+
   startDrawingRectangle = (x, y) => {
     this.setState(state => ({
       mouseDown: true,
@@ -237,8 +260,6 @@ class App extends React.Component {
         ...state.rectangle,
         x: x,
         y: y,
-        mouseX: x,
-        mouseY: y
       }
     }));
   }
@@ -287,16 +308,14 @@ class App extends React.Component {
   }
 
   startDrawingCircle = (x, y) => {
-    this.setState(state => {
-      return {
-        mouseDown: true,
-        circle: {
-          ...state.circle,
-          x: x,
-          y: y
-        }
+    this.setState(state => ({
+      mouseDown: true,
+      circle: {
+        ...state.circle,
+        x: x,
+        y: y
       }
-    })
+    }))
   }
 
   updateDrawingCircle = (x, y) => {
@@ -365,19 +384,51 @@ class App extends React.Component {
           ...state.polygon,
           points: [...this.state.polygon.points, x, y],
         },
-        mouseX: x,
-        mouseY: y
+        mousePos: [x, y]
       }
     })
   }
 
-  updateCurMousePosInPolygon = (x, y) => {
-    this.setState(state => {
-      return {
-        mouseX: x,
-        mouseY: y
+  startDrawingLine = (x, y) => {
+    this.setState(state => ({
+      mouseDown: true,
+      line: {
+        ...state.line,
+        point1: [x, y],
+        point2: [x, y]
       }
-    })
+    }))
+  }
+
+  updateDrawingLine = (x, y) => {
+    this.setState(state => ({
+      line: {
+        ...state.line,
+        point2: [x, y]
+      }
+    }))
+  }
+
+  endDrawingLine = (x, y) => {
+    this.setState(state => ({
+      mouseDown: false,
+      selectedImage: {
+        ...state.selectImage,
+        annotations: {
+          ...state.selectedImage.annotations,
+          lines: [...state.selectedImage.annotations.lines, state.line]
+        }
+      },
+      line: {
+        ...state.line,
+        point1: [],
+        point2: [],
+      }
+    }))
+  }
+
+  updateCurMousePosInPolygon = (x, y) => {
+    this.setState({mousePos: [x, y]})
   }
 
   deleteShape = (type, idx) => {
@@ -408,36 +459,35 @@ class App extends React.Component {
     saveObjectAsJSONFfile(data, "annotations");
   };
 
+  selectRectangularNode = (node) => {
+    this.setState({selectedRectangulareNode: node});
+  }
+
+  selectCircularNode = (node) => {
+    this.setState({selectedCircularNode: node});
+  }
+
+  selectLineNode = (node) => {
+    this.setState({selectedLineNode: node});
+  }
+
+  selectPolygonNode = (node) => {
+    this.setState({selectedPolygonNode: node});
+  }
+
+  detachTrasformer = (className) => {
+    if (className != "Rect") this.selectRectangularNode(null);
+    if (className != 'Circle') this.selectCircularNode(null);
+    if (className!='Rect') this.selectLineNode(null);
+    if (className!='Rect') this.selectPolygonNode(null);
+
+  }
+
   //Signout Button Action
   handleSubmit(event) {
     event.preventDefault();
     localStorage.removeItem("token");
     window.location.href = "/";
-  }
-
-  //When a new rectangle is added
-  handleInputValueRect(val) {
-    if (this.state.selectedImage === undefined) return;
-    this.setState((state) => ({
-      selectedImage: {
-        ...this.state.selectedImage,
-        annotations: {
-          ...this.state.selectedImage.annotations,
-          rectangles: val,
-        },
-      },
-    }));
-  }
-
-  // When a circle is added
-  handleInputValueCirc(val) {
-    if (this.state.selectedImage === undefined) return;
-    this.setState((state) => ({
-      selectedImage: {
-        ...this.state.selectedImage,
-        annotations: { ...this.state.selectedImage.annotations, circles: val },
-      },
-    }));
   }
 
   // Calling child functions inside parent
@@ -446,27 +496,29 @@ class App extends React.Component {
     if (this.state.mouseDown && this.state.drawingMode === 'rectangle') {
       const mousePos = event.target.getStage().getPointerPosition();
       this.updateDrawingRectangle(mousePos.x, mousePos.y);
+      return;
     }
 
     if (this.state.mouseDown && this.state.drawingMode == 'circle') {
       const stage = event.target.getStage();
       const mousePos = stage.getPointerPosition();
       this.updateDrawingCircle(mousePos.x, mousePos.y);
+      return;
+    }
+
+    if (this.state.mouseDown && this.state.drawingMode === "line") {
+      const stage = event.target.getStage();
+      const mousePos = stage.getPointerPosition();
+      this.updateDrawingLine(mousePos.x, mousePos.y);
+      return;
     }
 
     if (this.state.drawingMode === 'polygon' && this.state.polygon.points.length >= 1) {
       const stage = event.target.getStage();
       const mousePos = stage.getPointerPosition();
       this.updateCurMousePosInPolygon(mousePos.x, mousePos.y);
+      return;
     }
-    // if (this.state.rector) {
-    //   this.refs.child1.handleNewRectChange(event);
-    // }
-
-    // //For Circle
-    // else if (this.state.circle) {
-    //   this.refs.child.handleNewCircleChange(event);
-    // }
   };
 
   // When mouse key is released up
@@ -479,16 +531,10 @@ class App extends React.Component {
     if (this.state.mouseDown && this.state.drawingMode === 'circle') {
       this.endDrawingCircle();
     }
-    // if (this.state.rector) {
-    //   this.refs.child1.handleStageMouseUp();
-    //   this.setState({ mouseDown: this.refs.child1.state.mouseDown });
-    // }
 
-    // //For Circle
-    // else if (this.state.circle) {
-    //   this.refs.child.handleStageMouseUp();
-    //   this.setState({ mouseDown: this.refs.child.state.mouseDown });
-    // }
+    if (this.state.mouseDown && this.state.drawingMode === 'line') {
+      this.endDrawingLine();
+    }
   };
 
   // When mouse key is pressed down
@@ -498,6 +544,7 @@ class App extends React.Component {
     const clickedOn = event.target.className;
     if (!this.state.selectedImage) return;
     if (this.state.drawingMode === "delete") {
+      this.detachTrasformer("");
       const className = event.target.className;
       const id = event.target.attrs.id;
       if (className == "Rect") {
@@ -508,69 +555,47 @@ class App extends React.Component {
       }
       return;
     }
+    //this.detachTrasformer(event.target.className);
+    if ((clickedOn === "Image" || (this.state.polygon.points.length >= 3 && clickedOn === "Line")) && this.state.drawingMode === 'polygon') {
+      const stage = event.target.getStage();
+      const mousePos = stage.getPointerPosition();
+      this.addPointToPolygon(mousePos.x, mousePos.y);
+    }
+
     if (clickedOn==="Image") {
       if (this.state.drawingMode === 'rectangle') {
         const mousePos = event.target.getStage().getPointerPosition();
         this.startDrawingRectangle(mousePos.x, mousePos.y);
+        return;
       }
 
       if (this.state.drawingMode === 'circle') {
         const stage = event.target.getStage();
         const mousePos = stage.getPointerPosition();
         this.startDrawingCircle(mousePos.x, mousePos.y);
+        return;
+      } 
+
+      if (this.state.drawingMode ==="line") {
+        const stage = event.target.getStage();
+        const mousePos = stage.getPointerPosition();
+        this.startDrawingLine(mousePos.x, mousePos.y);
       }
     }
-    if ((clickedOn === "Image" || clickedOn === "Line") && this.state.drawingMode === 'polygon') {
-      const stage = event.target.getStage();
-      const mousePos = stage.getPointerPosition();
-      this.addPointToPolygon(mousePos.x, mousePos.y);
-    }
-    // if (this.state.rector) {
-    //   this.refs.child1.handleStageMouseDown(event);
-    //   this.setState({ mouseDown: this.refs.child1.state.mouseDown });
-    // }
-
-    // //For Circle
-    // else if (this.state.circle) {
-    //   this.refs.child.handleStageMouseDown(event);
-    //   this.setState({ mouseDown: this.refs.child.state.mouseDown });
-    // }
-  };
-
-  //To resize the canvasdynamically
-  // componentDidMount() {
-  //   this.checkSize();
-  //   window.addEventListener("resize", this.checkSize);
-  // }
-
-  // componentWillUnmount() {
-  //   window.removeEventListener("resize", this.checkSize);
-  // }
-
-  // checkSize = () => {
-  //   this.setState({
-  //     stageWidth: window.innerWidth * 0.764,
-  //   });
-  // };
-
-  //Setting the buttons
-  buttonClick = (rector, circle, line, polygon, point) => {
-    //this.setState({ rector, circle, line, polygon, point });
   };
 
   render() {
-    const {
-      state: { mouseDown, polygon: {
+    let {
+      state: { polygon: {
         points,
       },
-      mouseX,
-      mouseY 
+        mousePos,
       },
       handleNewShapeChange,
       handleStageMouseDown,
       handleStageMouseUp,
     } = this;
-
+    points = points.concat(mousePos)
     return (
       <Container fuild>
         <Row className="border-bottom">
@@ -598,7 +623,6 @@ class App extends React.Component {
         <Row>
           <div className="my-2 border">
             <Sidebar
-              buttonClick={this.buttonClick}
               imageSet={this.imageSet}
               rectangles={this.state.rectangles}
               circles={this.state.circles}
@@ -658,9 +682,9 @@ class App extends React.Component {
                   <DrawCircle
                     ref="child"
                     circles={this.state.selectedImage.annotations.circles}
-                    addCircle={(newCircle) => this.addCircle(newCircle)}
+                    selectedNode={this.state.selectedCircularNode}
+                    selectNode={this.selectCircularNode}
                     updateCircle={this.updateCircle}
-                    handleInput={this.handleInputValueCirc}
                   />
                 ) : null}
 
@@ -672,13 +696,32 @@ class App extends React.Component {
                         ? this.state.selectedImage.annotations.rectangles
                         : []
                     }
-                    addRectangle={this.addRectangle}
                     updateRectangle={this.updateRectangle}
-                    handleInput={this.handleInputValueRect}
                     scaleX={this.state.selectedImage.scaleX}
                     scaleY={this.state.selectedImage.scaleY}
+                    selectNode={this.selectRectangularNode}
+                    selectedNode={this.state.selectedRectangulareNode}
                   />
                 ) : null}
+                {
+                  this.state.selectedImage ? (
+                    <DrawPolygons 
+                      polygons={this.state.selectedImage.annotations.polygons} 
+                      selectNode={this.selectPolygonNode}
+                      selectedNode={this.state.selectedPolygonNode}
+                      updatePolygon={this.updatePolygon}/>
+                  ): null
+                }
+                {
+                  this.state.selectedImage ? 
+                    <DisplayLines 
+                      lines={this.state.selectedImage.annotations.lines} 
+                      updateLine={this.updateLine}
+                      selectNode={this.selectLineNode}
+                      selectedNode={this.state.selectedLineNode}
+                      />
+                    : null
+                }
                 {
                   this.state.mouseDown && this.state.drawingMode ==='rectangle' ?
                   <Rectangle id="annotate"
@@ -697,19 +740,20 @@ class App extends React.Component {
                 {
                   (this.state.drawingMode === 'polygon' && points.length >= 1) ?
                     <Line 
-                      points={points.concat([mouseX, mouseY])} 
+                      points={points} 
                       stroke='#00A3AA'
-                      strokeWidth={4}
+                      strokeWidth={5}
                     />
                   :null
                 }
-              </Layer>
-              <Layer>
                 {
-                  this.state.selectedImage ?
-                  this.state.selectedImage.annotations.polygons.map((poly, i) => {
-                    return <Line key={i} points={poly.points} stroke={poly.stroke} strokeWidth={4} closed/>
-                  }): null
+                  (this.state.drawingMode === 'line' && this.state.mouseDown) ?
+                    <Line 
+                      points={[...this.state.line.point1, ...this.state.line.point2]} 
+                      stroke='#00A3AA'
+                      strokeWidth={5}
+                    />
+                  :null
                 }
               </Layer>
             </Stage>
