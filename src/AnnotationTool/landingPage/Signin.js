@@ -37,7 +37,7 @@ class Signin extends React.Component {
     var this1 = this;
 
     axios
-      .post("https://edunomics.in/api/labelImg/user/signup", data, {
+      .post("api/users/signup", data, {
         headers: { "Content-Type": "application/json" },
       })
       .then(function (response) {
@@ -58,7 +58,7 @@ class Signin extends React.Component {
     var password = this.state.password;
     var data = JSON.stringify({ email: email, password: password });
     var x = axios
-      .post("https://edunomics.in/api/labelImg/user/login", data, {
+      .post("api/users/login", data, {
         headers: { "Content-Type": "application/json" },
       })
       .then(function (response) {

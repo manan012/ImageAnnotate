@@ -55,7 +55,6 @@ class App extends Component {
   };
 
   signInUser = () => {
-    console.log("Signing In user");
     this.setState({
       token: localStorage.getItem("token"),
     });
@@ -68,7 +67,6 @@ class App extends Component {
   };
 
   render() {
-    console.log(this.verifyUser());
     return (
       <div className="root">
         {this.state.token ? (
