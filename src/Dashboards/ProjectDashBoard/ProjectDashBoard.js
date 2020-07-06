@@ -11,21 +11,29 @@ import {
   Input,
   Button,
   Col,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  FormGroup,
 } from "reactstrap";
 import ProjectList from "./ProjectList";
 import MembersTab from "./MembersTab";
 import AddDatasetTab from "./AddDatasetTab";
 import axios from "axios";
+
+
 class ProjectDashBoard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: "members",
+      activeTab: "projects",
+      addProjectModelOpen: false,
     };
 
     var body = JSON.stringify({
       x_auth_token: localStorage.getItem("token"),
     });
+
     axios
       .post("api/users/verify", body, {
         headers: { "Content-Type": "application/json" },
@@ -39,6 +47,7 @@ class ProjectDashBoard extends Component {
   }
 
   setActiveTab = (tab) => this.setState({ activeTab: tab });
+  toggleAddProjectModel = () => this.setState(state => ({addProjectModelOpen: !state.addProjectModelOpen}));
   toggle = (tab) => {
     if (this.state.activeTab != tab) this.setActiveTab(tab);
   };
@@ -88,13 +97,12 @@ class ProjectDashBoard extends Component {
                       <label className="px-1">Search</label>
                       <Input type="text" />
                     </Col>
-                    <Button className="ml-auto" color="primary">
+                    <Button onClick={this.toggleAddProjectModel} className="ml-auto" color="primary">
                       New Project
                     </Button>
                   </Row>
                 </from>
               </div>
-
               <ProjectList />
             </TabPane>
             <TabPane tabId="members">
@@ -104,6 +112,20 @@ class ProjectDashBoard extends Component {
               <AddDatasetTab />
             </TabPane>
           </TabContent>
+        </div>
+        <div>
+          <Modal isOpen={this.state.addProjectModelOpen} centered toggle={this.toggleAddProjectModel} className={'center'}>
+            <ModalHeader toggle={this.toggleAddProjectModel}>Create Project</ModalHeader>
+            <ModalBody>
+              <Form>
+                <FormGroup>
+                  <p>Name your project</p>
+                  <Input type="text" name="name" placeholder="Project Name" />
+                  <Input type="text" type="description" placeholder="Project Description" />
+                </FormGroup>
+              </Form>
+            </ModalBody>
+          </Modal>
         </div>
       </Container>
     );

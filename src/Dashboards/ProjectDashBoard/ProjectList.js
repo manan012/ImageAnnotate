@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import List from "./List";
-import ListItem from './ListItem';
-import { Link } from 'react-router-dom';
+import List from "../List";
+import ListItem from '../ListItem';
 
 class ProjectList extends Component {
     constructor(props) {

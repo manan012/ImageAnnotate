@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import axios from "axios";
 import "../../../node_modules/@fortawesome/fontawesome-free/css/all.css";
 import "./Signin.css";
+import { logIn } from "../../api/user";
 class Signin extends React.Component {
   constructor(props) {
     super(props);
@@ -41,6 +42,7 @@ class Signin extends React.Component {
         headers: { "Content-Type": "application/json" },
       })
       .then(function (response) {
+        console.log(response);
         // console.log(response);
         // alert("Please login with your credentials");
         alert(response.data.msg + ". Now Login");
@@ -56,11 +58,7 @@ class Signin extends React.Component {
     var this1 = this;
     var email = this.state.email;
     var password = this.state.password;
-    var data = JSON.stringify({ email: email, password: password });
-    var x = axios
-      .post("api/users/login", data, {
-        headers: { "Content-Type": "application/json" },
-      })
+    logIn(email, password)
       .then(function (response) {
         localStorage.setItem("token", response.data.token);
         this1.props.handleUser();

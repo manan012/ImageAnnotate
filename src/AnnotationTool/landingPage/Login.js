@@ -56,13 +56,13 @@ class Login extends React.Component {
     var email = this.state.email;
     var password = this.state.password;
     var data = JSON.stringify({ email: email, password: password });
+    console.log(data);
     var x = axios
       .post("http://rachitpahwa.codes/api/labelImg/user/login", data, {
         headers: { "Content-Type": "application/json" },
       })
       .then(function (response) {
         localStorage.setItem("token", response.data.token);
-
         this1.props.history.push("/label");
         //console.log(response.data.token);
       })

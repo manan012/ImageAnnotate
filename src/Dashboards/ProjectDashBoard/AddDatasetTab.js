@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Button } from 'reactstrap';
-import List from './List';
-import ListItem from './ListItem';
+import List from '../List';
+import ListItem from '../ListItem';
 
 class AddDatasetTab extends Component {
     constructor(props) {

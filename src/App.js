@@ -10,7 +10,7 @@ import axios from "axios";
 import Main from "./AnnotationTool/Main";
 import Start from "./AnnotationTool/landingPage/Start";
 import Signin from "./AnnotationTool/landingPage/Signin";
-import ProjectDashBoard from "../src/Dashboards/ProjectDashBoard";
+import ProjectDashBoard from "../src/Dashboards/ProjectDashBoard/ProjectDashBoard";
 import OverviewDashBoard from "../src/Dashboards/OverviewDashBoard";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
