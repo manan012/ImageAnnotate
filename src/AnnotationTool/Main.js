@@ -6,7 +6,7 @@ import Sidebar from "./Sidebar/Sidebar";
 import DrawRect from "./Rectangle/DrawRect";
 import DrawCircle from "./Circle/DrawCircle";
 import ImageSelector from "../Images/ImageSelector";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 import NameAnnotations from "./Names/NameAnnotations";
 import { omit } from "ramda";
 import detectObject from "../utils/objectDetection";
@@ -45,14 +45,14 @@ class App extends React.Component {
         width: 0,
         height: 0,
         stroke: "#00A3AA",
-        name: ""
+        name: "",
       },
       circle: {
         x: 0,
         y: 0,
         width: 0,
         stroke: "#00A3AA",
-        name: ""
+        name: "",
       },
       polygon: {
         points: [],
@@ -94,7 +94,7 @@ class App extends React.Component {
   setDrawingMode = (mode) => {
     //console.log(this.state);
     this.setState((state) => ({ drawingMode: mode }));
-  }
+  };
 
   addImages = (newImages) => {
     this.setState((state) => ({ images: [...state.images, ...newImages] }));
@@ -255,7 +255,7 @@ class App extends React.Component {
   }
 
   startDrawingRectangle = (x, y) => {
-    this.setState(state => ({
+    this.setState((state) => ({
       mouseDown: true,
       rectangle: {
         ...state.rectangle,
@@ -263,10 +263,10 @@ class App extends React.Component {
         y: y/this.state.selectedImage.scaleY,
       }
     }));
-  }
+  };
 
   updateDrawingRectangle = (x, y) => {
-    this.setState(state => ({
+    this.setState((state) => ({
       rectangle: {
         ...state.rectangle,
         width: x/this.state.selectedImage.scaleX-state.rectangle.x,
@@ -276,8 +276,11 @@ class App extends React.Component {
   }
 
   endDrawingRectangle = () => {
-    this.setState(state => {
-      if (Math.abs(state.rectangle.width) < 10 || Math.abs(state.rectangle.height) < 10) {
+    this.setState((state) => {
+      if (
+        Math.abs(state.rectangle.width) < 10 ||
+        Math.abs(state.rectangle.height) < 10
+      ) {
         return {
           mouseDown: false,
           rectangle: {
@@ -286,27 +289,31 @@ class App extends React.Component {
             y: 0,
             width: 0,
             height: 0,
-          }
-        }
+          },
+        };
       }
       return {
-      mouseDown: false,
-      selectedImage: {
-        ...state.selectedImage,
-        annotations: {
-          ...state.selectedImage.annotations,
-          rectangles: [...state.selectedImage.annotations.rectangles, state.rectangle]
+        mouseDown: false,
+        selectedImage: {
+          ...state.selectedImage,
+          annotations: {
+            ...state.selectedImage.annotations,
+            rectangles: [
+              ...state.selectedImage.annotations.rectangles,
+              state.rectangle,
+            ],
+          },
         },
-      },
-      rectangle: {
-        ...state.rectangle,
-        x: 0,
-        y: 0,
-        width: 0,
-        height: 0,
-      }
-    }})
-  }
+        rectangle: {
+          ...state.rectangle,
+          x: 0,
+          y: 0,
+          width: 0,
+          height: 0,
+        },
+      };
+    });
+  };
 
   startDrawingCircle = (x, y) => {
     this.setState(state => ({
@@ -320,7 +327,7 @@ class App extends React.Component {
   }
 
   updateDrawingCircle = (x, y) => {
-    this.setState(state => {
+    this.setState((state) => {
       return {
         circle: {
           ...state.circle,
@@ -332,7 +339,7 @@ class App extends React.Component {
   }
 
   endDrawingCircle = () => {
-    this.setState(state => {
+    this.setState((state) => {
       if (state.circle.width <= 5) {
         return {
           mouseDown: false,
@@ -340,9 +347,9 @@ class App extends React.Component {
             ...state.circle,
             x: 0,
             y: 0,
-            width: 0
-          }
-        }
+            width: 0,
+          },
+        };
       }
       return {
         mouseDown: false,
@@ -350,36 +357,43 @@ class App extends React.Component {
           ...state.selectedImage,
           annotations: {
             ...state.selectedImage.annotations,
-            circles: [...state.selectedImage.annotations.circles, state.circle]
-          }
+            circles: [...state.selectedImage.annotations.circles, state.circle],
+          },
         },
         circle: {
           ...state.circle,
           x: 0,
           y: 0,
-          width: 0
-        }
-      }
-    })
-  }
+          width: 0,
+        },
+      };
+    });
+  };
 
   addPointToPolygon = (x, y) => {
-    this.setState(state=> {
-      const {points} = state.polygon;
-      if (points.length >= 3 && (Math.abs(points[0]-x) <= 10 && Math.abs(points[1]-y) <= 10)) {
+    this.setState((state) => {
+      const { points } = state.polygon;
+      if (
+        points.length >= 3 &&
+        Math.abs(points[0] - x) <= 10 &&
+        Math.abs(points[1] - y) <= 10
+      ) {
         return {
           selectedImage: {
             ...state.selectedImage,
             annotations: {
               ...state.selectedImage.annotations,
-              polygons: [...state.selectedImage.annotations.polygons, state.polygon]
-            }
+              polygons: [
+                ...state.selectedImage.annotations.polygons,
+                state.polygon,
+              ],
+            },
           },
           polygon: {
             ...state.polygon,
             points: [],
-          }
-        }
+          },
+        };
       }
       return {
         polygon: {
@@ -495,13 +509,13 @@ class App extends React.Component {
   // Calling child functions inside parent
   handleNewShapeChange = (event) => {
     //For rectangle
-    if (this.state.mouseDown && this.state.drawingMode === 'rectangle') {
+    if (this.state.mouseDown && this.state.drawingMode === "rectangle") {
       const mousePos = event.target.getStage().getPointerPosition();
       this.updateDrawingRectangle(mousePos.x, mousePos.y);
       return;
     }
 
-    if (this.state.mouseDown && this.state.drawingMode == 'circle') {
+    if (this.state.mouseDown && this.state.drawingMode == "circle") {
       const stage = event.target.getStage();
       const mousePos = stage.getPointerPosition();
       this.updateDrawingCircle(mousePos.x, mousePos.y);
@@ -515,7 +529,10 @@ class App extends React.Component {
       return;
     }
 
-    if (this.state.drawingMode === 'polygon' && this.state.polygon.points.length >= 1) {
+    if (
+      this.state.drawingMode === "polygon" &&
+      this.state.polygon.points.length >= 1
+    ) {
       const stage = event.target.getStage();
       const mousePos = stage.getPointerPosition();
       this.updateCurMousePosInPolygon(mousePos.x, mousePos.y);
@@ -526,11 +543,11 @@ class App extends React.Component {
   // When mouse key is released up
   handleStageMouseUp = () => {
     //For Rectangle
-    if (this.state.mouseDown && this.state.drawingMode === 'rectangle') {
+    if (this.state.mouseDown && this.state.drawingMode === "rectangle") {
       this.endDrawingRectangle();
     }
 
-    if (this.state.mouseDown && this.state.drawingMode === 'circle') {
+    if (this.state.mouseDown && this.state.drawingMode === "circle") {
       this.endDrawingCircle();
     }
 
@@ -570,7 +587,7 @@ class App extends React.Component {
         return;
       }
 
-      if (this.state.drawingMode === 'circle') {
+      if (this.state.drawingMode === "circle") {
         const stage = event.target.getStage();
         const mousePos = stage.getPointerPosition();
         this.startDrawingCircle(mousePos.x, mousePos.y);
@@ -606,11 +623,11 @@ class App extends React.Component {
               <b>Image Annotator</b>
             </h1>
           </div>
-          {/* <div className="col-md-2 name1">
+          <div className="col-md-2 name1">
             <Button color="primary" type="submit" onClick={this.handleSubmit}>
               Log out
             </Button>
-          </div> */}
+          </div>
           <Col xs={12} className={"py-2"}>
             <ImageSelector
               images={this.state.images}

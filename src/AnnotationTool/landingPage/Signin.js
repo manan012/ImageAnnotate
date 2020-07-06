@@ -62,8 +62,8 @@ class Signin extends React.Component {
         headers: { "Content-Type": "application/json" },
       })
       .then(function (response) {
-        console.log(response.data.token);
         localStorage.setItem("token", response.data.token);
+        this1.props.handleUser();
         this1.props.history.push("/label");
         //console.log(response.data.token);
       })
@@ -190,8 +190,8 @@ class Signin extends React.Component {
                 <span>or</span>Log in
               </h2>
               <form
-                action=""
-                method="POST"
+                // action=""
+                // method="POST"
                 name="form2"
                 onSubmit={this.onSubmitLogin}
               >

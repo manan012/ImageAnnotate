@@ -18,75 +18,113 @@ import OverviewDashBoard from "../src/Dashboards/OverviewDashBoard";
 class App extends Component {
   constructor() {
     super();
+    // console.log("constructor called");
+    // localStorage.removeItem("token");
     this.state = {
       isSignedIn: false,
       logginStatus: true,
       token: localStorage.getItem("token"),
-      loggedInUser: "",
     };
   }
 
-  // verifyUser = () => {
-  //   if (this.state.token) {
-  //     axios
-  //       .get("")
-  //       .then((user) => {
-  //         return true;
-  //       })
-  //       .catch((err) => {
-  //         localStorage.removeItem("token");
+  verifyUser = () => {
+    if (this.state.token) {
+      // console.log("in if");
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          "x-access-token": this.state.token,
+        },
+      };
+      axios
+        .get("https://edunomics.in/api/labelImg/user/verify", config)
+        .then((response) => {
+          // console.log("here");
+          return true;
+        })
+        .catch((err) => {
+          localStorage.removeItem("token");
+          this.setState({
+            token: null,
+          });
+          return false;
+        });
+    } else {
+      return false;
+    }
+  };
 
-  //         this.setState({
-  //           loggedInUser: "",
-  //           token: null,
-  //         });
-  //         return false;
-  //       });
-  //   } else {
-  //     return false;
-  //   }
-  // };
-
-  signInUser = (user) => {
+  signInUser = () => {
+    console.log("Signing In user");
     this.setState({
-      loggedInUser: user,
+      token: localStorage.getItem("token"),
     });
   };
 
-  signOutUser = (user) => {
+  signOutUser = () => {
     this.setState({
-      loggedInUser: "",
+      token: null,
     });
   };
 
   render() {
-    console.log("hello", this.state.token);
+    console.log(this.verifyUser());
     return (
-      <Router>
-        <div className="root">
-          <Switch>
-            <Route
-              exact
-              path="/signin"
-              component={Signin}
-              handleUser={this.signInUser}
-            ></Route>
-            <Route exact path="/" component={Start}></Route>
-
-            {localStorage.getItem("token") ? (
+      <div className="root">
+        {this.state.token ? (
+          <Router>
+            <Switch>
               <Route
+                exact
                 path="/label"
-                component={Main}
-                handleUser={this.signOutUser}
+                render={(props) => (
+                  <Main {...props} handleUser={this.signOutUser} />
+                )}
               ></Route>
-            ) : (
-              <Route exact path="/" component={() => <Redirect to="/" />} />
-            )}
-            <Route exact path="/project" component={ProjectDashBoard} />
-            <Route exact path="/overview" component={OverviewDashBoard} />
-          </Switch>
-        </div>
-      </Router>
+              <Route exact path="/project" component={ProjectDashBoard} />
+              <Route exact path="/overview" component={OverviewDashBoard} />
+              <Route
+                exact
+                path="/"
+                component={() => <Redirect to="/project" />}
+              />
+              <Route
+                exact
+                path="/signin"
+                component={() => <Redirect to="/project" />}
+              />
+            </Switch>
+          </Router>
+        ) : (
+          <Router>
+            <Switch>
+              <Route exact path="/" component={Start}></Route>
+              <Route
+                exact
+                path="/signin"
+                render={(props) => (
+                  <Signin {...props} handleUser={this.signInUser} />
+                )}
+              ></Route>
+              <Route
+                exact
+                path="/label"
+                component={() => <Redirect to="/signin" />}
+              />
+              <Route
+                exact
+                path="/project"
+                component={() => <Redirect to="/signin" />}
+              />
+              <Route
+                exact
+                path="/overview"
+                component={() => <Redirect to="/signin" />}
+              />
+            </Switch>
+          </Router>
+        )}
+      </div>
     );
   }
 }
