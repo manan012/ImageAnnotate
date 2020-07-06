@@ -31,6 +31,8 @@ class DrawCircle extends React.Component {
                         sclassName="circ"
                         key={circ.key}
                         {...circ}
+                        scaleX={this.props.scaleX}
+                        scaleY={this.props.scaleY}
                         id={i}
                         selectNode={this.props.selectNode}
                         onTransform={(newProps) => {

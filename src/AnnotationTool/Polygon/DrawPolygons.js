@@ -27,6 +27,9 @@ class DrawPolygons extends Component {
                         return <CustomeLine transformerOn={this.props.selectedNode === i} 
                             selectNode={()=>this.props.selectNode(i)}
                             points={splitEvery(2, poly.points)} closed={true} 
+                            stroke={poly.stroke}
+                            fill={poly.fill}
+                            opacity={poly.opacity}
                             onDragEnd={(event) => this.handleDrag(i, event)} onTransFormEnd={(points) => this.handleChange(i, points)}/>
                     })
                 }

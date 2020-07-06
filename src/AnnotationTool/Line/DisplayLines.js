@@ -49,7 +49,8 @@ class DisplayLines extends Component {
                     return <CustomeLine selectNode={() => this.props.selectNode(i)} 
                             transformerOn={this.props.selectedNode===i} 
                             points={[line.point1, line.point2]} 
-                            onDragEnd={(e) => this.handleChange(i, e)} 
+                            onDragEnd={(e) => this.handleChange(i, e)}
+                            stroke={line.stroke} 
                             onTransFormEnd={(points) => this.handleTransformation(i, points)} />
                 })
             }

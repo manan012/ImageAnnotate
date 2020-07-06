@@ -35,6 +35,6 @@
     /* padding-left: 25%; */
 }
 
-.submitButton:hover {
+.submitButton:hover, .submitButton.active {
     background: #efefef;
 }

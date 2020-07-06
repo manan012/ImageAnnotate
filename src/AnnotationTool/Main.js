@@ -29,13 +29,11 @@ class App extends React.Component {
       selectedImage: undefined,
       stageWidth: 1000,
       mouseDown: false,
-      drawingMode: "circle",
+      drawingMode: "rectangle",
       rector: false,
-      // circle: false,
       drawingAreaWidth: 0,
       drawingAreaHeight: 0,
       line: false,
-      //polygon: false,
       point: false,
       selectedRectangulareNode: null,
       selectedCircularNode: null,
@@ -82,8 +80,8 @@ class App extends React.Component {
       drawingAreaHeight: this.drawingArea.getBoundingClientRect().height,
       drawingAreaWidth: this.drawingArea.getBoundingClientRect().width,
     });
-    window.addEventListener("resize", this.updateDrawingAreaSize);
-    window.addEventListener("resize", this.correctScaleOfSelectedImage);
+    // window.addEventListener("resize", this.updateDrawingAreaSize);
+    // window.addEventListener("resize", this.correctScaleOfSelectedImage);
   };
 
   updateDrawingAreaSize = () => {
@@ -123,13 +121,16 @@ class App extends React.Component {
 
   selectImage = (idx) => {
     console.log(idx);
-    if (this.state.selectedImage && this.state.selectedImage.idx === idx)
+    if (this.state.selectedImage && this.state.selectedImage.idx === idx) {
+      console.log('image is already selected');
       return;
+    }
     if (this.state.selectedImage == undefined) {
       this.setState((state =>({ selectedImage: { idx: idx, ...state.images[idx]}})));
       return;
     }
     this.setState((state) => {
+      console.log(state.selectedImage);
       return {
         images: state.images.map((img, i) =>
           i === state.selectedImage.idx
@@ -258,8 +259,8 @@ class App extends React.Component {
       mouseDown: true,
       rectangle: {
         ...state.rectangle,
-        x: x,
-        y: y,
+        x: x/this.state.selectedImage.scaleX,
+        y: y/this.state.selectedImage.scaleY,
       }
     }));
   }
@@ -268,8 +269,8 @@ class App extends React.Component {
     this.setState(state => ({
       rectangle: {
         ...state.rectangle,
-        width: x-state.rectangle.x,
-        height: y-state.rectangle.y
+        width: x/this.state.selectedImage.scaleX-state.rectangle.x,
+        height: y/this.state.selectedImage.scaleY-state.rectangle.y
       }
     }))
   }
@@ -323,7 +324,8 @@ class App extends React.Component {
       return {
         circle: {
           ...state.circle,
-          width: 2*Math.sqrt(Math.floor(Math.pow(x - state.circle.x, 2) + Math.pow(y - state.circle.y, 2)))
+          width: 2*Math.sqrt(Math.floor(Math.pow((x - state.circle.x), 2) 
+                            + Math.pow((y - state.circle.y), 2)))
         }
       }
     })
@@ -413,7 +415,7 @@ class App extends React.Component {
     this.setState(state => ({
       mouseDown: false,
       selectedImage: {
-        ...state.selectImage,
+        ...state.selectedImage,
         annotations: {
           ...state.selectedImage.annotations,
           lines: [...state.selectedImage.annotations.lines, state.line]
@@ -476,11 +478,11 @@ class App extends React.Component {
   }
 
   detachTrasformer = (className) => {
-    if (className != "Rect") this.selectRectangularNode(null);
-    if (className != 'Circle') this.selectCircularNode(null);
-    if (className!='Rect') this.selectLineNode(null);
-    if (className!='Rect') this.selectPolygonNode(null);
-
+    if (className != "Image") return;
+    this.selectRectangularNode(null);
+    this.selectCircularNode(null);
+    this.selectLineNode(null);
+    this.selectPolygonNode(null);
   }
 
   //Signout Button Action
@@ -544,7 +546,7 @@ class App extends React.Component {
     const clickedOn = event.target.className;
     if (!this.state.selectedImage) return;
     if (this.state.drawingMode === "delete") {
-      this.detachTrasformer("");
+      this.detachTrasformer("Image");
       const className = event.target.className;
       const id = event.target.attrs.id;
       if (className == "Rect") {
@@ -553,9 +555,8 @@ class App extends React.Component {
       if (className == "Circle") {
         this.deleteShape("circles", id);
       }
-      return;
     }
-    //this.detachTrasformer(event.target.className);
+    this.detachTrasformer(event.target.className);
     if ((clickedOn === "Image" || (this.state.polygon.points.length >= 3 && clickedOn === "Line")) && this.state.drawingMode === 'polygon') {
       const stage = event.target.getStage();
       const mousePos = stage.getPointerPosition();
@@ -630,6 +631,7 @@ class App extends React.Component {
               anotateSeletedImage={this.anotateSeletedImage}
               saveAnnotationsAsJson={this.saveAnnotationsAsJson}
               setDrawingMode={this.setDrawingMode}
+              drawingMode={this.state.drawingMode}
             />
           </div>
           <div
@@ -684,6 +686,8 @@ class App extends React.Component {
                     circles={this.state.selectedImage.annotations.circles}
                     selectedNode={this.state.selectedCircularNode}
                     selectNode={this.selectCircularNode}
+                    scaleX={this.state.selectedImage.scaleX}
+                    scaleY={this.state.selectedImage.scaleY}
                     updateCircle={this.updateCircle}
                   />
                 ) : null}
@@ -767,6 +771,8 @@ class App extends React.Component {
               }
               updateCircle={this.updateCircle}
               updateRectangle={this.updateRectangle}
+              updateLine={this.updateLine}
+              updatePolygon={this.updatePolygon}
             />
           </div>
         </Row>

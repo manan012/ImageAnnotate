@@ -58,7 +58,7 @@ class Sidebar extends Component {
           <label
             htmlFor="files"
             className="submitButton"
-            title="Select File to Upload"
+            title="Select Folder to Upload"
           >
             <i class="fas fa-folder-open fa-3x"></i>
           </label>
@@ -75,7 +75,7 @@ class Sidebar extends Component {
         <div>
           <button
             className="submitButton"
-            title="Draw Rectangle"
+            title="Auto Annotate"
             onClick={() => {
               this.props.anotateSeletedImage();
             }}
@@ -85,40 +85,7 @@ class Sidebar extends Component {
         </div>
         <div>
           <button
-            className="submitButton"
-            title="Draw Rectangle"
-            onClick={() => {
-              this.props.setDrawingMode('rectangle');
-            }}
-          >
-            <i className="fas fa-vector-square fa-3x"></i>
-          </button>
-        </div>
-        <div>
-          <button
-            className="submitButton"
-            title="Draw Circle"
-            onClick={() => {
-              this.props.setDrawingMode('circle');
-            }}
-          >
-            <i className="far fa-circle fa-3x"></i>
-          </button>
-        </div>
-        <div>
-          <button
-            className="submitButton"
-            title="Delete Shape"
-            onClick={() => {
-              this.props.setDrawingMode('delete');
-            }}
-          >
-            <i class="fas fa-minus-circle fa-3x"></i>
-          </button>
-        </div>
-        <div>
-          <button
-            className="submitButton"
+            className={"submitButton " + (this.props.drawingMode === 'line' ? 'active' : "")}
             title="Draw Line"
             onClick={() => {
               this.props.setDrawingMode('line');
@@ -129,13 +96,46 @@ class Sidebar extends Component {
         </div>
         <div>
           <button
-            className="submitButton"
+            className={"submitButton " + (this.props.drawingMode === 'circle' ? 'active' : "")}
+            title="Draw Circle"
+            onClick={() => {
+              this.props.setDrawingMode('circle');
+            }}
+          >
+            <i className="far fa-circle fa-3x"></i>
+          </button>
+        </div>
+        <div>
+          <button
+            className={"submitButton " + (this.props.drawingMode === '' ? 'active' : "")}
+            title="Draw Rectangle"
+            onClick={() => {
+              this.props.setDrawingMode('rectangle');
+            }}
+          >
+            <i className="fas fa-vector-square fa-3x"></i>
+          </button>
+        </div>
+        <div>
+          <button
+            className={"submitButton " + (this.props.drawingMode === 'polygon' ? 'active' : "")}
             title="Draw Polygon"
             onClick={() => {
               this.props.setDrawingMode('polygon');
             }}
           >
             <i className="fas fa-draw-polygon fa-3x"></i>
+          </button>
+        </div>
+        <div>
+          <button
+            className={"submitButton " + (this.props.drawingMode === 'delete' ? 'active' : "")}
+            title="Delete Shape"
+            onClick={() => {
+              this.props.setDrawingMode('delete');
+            }}
+          >
+            <i class="fas fa-minus-circle fa-3x"></i>
           </button>
         </div>
         <div>

@@ -16,10 +16,10 @@ class Rectangle extends React.Component {
         // while transforming
         // so we need to adjust that properties to width and height
         onTransform({
-            x: shape.x(),
-            y: shape.y(),
-            width: shape.width() * shape.scaleX(),
-            height: shape.height() * shape.scaleY(),
+            x: shape.x()/this.props.scaleX,
+            y: shape.y()/this.props.scaleY,
+            width: (shape.width() * shape.scaleX())/this.props.scaleX,
+            height: (shape.height() * shape.scaleY())/this.props.scaleY,
             rotation: shape.rotation()
         });
     };
@@ -69,7 +69,7 @@ class Rectangle extends React.Component {
                 <Rect x={x*scaleX}
                     y={y*scaleY}
                     width={width*scaleX}
-                    height={height*scaleX}
+                    height={height*scaleY}
                     // force no scaling
                     // otherwise Transformer will change it
                     scaleX={1}

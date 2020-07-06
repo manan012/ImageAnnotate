@@ -26,7 +26,6 @@ class Circ extends React.Component {
             x: shape.x(),
             y: shape.y(),
             width: shape.width() * shape.scaleX(),
-            
             rotation: shape.rotation(),
             radius: shape.radius(),
         });
@@ -55,9 +54,12 @@ class Circ extends React.Component {
                 x,
                 y,
                 width,
-                
+                fill,
+                opacity,
                 name,
                 stroke,
+                scaleX,
+                scaleY
             },
             handleChange,
             handleMouseEnter,
@@ -73,6 +75,8 @@ class Circ extends React.Component {
                     // otherwise Transformer will change it
                     scaleX={1}
                     scaleY={1}
+                    fill={fill}
+                    opacity={opacity}
                     stroke={stroke}
                     strokeWidth={5}
                     name={name}
