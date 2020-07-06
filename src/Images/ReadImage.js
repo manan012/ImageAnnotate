@@ -32,20 +32,25 @@ class ReadImage extends Component {
     img.onload = () => {
       const height = img.height;
       const width = img.width;
+      const ratio = width/height;
       const drawingAreaHeight = this.props.drawingAreaHeight;
       const drawingAreaWidth = this.props.drawingAreaWidth;
-      const commScale = Math.max(
-        (width <= drawingAreaWidth ? 1 : drawingAreaWidth/width),
-        (height <= drawingAreaHeight ? 1 : drawingAreaHeight/height)
-      )
+      const resizedWidth = drawingAreaWidth;
+      const resizedHeight = resizedWidth/ratio;
+      const scaleX = width <= drawingAreaWidth ? 1 : resizedWidth/width;
+      const scaleY = height <= drawingAreaHeight ? 1 : resizedHeight/height;
+      
       console.log(drawingAreaHeight, drawingAreaWidth);
       this.props.onComplete({
         ...this.state,
         readed:100, 
         height: height, 
         width: width, 
-        scaleX: commScale,
-        scaleY: commScale,
+        ratio: ratio,
+        resizedHeight: resizedHeight,
+        resizedWidth: resizedWidth,
+        scaleX: scaleX,
+        scaleY: scaleY,
         image: this.fileReader.result
       });
     }

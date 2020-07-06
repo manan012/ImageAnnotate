@@ -3,11 +3,17 @@ import { Transformer } from 'react-konva';
 
 class RectTransformer extends React.Component {
   componentDidMount() {
-    this.checkNode();
+    //this.checkNode();
   }
 
   componentDidUpdate() {
-    this.checkNode();
+    //this.checkNode();
+    console.log(this.props.selectedNode);
+    if (this.props.selectedNode) {
+      this.transformer.attachTo(this.props.selectedNode);
+    } else {
+      this.transformer.detach();
+    }
   }
 
   checkNode = () => {
