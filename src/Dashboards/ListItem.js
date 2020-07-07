@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { deleteProject } from "../sagas/projectSagas";
 
 class ListItem extends Component {
     constructor(props) {
@@ -32,7 +34,9 @@ class ListItem extends Component {
                                 <i className="fas fa-ellipsis-v"></i>
                             </button>
                             <div className={"dropdown-menu " + (this.state.dropdownOpen ? "show" : "")}>
-                                <a className="dropdown-item" href="#">Delete</a>
+                                <a className="dropdown-item"
+                                 onClick={() => this.props.deleteProject(this.props.id)}
+                                >Delete</a>
                             </div>
                         </div>
                     </div>
@@ -42,4 +46,7 @@ class ListItem extends Component {
     }
 }
 
-export default ListItem;
+const matchDispatchToProp = (dispatch) => ({
+    deleteProject: (id) => dispatch({type: 'DELETE_PROJECT', id: id})
+})
+export default connect(null, matchDispatchToProp)(ListItem);

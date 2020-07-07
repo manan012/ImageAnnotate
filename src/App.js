@@ -23,7 +23,7 @@ class App extends Component {
 
   componentWillMount() {
     this.props.verifyToken();
-    this.props.autoLogIn();
+    //this.props.autoLogIn();
   }
 
   render() {

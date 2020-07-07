@@ -1,26 +1,15 @@
 import React, { Component } from "react";
 import {
-  Row,
   Nav,
   NavItem,
   NavLink,
   TabContent,
   TabPane,
   Container,
-  Form,
-  Input,
-  Button,
-  Col,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  FormGroup,
 } from "reactstrap";
-import ProjectList from "./ProjectList";
 import MembersTab from "./MembersTab";
 import AddDatasetTab from "./AddDatasetTab";
-import {fetchProject} from "../../api/Project";
-import { connect } from "react-redux";
+import ProjectTab from "./ProjectTab";
 
 
 class ProjectDashBoard extends Component {
@@ -33,13 +22,9 @@ class ProjectDashBoard extends Component {
   }
 
   componentWillMount() {
-    if (this.props.status === 'NOT_FETCHED') {
-      this.props.fetchProjects();
-    }
   }
 
   setActiveTab = (tab) => this.setState({ activeTab: tab });
-  toggleAddProjectModel = () => this.setState(state => ({addProjectModelOpen: !state.addProjectModelOpen}));
   toggle = (tab) => {
     if (this.state.activeTab != tab) this.setActiveTab(tab);
   };
@@ -81,21 +66,7 @@ class ProjectDashBoard extends Component {
           </Nav>
           <TabContent activeTab={this.state.activeTab}>
             <TabPane className="" tabId="projects">
-              <div className="my-3">
-                <from>
-                  <Row className="search-form">
-                    <Col xs={6}>
-                      <i className="" class="fas fa-search"></i>
-                      <label className="px-1">Search</label>
-                      <Input type="text" />
-                    </Col>
-                    <Button onClick={this.toggleAddProjectModel} className="ml-auto" color="primary">
-                      New Project
-                    </Button>
-                  </Row>
-                </from>
-              </div>
-              <ProjectList />
+              <ProjectTab />
             </TabPane>
             <TabPane tabId="members">
               <MembersTab />
@@ -105,32 +76,8 @@ class ProjectDashBoard extends Component {
             </TabPane>
           </TabContent>
         </div>
-        <div>
-          <Modal isOpen={this.state.addProjectModelOpen} centered toggle={this.toggleAddProjectModel} className={'center'}>
-            <ModalHeader toggle={this.toggleAddProjectModel}>Create Project</ModalHeader>
-            <ModalBody>
-              <Form>
-                <FormGroup>
-                  <p>Name your project</p>
-                  <Input type="text" name="name" placeholder="Project Name" />
-                  <Input type="text" type="description" placeholder="Project Description" />
-                </FormGroup>
-              </Form>
-            </ModalBody>
-          </Modal>
-        </div>
       </Container>
     );
   }
 }
-
-const matchStateToProp = (state) => ({
-  status: state.projects.status,
-  projects: state.projects.projects
-})
-
-const matchDispatchToProp = (dispatch) => ({
-  fetchProjects: () => dispatch({type:'FETCH_PROJECTS'}),
-})
-
-export default connect(matchStateToProp, matchDispatchToProp)(ProjectDashBoard);
+export default (ProjectDashBoard);

@@ -9,7 +9,9 @@ const signUp = async ({email, password, name, dob, contact_no, organizationName}
 }
 
 const verifyToken = async (token) => {
-    return axios.post("api/users/verify", {x_auth_token: token});
+    return axios.post("api/users/verify", {}, {headers: {
+        'x_auth_token': token
+    }});
 }
 
 

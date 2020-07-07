@@ -1,5 +1,5 @@
 import {takeLatest, takeEvery} from 'redux-saga/effects'
-import { fetchProjects, fetchProject } from './projectSagas'
+import { fetchProjects, fetchProject, deleteProject, addProject } from './projectSagas'
 import { verifyToken, logIn, signUp } from './user';
 
 export default function* rootSaga() {
@@ -11,4 +11,6 @@ export default function* rootSaga() {
     //Project actions
     yield takeLatest('FETCH_PROJECTS', fetchProjects);
     yield takeLatest('FETCH_PROJECT', fetchProject);
+    yield takeEvery('ADD_PROJECT', addProject);
+    yield takeEvery('DELETE_PROJECT', deleteProject);
 }
