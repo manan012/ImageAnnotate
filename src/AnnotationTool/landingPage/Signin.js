@@ -2,7 +2,8 @@ import React, { Fragment } from "react";
 import axios from "axios";
 import "../../../node_modules/@fortawesome/fontawesome-free/css/all.css";
 import "./Signin.css";
-import { logIn } from "../../api/user";
+import User from "../../api/User";
+import { connect } from "react-redux";
 class Signin extends React.Component {
   constructor(props) {
     super(props);
@@ -58,21 +59,7 @@ class Signin extends React.Component {
     var this1 = this;
     var email = this.state.email;
     var password = this.state.password;
-    logIn(email, password)
-      .then(function (response) {
-        localStorage.setItem("token", response.data.token);
-        this1.props.handleUser();
-        this1.props.history.push("/label");
-        //console.log(response.data.token);
-      })
-      .catch((err) => {
-        //Uncomment to bypass login
-        // localStorage.setItem("token", 65515631);
-
-        // this1.props.history.push("/label");
-        // alert("Enter valid credentials");
-        console.log("error2", err);
-      });
+    this.props.logIn(email, password);
     //console.log(data);
   };
 
@@ -221,4 +208,8 @@ class Signin extends React.Component {
   }
 }
 
-export default Signin;
+const matchDispatchToProps = (dispatch) => ({
+  logIn: (email, password) => dispatch({type: 'LOGIN', logInCred: {email, password}})
+})
+
+export default connect(null, matchDispatchToProps)(Signin);

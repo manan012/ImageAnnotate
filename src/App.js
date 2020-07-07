@@ -5,77 +5,31 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import axios from "axios";
-
 import Main from "./AnnotationTool/Main";
 import Start from "./AnnotationTool/landingPage/Start";
 import Signin from "./AnnotationTool/landingPage/Signin";
 import ProjectDashBoard from "../src/Dashboards/ProjectDashBoard/ProjectDashBoard";
 import OverviewDashBoard from "../src/Dashboards/OverviewDashBoard";
-import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
-import rootReducer from "./store";
-import {logger} from 'redux-logger'
+import { connect } from "react-redux";
+
 
 // import Axios from "axios";
 
-const store = createStore(rootReducer, applyMiddleware(logger));
 
 class App extends Component {
   constructor() {
     super();
-    // console.log("constructor called");
-    // localStorage.removeItem("token");
-    this.state = {
-      isSignedIn: false,
-      logginStatus: true,
-      token: localStorage.getItem("token"),
-    };
   }
 
-  verifyUser = () => {
-    if (this.state.token) {
-      // console.log("in if");
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          "x-access-token": this.state.token,
-        },
-      };
-      axios
-        .get("https://edunomics.in/api/labelImg/user/verify", config)
-        .then((response) => {
-          // console.log("here");
-          return true;
-        })
-        .catch((err) => {
-          localStorage.removeItem("token");
-          this.setState({
-            token: null,
-          });
-          return false;
-        });
-    } else {
-      return false;
-    }
-  };
+  componentWillMount() {
+    this.props.verifyToken();
+    this.props.autoLogIn();
+  }
 
-  signInUser = () => {
-    this.setState({
-      token: localStorage.getItem("token"),
-    });
-  };
-
-  signOutUser = () => {
-    this.setState({
-      token: null,
-    });
-  };
   render() {
     return (
-      <Provider store={store}>
         <div className="root">
-          {this.state.token ? (
+          {this.props.loggedIn ? (
             <Router>
               <Switch>
                 <Route
@@ -129,9 +83,17 @@ class App extends Component {
             </Router>
           )}
         </div>
-      </Provider>
     );
   }
 }
 
-export default App;
+const matchStateToProp = (store) => ({
+  loggedIn: store.user.loggedIn
+})
+
+const matchDispatchToProp = (dispatch) => ({
+  verifyToken: (loggedIn) => {if (!loggedIn && 'token' in localStorage) dispatch({type: 'VERIFY_TOKEN', token: localStorage.getItem('token')})},
+  autoLogIn: () => dispatch({type: 'LOGIN', logInCred: {email: 'team1@gmail.com', password: '12345'}})
+})
+
+export default connect(matchStateToProp, matchDispatchToProp)(App);

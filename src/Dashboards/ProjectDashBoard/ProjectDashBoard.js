@@ -19,7 +19,8 @@ import {
 import ProjectList from "./ProjectList";
 import MembersTab from "./MembersTab";
 import AddDatasetTab from "./AddDatasetTab";
-import axios from "axios";
+import {fetchProject} from "../../api/Project";
+import { connect } from "react-redux";
 
 
 class ProjectDashBoard extends Component {
@@ -29,21 +30,12 @@ class ProjectDashBoard extends Component {
       activeTab: "projects",
       addProjectModelOpen: false,
     };
+  }
 
-    var body = JSON.stringify({
-      x_auth_token: localStorage.getItem("token"),
-    });
-
-    axios
-      .post("api/users/verify", body, {
-        headers: { "Content-Type": "application/json" },
-      })
-      .then((response) => {
-        this.setState({ userId: response.data.userId });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  componentWillMount() {
+    if (this.props.status === 'NOT_FETCHED') {
+      this.props.fetchProjects();
+    }
   }
 
   setActiveTab = (tab) => this.setState({ activeTab: tab });
@@ -132,4 +124,13 @@ class ProjectDashBoard extends Component {
   }
 }
 
-export default ProjectDashBoard;
+const matchStateToProp = (state) => ({
+  status: state.projects.status,
+  projects: state.projects.projects
+})
+
+const matchDispatchToProp = (dispatch) => ({
+  fetchProjects: () => dispatch({type:'FETCH_PROJECTS'}),
+})
+
+export default connect(matchStateToProp, matchDispatchToProp)(ProjectDashBoard);
