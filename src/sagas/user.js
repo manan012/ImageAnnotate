@@ -7,6 +7,7 @@ export function* verifyToken(action) {
         console.log(res);
         yield put({type: "VERIFY_TOKEN_SUCCESS", token: action.token, userId: res.data.userId})
     } catch (e) {
+        console.log(e);
         yield put({type: "VERIFY_TOKEN_FAILED"})
     }
 }
@@ -17,7 +18,7 @@ export function* logIn(action) {
         console.log(res);
         yield put({type: "LOGIN_SUCCESS", token: res.data.token});
     } catch(e) {
-        yield put({type: "LOGIN_FAILED", error: e.message});
+        yield put({type: "LOGIN_FAILED", error: e.response.data.message});
     }
 }
 

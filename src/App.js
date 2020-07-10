@@ -11,6 +11,7 @@ import Signin from "./AnnotationTool/landingPage/Signin";
 import ProjectDashBoard from "../src/Dashboards/ProjectDashBoard/ProjectDashBoard";
 import OverviewDashBoard from "../src/Dashboards/OverviewDashBoard";
 import { connect } from "react-redux";
+import Datasetdisplay from "./Dashboards/ProjectDashBoard/Datasetdisplay";
 
 
 // import Axios from "axios";
@@ -40,7 +41,8 @@ class App extends Component {
                   )}
                 ></Route>
                 <Route exact path="/project" component={ProjectDashBoard} />
-                <Route exact path="/overview" component={OverviewDashBoard} />
+                <Route exact path="/overview/:projectId" component={OverviewDashBoard} />
+                <Route exact path="/dataset/:datasetId" component={Datasetdisplay} />
                 <Route
                   exact
                   path="/"

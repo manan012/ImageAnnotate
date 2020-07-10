@@ -16,7 +16,7 @@ function userReducer(state=defaultState, action) {
         case 'LOGIN_SUCCESS':
             return {...state, status: 'LOGIN_SUCCESS', loggedIn: true, token: action.token}
         case 'LOGIN_FAILED':
-            return {...state, status: "LOGIN_FAILED", loggedIn: true, token: "", error: action.error}
+            return {...state, status: "LOGIN_FAILED", loggedIn: false, token: "", error: action.error}
         default:
             return state;
     }

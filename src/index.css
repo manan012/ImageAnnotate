@@ -14,7 +14,6 @@ body {
   transition: 1s;
 }
 
-
 .img-sel-inner-container .card {
   min-width: 75px;
 }
@@ -93,8 +92,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem .8rem;
   border-bottom: 2px solid var(--light);
+}
+
+.list-item a {
+  color: black;
+}
+
+.list-item a:hover {
+  text-decoration: none;
 }
 
 .list-item:hover {

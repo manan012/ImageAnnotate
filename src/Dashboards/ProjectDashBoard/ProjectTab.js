@@ -6,7 +6,7 @@ import {
     Col,
 } from "reactstrap";
 import ProjectList from "./ProjectList";
-import AddProjectModel from './AddProjectModel';
+import AddProjectModal from './AddProjectModal';
 
 class ProjectTab extends Component {
     constructor(props) {
@@ -35,7 +35,7 @@ class ProjectTab extends Component {
                     </from>
                 </div>    
               <ProjectList />
-              <AddProjectModel modelOpen={this.state.addProjectModelOpen} toggle={this.toggleAddProjectModel} />
+              <AddProjectModal modelOpen={this.state.addProjectModelOpen} toggle={this.toggleAddProjectModel} />
             </Fragment>
         )
     }

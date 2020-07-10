@@ -8,13 +8,19 @@ export function* fetchProjects(action) {
         console.log(res);
         yield put({type: 'FETCH_PROJECTS_SUCCESS', projects: [...res.data.projects.projectsCreated, ...res.data.projects.projectsInvited]})
     } catch (e) {
-        yield put({type: 'FETCH_PROJECTS_FAILED', error: e.message});
+        yield put({type: 'FETCH_PROJECTS_FAILED', error: e.response.data.message});
     }
 };
 
 
 export function* fetchProject(action) {
-    console.log(action);
+    try {
+        const res = yield call(PROJECT.getProject, action.projectId);
+        console.log(res);
+        yield put({type: 'FETCH_PROJECT_SUCCESS', project: res.data.project});
+    } catch (e) {
+        yield put({type: 'FETCH_PROJECT_FAILED', error: e.response.data.message});
+    }
 }
 
 export function* addProject(action) {
@@ -23,7 +29,7 @@ export function* addProject(action) {
         console.log(res)
         yield put({type: 'ADD_PROJECT_SUCCESS', project: res.data.project});
     } catch (e) {
-        yield put({type: 'ADD_PROJECT_FAILED', error: e.message})
+        yield put({type: 'ADD_PROJECT_FAILED', error: e.response.data.message})
     }
 }
 
@@ -33,6 +39,6 @@ export function* deleteProject(action) {
         console.log(res);
         yield put({type: 'DELETE_PROJECT_SUCCESS', id: action.id});
     } catch(e) {
-        yield put({type: 'DELETE_PROJECT_FAILED', error: e.message});
+        yield put({type: 'DELETE_PROJECT_FAILED', error: e.response.data.message});
     }
 }

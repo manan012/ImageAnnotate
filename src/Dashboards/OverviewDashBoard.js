@@ -20,6 +20,7 @@ import {
 } from "reactstrap";
 import ImageComponent from "./ImageComponent";
 import "./OverviewDashBoard.css";
+import { connect } from "react-redux";
 class OverviewDashBoard extends Component {
   constructor(props) {
     super(props);
@@ -40,6 +41,11 @@ class OverviewDashBoard extends Component {
         point: "https://i.stack.imgur.com/CDK3k.jpg",
       },
     };
+  }
+
+  componentWillMount = () => {
+    console.log("executed");
+    this.props.fetchProject(this.props.match.params.projectId);
   }
 
   activateNavItem = (navName) => {
@@ -67,13 +73,16 @@ class OverviewDashBoard extends Component {
   };
 
   render() {
+    console.log(this.props);
     return (
+      this.props.project.status != 'FETCHING_PROJECT' 
+      &&
       <Container>
         <div className="project_info_div">
           <Row>
             <Col md={6}>
               <div class="project_name">
-                <h2>Sample Project</h2>
+                <h2>{this.props.project.name}</h2>
               </div>
             </Col>
             <Col md={{ span: 4, offset: 4 }}>
@@ -85,7 +94,7 @@ class OverviewDashBoard extends Component {
           <Row>
             <Col>
               <div className="project_desc">
-                <h6>Demonstrating image segmentation and object detection</h6>
+                <h6>{this.props.project.description}</h6>
               </div>
             </Col>
           </Row>
@@ -457,4 +466,12 @@ class OverviewDashBoard extends Component {
   }
 }
 
-export default OverviewDashBoard;
+const mapStateToProps = (state) => ({
+  project: state.projects.project
+})
+
+const mapDispatchToProp = (dispatch) => ({
+  fetchProject: (id) => dispatch({type: 'FETCH_PROJECT', projectId: id})
+})
+
+export default connect(mapStateToProps, mapDispatchToProp)(OverviewDashBoard);

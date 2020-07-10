@@ -18,14 +18,16 @@ class ProjectList extends Component {
     render() {
         return (
             <List className="project-list">
-                {   this.props.status === "NOT_FETCHED" ? 
+                {   this.props.status === "NOT_FETCHED" || this.props.status === 'FETCHING_PROJECTS' ? 
                         <div style={{width: "100%", height: 400, textAlign:"center"}}>
                             <Spinner style={{marginTop: 200}} color="primary" />
                         </div>
                         :
                         this.props.projects.map(project => <ListItem key={project._id} 
+                                                                     to={"/overview/"+project._id}
                                                                      id={project._id} 
                                                                      title={project.name} 
+                                                                     onDelete={() => this.props.deleteProject(project._id)}
                                                                      infos={[]}/>)
                 }
             </List>
@@ -39,8 +41,10 @@ const matchStateToProp = (state) => ({
 })
   
 const matchDispatchToProp = (dispatch) => ({
-fetchProjects: () => dispatch({type:'FETCH_PROJECTS'}),
+    fetchProjects: () => dispatch({type:'FETCH_PROJECTS'}),
+    deleteProject: (id) => dispatch({type: 'DELETE_PROJECT', id: id})
 })
   
+
 
 export default connect(matchStateToProp, matchDispatchToProp)(ProjectList);

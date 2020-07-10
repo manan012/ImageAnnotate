@@ -1,5 +1,6 @@
 const defaultState = {
     status: "NOT_FETCHED",
+    project: {status: 'NOT_FETCHED'},
     projects: []
 }
 
@@ -11,6 +12,12 @@ const projectsReducer = (state=defaultState, action) => {
             return {...state, status: "FETCHED_PROJECTS", projects: action.projects}
         case 'FETCH_PROJECTS_FAILED':
             return {...state, status: "FETCHING_PROJECTS_FAILED", error: action.error}
+        case 'FETCH_PROJECT':
+            return {...state, project: {status: 'FETCHING_PROJECT'}};
+        case "FETCH_PROJECT_SUCCESS":
+            return {...state, project: {status: 'FETCH_PROJECT_SUCCESS', ...action.project}}
+        case "FETCH_PROJECT_FAILD":
+            return {...state, project: {status: 'FETCH_PROJECT_FAILED', error: action.error}}
         case 'DELETE_PROJECT':
             return {...state, status: "DELETING_PROJECT"}
         case 'DELETE_PROJECT_SUCCESS':

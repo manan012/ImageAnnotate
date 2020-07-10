@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Button} from 'reactstrap';
 import { connect } from 'react-redux';
 
-class AddProjectModel extends Component {
+class AddProjectModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -26,11 +26,12 @@ class AddProjectModel extends Component {
                 <ModalBody>
                 <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
-                        <p>Name your project</p>
                         <Input type="text" name="name" value={this.state.name} onChange={this.handleNameChange} placeholder="Project Name" />
-                        <Input type="text" type="description" value={this.state.description} onChange={this.handleDescriptionChange} placeholder="Project Description" />
-                        <Button type="submit" color="primary">Add Project</Button>
                     </FormGroup>
+                    <FormGroup>
+                        <Input type="text" type="description" value={this.state.description} onChange={this.handleDescriptionChange} placeholder="Project Description" />
+                    </FormGroup>
+                    <Button type="submit" color="primary">Add Project</Button>
                 </Form>
                 </ModalBody>
             </Modal>
@@ -42,4 +43,4 @@ const matchDispatchToProp = (dispatch) => ({
     addProject: (name, description) => dispatch({type: 'ADD_PROJECT', name, description}),
 })
 
-export default connect(null, matchDispatchToProp)(AddProjectModel);
+export default connect(null, matchDispatchToProp)(AddProjectModal);
