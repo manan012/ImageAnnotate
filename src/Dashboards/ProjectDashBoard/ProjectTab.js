@@ -12,7 +12,7 @@ class ProjectTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            addProjectModelOpen: false,
+            addProjectModelOpen: true,
         }
     }
 

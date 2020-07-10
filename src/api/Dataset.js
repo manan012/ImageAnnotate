@@ -32,7 +32,8 @@ const deleteDataset = async (id) => {
 }
 
 const deleteImages = async (datasetId, imagesIds) => {
-    return axios.delete ('/api/datasets/deleteimages', {datasetId, imagesIds});
+    console.log(datasetId, imagesIds);
+    return axios.post('/api/datasets/deleteimages', {datasetId: datasetId, imageIds: imagesIds});
 }
 
 const uploadImages = async (datasetId, images) => {

@@ -40,7 +40,7 @@ export function* deleteDataset(action) {
 export function* deleteImages(action) {
     try {
         const res = yield call(DATASET.deleteImages, action.datasetId, action.imagesIds);
-        yield put({type: 'DELETE_IMAGES_SUCCESS', imageIds: action.imageIds});
+        yield put({type: 'DELETE_IMAGES_SUCCESS', imageIds: action.imagesIds});
     } catch(e) {
         yield put({type: 'DELETE_IMAGES_FAILED', error: e.response.data.error})
     }
@@ -49,7 +49,7 @@ export function* deleteImages(action) {
 export function* uploadImages(action) {
     try {
         const res = yield call(DATASET.uploadImages, action.datasetId, action.images);
-        yield put({type: 'UPLOAD_IMAGES_SUCCESS'});
+        yield put({type: 'UPLOAD_IMAGES_SUCCESS', uploadedImages: res.data.uploaded_images});
     } catch(e) {
         yield put({type: 'UPLOAD_IMAGES_ERROR', error: e.response.data.error})
     }

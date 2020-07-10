@@ -166,3 +166,26 @@ body {
   font-size: 14px;
 }
 
+.step:first-of-type {
+  margin-top: 0px;
+}
+
+.step {
+  margin: 20px 0;
+}
+
+.step span {
+  background-color: grey;
+  display: inline-block;
+  color: white;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.step-content {
+  margin-left: 10px;
+  border-left: 2px solid grey;
+}

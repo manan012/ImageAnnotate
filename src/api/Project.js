@@ -12,8 +12,8 @@ export const deleteProject = async (id) => {
     return axios.delete('/api/projects/'+id);
 }
 
-export const addProject = async (name, description) => {
-    return axios.post('/api/projects', {name: name, description: description});
+export const addProject = async (name, description, datasetIds) => {
+    return axios.post('/api/projects', {name: name, description: description, datasetIds: datasetIds});
 }
 
 const PROJECT = {

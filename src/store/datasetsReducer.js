@@ -26,8 +26,23 @@ const datasetsReducer = (state=defaultState, action) => {
             return {...state, status: 'CREATE_DATASET_WITH_IMAGE_SUCCESS', datasets: [action.dataset, ...state.datasets]}
         case 'CREATE_DATASET_WITH_IMAGES_ERROR':
             return {...state, status: "CREATE_DATASET_WITH_IMAGES_ERROR", error: action.error}
+        case 'UPLOAD_IMAGES':
+            return {...state, dataset: {...state.dataset, status: 'UPLOADING_IMAGES'}}
+        case 'UPLOAD_IMAGES_SUCCESS':
+            return {...state, dataset: {...state.dataset, status: 'UPLOAD_IMAGES_SUCCESS', images: [...action.uploadedImages, ...state.dataset.images]}}
+        case 'UPLOAD_IMAGES_FAILED':
+            return {...state, dataset: {...state.dataset, status: 'UPLOAD_IMAGES_SUCCESS', error: action.error}}
         case 'DELETE_DATASET':
             return {...state, status: "DELETING_DATASET"}
+        case 'DELETE_IMAGES':
+            return {...state, dataset: {...state.dataset, status: 'DELETING_IMAGES'}}
+        case 'DELETE_IMAGES_SUCCESS':
+            return {...state, 
+                        dataset: {...state.dataset, 
+                        status: 'DELETE_IMAGE_SUCCESS', 
+                        images: state.dataset.images.filter(img => action.imageIds.filter(id => id === img._id).length === 0)
+                    }
+                }
         case 'DELETE_DATASET_SUCCESS':
             return {...state, 
                     status: "DELETING_DATASET_SUCCESS", 

@@ -50,7 +50,7 @@ class DatasetDisplay extends Component {
 
     render() {
         return (
-            this.props.dataset.status=== "FETCH_DATASET_SUCCESS" ?
+            (this.props.dataset.status !== "NOT_FETCHED" && this.props.dataset.status !== "FETCH_DATASET_FAILED" && this.props.dataset.status!== 'FETCHING_DATASET') ?
                 <Container>
                     <div className="d-flex justify-content-end py-3">
                         {
@@ -94,7 +94,7 @@ class DatasetDisplay extends Component {
                         </tbody>
                     </Table>
                     <Modal isOpen={this.state.addImageModelOpen} centered toggle={this.toggleAddImageModel} className={'center'}>
-                    <ModalHeader toggle={this.props.toggle}>Add Dataset</ModalHeader>
+                    <ModalHeader toggle={this.toggleAddImageModel}>Add Dataset</ModalHeader>
                         <ModalBody>
                             <FileUpload handleFilesInput={this.handleFileUpload}/>
                         </ModalBody>

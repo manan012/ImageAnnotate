@@ -1,7 +1,7 @@
 import {takeLatest, takeEvery} from 'redux-saga/effects'
 import { fetchProjects, fetchProject, deleteProject, addProject } from './projectSagas'
 import { verifyToken, logIn, signUp } from './user';
-import {fetchDatasets, createDatasetWithImages, fetchDataset, deleteDataset, uploadImages} from './datasetSagas'
+import {fetchDatasets, createDatasetWithImages, fetchDataset, deleteDataset, uploadImages, deleteImages} from './datasetSagas'
 
 export default function* rootSaga() {
     //User actions
@@ -20,5 +20,6 @@ export default function* rootSaga() {
     yield takeLatest('FETCH_DATASETS', fetchDatasets);
     yield takeLatest('CREATE_DATASET_WITH_IMAGES', createDatasetWithImages);
     yield takeEvery('DELETE_DATASET', deleteDataset);
+    yield takeEvery("DELETE_IMAGES", deleteImages)
     yield takeEvery('UPLOAD_IMAGES', uploadImages);
 }

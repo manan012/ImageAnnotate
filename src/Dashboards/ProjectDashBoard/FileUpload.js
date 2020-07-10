@@ -57,7 +57,7 @@ class FileUpload extends Component {
                         <div className="text-center"><i class="fas fa-cloud-upload-alt fa-2x"></i></div>
                         <p>Drop Image files to upload.</p>
                         <input onChange={this.handleFilesInput} type="file" multiple className="d-none" id="files" />
-                        <Button color="primary p-0">
+                        <Button type="button" color="primary p-0">
                             <label className="mb-0 w-100 py-1 px-2" htmlFor="files">
                                 Choose files to upload
                             </label>

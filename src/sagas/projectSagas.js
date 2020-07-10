@@ -25,7 +25,7 @@ export function* fetchProject(action) {
 
 export function* addProject(action) {
     try {
-        const res = yield call(PROJECT.addProject, action.name, action.description);
+        const res = yield call(PROJECT.addProject, action.name, action.description, action.datasetIds);
         console.log(res)
         yield put({type: 'ADD_PROJECT_SUCCESS', project: res.data.project});
     } catch (e) {
