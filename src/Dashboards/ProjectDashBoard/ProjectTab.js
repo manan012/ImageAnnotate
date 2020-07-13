@@ -55,7 +55,7 @@ class ProjectTab extends Component {
                            deleteProject={this.props.deleteProject}/>
                 }
                 {  this.state.searchKey.length > 0 &&
-                  <SearchProjectDisplay status={this.props.status} 
+                   <SearchProjectDisplay status={this.props.status} 
                                     projects={this.props.projects.filter(p => match(this.state.searchKey.toLowerCase(), p.name.toLowerCase()).length > 0)} 
                                     fetchProjects={this.props.fetchProjects}
                                     deleteProject={this.props.deleteProject}/> 
