@@ -6,7 +6,7 @@ export function* fetchDatasets() {
         const res = yield call(DATASET.fetchDatasets);
         yield put({type: "FETCH_DATASETS_SUCCESS", datasets: res.data.datasets});
     } catch (e) {
-        yield put({type: "FETCH_DATASET_FAILED", error: e.response.data.error});
+        yield put({type: "FETCH_DATASET_FAILED", error: e.response.data.message});
     }
 }
 
@@ -15,7 +15,7 @@ export function* fetchDataset(action) {
         const res = yield call(DATASET.fetchDataset, action.id);
         yield put({type: 'FETCH_DATASET_SUCCESS', dataset: res.data.dataset});
     } catch (e) {
-        yield put({type: 'FETCH_DATASET_SUCCESS', error: e.response.data.error});
+        yield put({type: 'FETCH_DATASET_SUCCESS', error: e.response.data.message});
     }
 }
 
@@ -26,7 +26,7 @@ export function* createDatasetWithImages(action) {
         yield put({type: 'CREATE_DATASET_WITH_IMAGES_SUCCESS', dataset: res.data.dataset});
     } catch (e) {
         console.dir(e);
-        yield put({type: "CREATE_DATASET_WITH_IMAGES_ERROR", error: e.response.data.error});
+        yield put({type: "CREATE_DATASET_WITH_IMAGES_ERROR", error: e.response.data.message});
     }
 } 
 
@@ -35,7 +35,7 @@ export function* deleteDataset(action) {
         const res = yield call(DATASET.deleteDataset, action.id);
         yield put({type: 'DELETE_DATASET_SUCCESS', id:action.id})
     } catch(e) {
-        yield put({type: 'DELETE_DATASET_FAILED', error: e.response.data.error})
+        yield put({type: 'DELETE_DATASET_FAILED', error: e.response.data.message})
     }
 }
 
@@ -53,7 +53,7 @@ export function* uploadImages(action) {
         const res = yield call(DATASET.uploadImages, action.datasetId, action.images);
         yield put({type: 'UPLOAD_IMAGES_SUCCESS', uploadedImages: res.data.uploaded_images});
     } catch(e) {
-        yield put({type: 'UPLOAD_IMAGES_ERROR', error: e.response.data.error})
+        yield put({type: 'UPLOAD_IMAGES_ERROR', error: e.response.data.message})
     }
 }
 
