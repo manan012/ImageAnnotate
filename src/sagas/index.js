@@ -1,7 +1,8 @@
 import {takeLatest, takeEvery} from 'redux-saga/effects'
-import { fetchProjects, fetchProject, deleteProject, addProject } from './projectSagas'
+import { fetchProjects, fetchProject, deleteProject, addProject, inviteCollaborator } from './projectSagas'
 import { verifyToken, logIn, signUp } from './user';
 import {fetchDatasets, createDatasetWithImages, fetchDataset, deleteDataset, uploadImages, deleteImages} from './datasetSagas'
+import { fetchNotification } from './notifications';
 
 export default function* rootSaga() {
     //User actions
@@ -14,6 +15,7 @@ export default function* rootSaga() {
     yield takeLatest('FETCH_PROJECT', fetchProject);
     yield takeEvery('ADD_PROJECT', addProject);
     yield takeEvery('DELETE_PROJECT', deleteProject);
+    yield takeEvery('INVITE_COLLABORATOR', inviteCollaborator);
 
     //Datasets actions
     yield takeLatest('FETCH_DATASET', fetchDataset);
@@ -22,4 +24,7 @@ export default function* rootSaga() {
     yield takeEvery('DELETE_DATASET', deleteDataset);
     yield takeEvery("DELETE_IMAGES", deleteImages)
     yield takeEvery('UPLOAD_IMAGES', uploadImages);
+
+    //Notification actions
+    yield takeEvery('FETCH_NOTIFICATION', fetchNotification);
 }

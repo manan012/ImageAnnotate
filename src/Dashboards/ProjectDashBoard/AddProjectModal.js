@@ -33,8 +33,10 @@ class AddProjectModal extends Component {
         this.setState({files: files})
     }
     handleDatasetNameInput = (e) => this.setState({datasetName: e.target.value});
+
     handleCreateDatasetSubmit = (e) => {
         e.preventDefault();
+        e.stopPropagation();
         this.props.createDatasetWithImages(this.state.files, this.state.datasetName);
         this.setState({files: [], name: "", activeTab: "existing"});
     }
@@ -130,7 +132,7 @@ class AddProjectModal extends Component {
                                     ? 
                                         <FileUpload handleFilesInput={this.handleFilesInput} />
                                     :
-                                        <Form onSubmit={this.handleCreateDatasetSubmit}>
+                                        <Form className="mt-2"onSubmit={this.handleCreateDatasetSubmit}>
                                             <FormGroup>
                                                 <Input type="text" placeholder="Dataset Name" value={this.state.datasetName} onChange={this.handleDatasetNameInput} />
                                             </FormGroup>

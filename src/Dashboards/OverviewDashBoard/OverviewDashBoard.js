@@ -21,6 +21,7 @@ import {
 import ImageComponent from "./ImageComponent";
 import "./OverviewDashBoard.css";
 import { connect } from "react-redux";
+import InviteOnProjectModel from "./InviteOnProjectModel";
 class OverviewDashBoard extends Component {
   constructor(props) {
     super(props);
@@ -29,6 +30,7 @@ class OverviewDashBoard extends Component {
       exportFormat: "json",
       emailNotification: false,
       activeNavItem: "bounding_box",
+      invitationModelOpen: false,
       annotation_image: {
         bounding_box:
           "https://www.cogitotech.com/wp-content/uploads/2019/09/object_detections.jpg",
@@ -59,6 +61,8 @@ class OverviewDashBoard extends Component {
     if (this.state.activeTab != tab) this.setActiveTab(tab);
   };
 
+  toggleInvitationModel = () => this.setState({invitationModelOpen: !this.state.invitationModelOpen})
+
   // selecting the export format
   onSelectChange = () => {
     this.setState({
@@ -85,8 +89,12 @@ class OverviewDashBoard extends Component {
                 <h2>{this.props.project.name}</h2>
               </div>
             </Col>
-            <Col md={{ span: 4, offset: 4 }}>
-              <Button style={{ backgroundColor: "blue" }}>
+            <Col md={3}></Col>
+            <Col md={3}>
+              <Button onClick={this.toggleInvitationModel} className="mr-1" color="primary">
+                Invite
+              </Button>
+              <Button color="primary">
                 <span class="labelling">Start Labelling</span>
               </Button>
             </Col>
@@ -461,6 +469,10 @@ class OverviewDashBoard extends Component {
             {/* End Export TabPane */}
           </TabContent>
         </div>
+        <InviteOnProjectModel modelOpen={this.state.invitationModelOpen} 
+          toggle={this.toggleInvitationModel}
+          invite={(email) => this.props.invite(this.props.project._id, email)}
+          />
       </Container>
     );
   }
@@ -471,7 +483,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProp = (dispatch) => ({
-  fetchProject: (id) => dispatch({type: 'FETCH_PROJECT', projectId: id})
+  fetchProject: (id) => dispatch({type: 'FETCH_PROJECT', projectId: id}),
+  invite: (projectId, email) => dispatch({type: "INVITE_COLLABORATOR", projectId, email})
 })
 
 export default connect(mapStateToProps, mapDispatchToProp)(OverviewDashBoard);

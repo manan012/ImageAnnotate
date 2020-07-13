@@ -38,7 +38,7 @@ class ListItem extends Component {
                             <i className="fas fa-ellipsis-v"></i>
                         </button>
                         <div className={"dropdown-menu " + (this.state.dropdownOpen ? "show" : "")}>
-                            <a className="dropdown-item"
+                            <a className="dropdown-item hov-red"
                             onClick={() => this.props.onDelete()}
                             >Delete</a>
                         </div>

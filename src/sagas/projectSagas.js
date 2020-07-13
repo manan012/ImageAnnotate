@@ -58,3 +58,21 @@ export function* deleteProject(action) {
     });
   }
 }
+
+export function* inviteCollaborator(action) {
+  try {
+    const res = yield call(
+      PROJECT.inviteCollaborator,
+      action.projectId,
+      action.email
+    );
+    console.log(res);
+    yield put({ type: "INVITE_COLLABORATOR_SUCCESS" });
+  } catch (e) {
+    console.dir(e);
+    yield put({
+      type: "INVITE_COLLABORATOR_FAILED",
+      error: e.response.data.message,
+    });
+  }
+}

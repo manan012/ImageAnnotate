@@ -189,3 +189,26 @@ body {
   margin-left: 10px;
   border-left: 2px solid grey;
 }
+
+.dropdown-menu {
+  padding: 0;
+}
+
+.dropdown .btn {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.dropdown-item {
+  padding: 5px 10px;
+}
+
+.dropdown-item:hover {
+  background-color: var(--blue);
+  color: white !important;
+}
+
+.dropdown-item.hov-red:hover {
+  background-color: var(--red);
+  color: white !important  ;
+} 
