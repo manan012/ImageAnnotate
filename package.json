@@ -45,5 +45,5 @@
   "engines": {
     "node": "12.16.2"
   },
-  "proxy": "http://localhost:5000/"
+  "proxy": "https://glacial-chamber-36231.herokuapp.com/"
 }
