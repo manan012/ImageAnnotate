@@ -8,12 +8,6 @@ class ProjectList extends Component {
     constructor(props) {
         super(props);
     }
-
-    componentWillMount() {
-        if (this.props.status === 'NOT_FETCHED') {
-            this.props.fetchProjects();
-          }
-    }
     
     render() {
         return (
@@ -35,16 +29,5 @@ class ProjectList extends Component {
     }
 }
 
-const matchStateToProp = (state) => ({
-    status: state.projects.status,
-    projects: state.projects.projects
-})
-  
-const matchDispatchToProp = (dispatch) => ({
-    fetchProjects: () => dispatch({type:'FETCH_PROJECTS'}),
-    deleteProject: (id) => dispatch({type: 'DELETE_PROJECT', id: id})
-})
-  
 
-
-export default connect(matchStateToProp, matchDispatchToProp)(ProjectList);
+export default ProjectList;

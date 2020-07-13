@@ -16,11 +16,16 @@ export const addProject = async (name, description, datasetIds) => {
     return axios.post('/api/projects', {name: name, description: description, datasetIds: datasetIds});
 }
 
+export const inviteCollaborator = async (projectId, email) => {
+    return axios.post('/api/projects/invite', {projectId, email});
+}
+
 const PROJECT = {
     getProject: getProject,
     getProjects: getProjects,
     addProject: addProject,
-    deleteProject: deleteProject
+    deleteProject: deleteProject,
+    inviteCollaborator: inviteCollaborator
 }
 
 export default PROJECT;

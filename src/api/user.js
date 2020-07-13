@@ -5,6 +5,7 @@ const logIn = async ({email, password}) => {
 }
 
 const signUp = async ({email, password, name, dob, contact_no, organizationName}) => {
+    console.log(email);
     return axios.post("api/users/signup", {email, name, password, dob, contact_no, organizationName});
 }
 

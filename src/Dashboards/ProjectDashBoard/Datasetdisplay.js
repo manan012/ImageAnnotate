@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import {Container, Button, Table, Input, Modal, ModalHeader, ModalBody} from 'reactstrap';
+import {Container, Button, Table, Input, Modal, ModalHeader, ModalBody, Breadcrumb, BreadcrumbItem} from 'reactstrap';
 import { connect } from 'react-redux';
+import {Link} from 'react-router-dom';
 import FileUpload from './FileUpload';
 
 class DatasetDisplay extends Component {
@@ -52,12 +53,18 @@ class DatasetDisplay extends Component {
         return (
             (this.props.dataset.status !== "NOT_FETCHED" && this.props.dataset.status !== "FETCH_DATASET_FAILED" && this.props.dataset.status!== 'FETCHING_DATASET') ?
                 <Container>
-                    <div className="d-flex justify-content-end py-3">
-                        {
-                            this.state.selected.length > 0 && 
-                            <Button color="basic" onClick={this.deleteImages} className="mr-2 text-danger outline-none">Delete</Button>
-                        }
-                        <Button color="primary" onClick={this.toggleAddImageModel} className="">Add dataset</Button>
+                    <div className="d-flex justify-content-between py-3">
+                        <Breadcrumb>
+                            <BreadcrumbItem><Link to="/datasets">Datasets</Link></BreadcrumbItem>
+                            <BreadcrumbItem active>{this.props.dataset.datasetName}</BreadcrumbItem>
+                        </Breadcrumb>
+                        <div>
+                            {
+                                this.state.selected.length > 0 && 
+                                <Button color="basic" onClick={this.deleteImages} className="mr-2 text-danger outline-none">Delete</Button>
+                            }
+                            <Button color="primary" onClick={this.toggleAddImageModel} className="">Add Datapoint</Button>
+                        </div>
                     </div>
                     <Table borderless className="border">
                         <thead className="border-bottom">
@@ -66,7 +73,7 @@ class DatasetDisplay extends Component {
                                     <div style={{width: 40, height: 20}} className="text-center">
                                         <Input type="checkbox" className=""
                                                 onClick={this.toggleAllSelect}
-                                                checked={this.state.selected.length === this.props.dataset.images.length} />
+                                                checked={this.state.selected.length === this.props.dataset.images.length && this.props.dataset.images.length !== 0} />
                                     </div>
                                 </th>
                                 <th>Name</th>

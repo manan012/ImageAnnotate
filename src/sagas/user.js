@@ -5,7 +5,7 @@ export function* verifyToken(action) {
     try {
         const res =  yield call(User.verifyToken, action.token);
         console.log(res);
-        yield put({type: "VERIFY_TOKEN_SUCCESS", token: action.token, userId: res.data.userId})
+        yield put({type: "VERIFY_TOKEN_SUCCESS", user: res.data.user, token:action.token})
     } catch (e) {
         console.log(e);
         yield put({type: "VERIFY_TOKEN_FAILED"})
@@ -16,7 +16,7 @@ export function* logIn(action) {
     try {
         const res = yield call(User.login, action.logInCred);
         console.log(res);
-        yield put({type: "LOGIN_SUCCESS", token: res.data.token});
+        yield put({type: "LOGIN_SUCCESS", user: res.data.user, token:res.data.token});
     } catch(e) {
         yield put({type: "LOGIN_FAILED", error: e.response.data.message});
     }
@@ -24,10 +24,11 @@ export function* logIn(action) {
 
 export function* signUp(action) {
     try {
+        console.log(action);
         const res = yield call(User.signUp, action.signUpCred);
         console.log(res);
-        yield put({type: "SIGNUP_SUCCESS", user: res.data});
+        yield put({type: "SIGNUP_SUCCESS", user: res.data.user, token: res.data.token});
     } catch (e) {
-        yield put({type: "SIGNUP_FAILED", error: e.message});
+        yield put({type: "SIGNUP_FAILED", error: e.response.data.message});
     }
 }

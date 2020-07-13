@@ -27,30 +27,17 @@ class Signin extends React.Component {
   onSubmitSignUp = (e) => {
     e.preventDefault();
     // get our form data out of state
-    var data = JSON.stringify({
+    var data = {
       name: this.state.name,
       email: this.state.email,
       contact_no: this.state.contact_no,
       dob: this.state.dob,
       organizationName: this.state.organizationName,
       password: this.state.password,
-    });
+    };
     console.log(data);
     var this1 = this;
-
-    axios
-      .post("api/users/signup", data, {
-        headers: { "Content-Type": "application/json" },
-      })
-      .then(function (response) {
-        console.log(response);
-        // console.log(response);
-        // alert("Please login with your credentials");
-        alert(response.data.msg + ". Now Login");
-      })
-      .catch((err) => {
-        console.log("error1", err);
-      });
+    this.props.signUp(data);
   };
 
   // When login form is submitted
@@ -209,7 +196,8 @@ class Signin extends React.Component {
 }
 
 const matchDispatchToProps = (dispatch) => ({
-  logIn: (email, password) => dispatch({type: 'LOGIN', logInCred: {email, password}})
+  logIn: (email, password) => dispatch({type: 'LOGIN', logInCred: {email, password}}),
+  signUp: (data) => dispatch({type: 'SIGNUP', signUpCred: data})
 })
 
 export default connect(null, matchDispatchToProps)(Signin);

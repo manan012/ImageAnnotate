@@ -10,18 +10,15 @@ import {
 import MembersTab from "./MembersTab";
 import AddDatasetTab from "./AddDatasetTab";
 import ProjectTab from "./ProjectTab";
+import {Link} from "react-router-dom"
 
 
 class ProjectDashBoard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: "projects",
       addProjectModelOpen: false,
     };
-  }
-
-  componentWillMount() {
   }
 
   setActiveTab = (tab) => this.setState({ activeTab: tab });
@@ -34,37 +31,22 @@ class ProjectDashBoard extends Component {
         <div>
           <Nav tabs>
             <NavItem>
-              <NavLink
-                className={this.state.activeTab === "projects" ? "active" : ""}
-                onClick={() => {
-                  this.toggle("projects");
-                }}
-              >
+              <Link to="/projects" className={"nav-link " + (this.props.match.path === "/projects" ? "active" : "")}>
                 Projects
-              </NavLink>
+              </Link>
             </NavItem>
             <NavItem>
-              <NavLink
-                className={this.state.activeTab === "members" ? "active" : ""}
-                onClick={() => {
-                  this.toggle("members");
-                }}
-              >
+              <Link to="/members" className={"nav-link " + (this.props.match.path === "/members" ? "active" : "")}>
                 Members
-              </NavLink>
+              </Link>
             </NavItem>
             <NavItem>
-              <NavLink
-                className={this.state.activeTab === "datasets" ? "active" : ""}
-                onClick={() => {
-                  this.toggle("datasets");
-                }}
-              >
+              <Link to="/datasets" className={"nav-link " + (this.props.match.path === "/datasets" ? "active" : "")}>
                 Datasets
-              </NavLink>
+              </Link>
             </NavItem>
           </Nav>
-          <TabContent activeTab={this.state.activeTab}>
+          <TabContent activeTab={this.props.match.path.slice(1,)}>
             <TabPane className="" tabId="projects">
               <ProjectTab />
             </TabPane>

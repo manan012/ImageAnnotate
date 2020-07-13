@@ -27,6 +27,7 @@ store.subscribe(() => {
     }
 })
 store.subscribe(() => {if (store.getState().user.loggedIn) axios.defaults.headers['x_auth_token'] = store.getState().user.token})
+store.subscribe(() => {if (store.getState().user.status === 'LOGOUT') localStorage.removeItem('token')})
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));

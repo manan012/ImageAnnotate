@@ -9,9 +9,10 @@ import Main from "./AnnotationTool/Main";
 import Start from "./AnnotationTool/landingPage/Start";
 import Signin from "./AnnotationTool/landingPage/Signin";
 import ProjectDashBoard from "../src/Dashboards/ProjectDashBoard/ProjectDashBoard";
-import OverviewDashBoard from "../src/Dashboards/OverviewDashBoard";
+import OverviewDashBoard from "../src/Dashboards/OverviewDashBoard/OverviewDashBoard";
 import { connect } from "react-redux";
 import Datasetdisplay from "./Dashboards/ProjectDashBoard/Datasetdisplay";
+import Header from "./Header.js/Header";
 
 
 // import Axios from "axios";
@@ -32,6 +33,7 @@ class App extends Component {
         <div className="root">
           {this.props.loggedIn ? (
             <Router>
+              <Header />
               <Switch>
                 <Route
                   exact
@@ -40,18 +42,20 @@ class App extends Component {
                     <Main {...props} handleUser={this.signOutUser} />
                   )}
                 ></Route>
-                <Route exact path="/project" component={ProjectDashBoard} />
+                <Route exact path="/projects" component={ProjectDashBoard} />
+                <Route exact path="/members" component={ProjectDashBoard} />
+                <Route exact path="/datasets" component={ProjectDashBoard} />
                 <Route exact path="/overview/:projectId" component={OverviewDashBoard} />
                 <Route exact path="/dataset/:datasetId" component={Datasetdisplay} />
                 <Route
                   exact
                   path="/"
-                  component={() => <Redirect to="/project" />}
+                  component={() => <Redirect to="/projects" />}
                 />
                 <Route
                   exact
                   path="/signin"
-                  component={() => <Redirect to="/project" />}
+                  component={() => <Redirect to="/projects" />}
                 />
               </Switch>
             </Router>
@@ -73,7 +77,7 @@ class App extends Component {
                 />
                 <Route
                   exact
-                  path="/project"
+                  path="/projects"
                   component={() => <Redirect to="/signin" />}
                 />
                 <Route
@@ -81,6 +85,7 @@ class App extends Component {
                   path="/overview"
                   component={() => <Redirect to="/signin" />}
                 />
+                {/* <Route path="*" component={() => <Redirect to="/" />} /> */}
               </Switch>
             </Router>
           )}

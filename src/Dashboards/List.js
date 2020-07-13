@@ -9,7 +9,7 @@ class List extends Component {
     render() {
         return (
             <div className={"list w-100 " + this.props.className ? this.props.className : ""}>
-                {this.props.children};
+                {this.props.children}
             </div>
         )
     }
