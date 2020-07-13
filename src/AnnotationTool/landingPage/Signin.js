@@ -209,7 +209,8 @@ class Signin extends React.Component {
 }
 
 const matchDispatchToProps = (dispatch) => ({
-  logIn: (email, password) => dispatch({type: 'LOGIN', logInCred: {email, password}})
-})
+  logIn: (email, password) =>
+    dispatch({ type: "LOGIN", logInCred: { email, password } }),
+});
 
 export default connect(null, matchDispatchToProps)(Signin);
