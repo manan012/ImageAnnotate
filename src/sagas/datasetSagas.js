@@ -22,8 +22,10 @@ export function* fetchDataset(action) {
 export function* createDatasetWithImages(action) {
     try {
         const res = yield call(DATASET.createDatasetWithImages, action.images, action.name);
+        console.dir(res);
         yield put({type: 'CREATE_DATASET_WITH_IMAGES_SUCCESS', dataset: res.data.dataset});
     } catch (e) {
+        console.dir(e);
         yield put({type: "CREATE_DATASET_WITH_IMAGES_ERROR", error: e.response.data.error});
     }
 } 
