@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { DropdownItem, Dropdown, DropdownToggle, NavItem, Nav, DropdownMenu, NavbarToggler, NavbarText, Navbar, NavbarBrand, Collapse } from 'reactstrap'
 import { Link } from 'react-router-dom';
 import { connect, useStore } from 'react-redux';
+import MemberNotification from './MemberNotification';
 
 class Header extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ class Header extends Component {
         }
     }
     componentDidMount() {
-        if (this.props.user.loggedIn && this.props.notifications.status === 'NOT_FETCHED') {
+        if (this.props.user.loggedIn && this.props.notificationStatus === 'NOT_FETCHED') {
             this.props.fetchNotification();
         }
     }
@@ -38,10 +39,11 @@ class Header extends Component {
                                 <i class="fas fa-bell"></i>
                             </button>
                             <div className={"dropdown-menu " + (this.state.notificationDropdownOpen ? "show" : "")}>
-                                {/* <a className="dropdown-item"
-                                onClick={this.props.logout}
-                                >Log out</a> */}
-                                <div class="px-2 text-muted"><small>No notification</small></div>
+                                {
+                                    this.props.notifications.length == 0 ?
+                                    <div class="px-2 text-muted"><small>No notification</small></div>
+                                    : this.props.notifications.map(n => <MemberNotification notification={n}/>)
+                                }
                             </div>
                         </div>     
                         <div className="dropdown">
@@ -65,7 +67,8 @@ class Header extends Component {
 
 const matchStateToProps = (state) => ({
     user: state.user,
-    notifications: state.notifications
+    notifications: state.notifications.notifications,
+    notificationStatus: state.notifications.status
 })
 
 const matchDispatchToProps = (dispatch) => ({
