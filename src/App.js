@@ -13,6 +13,7 @@ import OverviewDashBoard from "../src/Dashboards/OverviewDashBoard/OverviewDashB
 import { connect } from "react-redux";
 import Datasetdisplay from "./Dashboards/ProjectDashBoard/Datasetdisplay";
 import Header from "./Header.js/Header";
+import DisplayErrors from "./Errors/DisplayErrors";
 
 
 // import Axios from "axios";
@@ -31,6 +32,7 @@ class App extends Component {
   render() {
     return (
         <div className="root">
+          <DisplayErrors />
           {this.props.loggedIn ? (
             <Router>
               <Header />

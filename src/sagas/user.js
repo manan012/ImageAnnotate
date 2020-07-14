@@ -18,6 +18,7 @@ export function* logIn(action) {
         console.log(res);
         yield put({type: "LOGIN_SUCCESS", user: res.data.user, token:res.data.token});
     } catch(e) {
+        console.dir(e);
         yield put({type: "LOGIN_FAILED", error: e.response.data.message});
     }
 }
@@ -29,6 +30,7 @@ export function* signUp(action) {
         console.log(res);
         yield put({type: "SIGNUP_SUCCESS", user: res.data.user, token: res.data.token});
     } catch (e) {
+        console.dir(e);
         yield put({type: "SIGNUP_FAILED", error: e.response.data.message});
     }
 }
