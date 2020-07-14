@@ -22,6 +22,9 @@ import ImageComponent from "./ImageComponent";
 import "./OverviewDashBoard.css";
 import { connect } from "react-redux";
 import InviteOnProjectModel from "./InviteOnProjectModel";
+import DatasetListOverview from "./DatasetListOverview";
+import MemberListOverview from "./MemberListOverview";
+
 class OverviewDashBoard extends Component {
   constructor(props) {
     super(props);
@@ -30,6 +33,7 @@ class OverviewDashBoard extends Component {
       exportFormat: "json",
       emailNotification: false,
       activeNavItem: "bounding_box",
+      activeSettingsNav: "datasets",
       invitationModelOpen: false,
       annotation_image: {
         bounding_box:
@@ -48,7 +52,13 @@ class OverviewDashBoard extends Component {
   componentWillMount = () => {
     console.log("executed");
     this.props.fetchProject(this.props.match.params.projectId);
-  }
+  };
+
+  activateSettingsNavItem = (navName) => {
+    this.setState({
+      activeSettingsNav: navName,
+    });
+  };
 
   activateNavItem = (navName) => {
     this.setState({
@@ -61,7 +71,8 @@ class OverviewDashBoard extends Component {
     if (this.state.activeTab != tab) this.setActiveTab(tab);
   };
 
-  toggleInvitationModel = () => this.setState({invitationModelOpen: !this.state.invitationModelOpen})
+  toggleInvitationModel = () =>
+    this.setState({ invitationModelOpen: !this.state.invitationModelOpen });
 
   // selecting the export format
   onSelectChange = () => {
@@ -79,412 +90,483 @@ class OverviewDashBoard extends Component {
   render() {
     console.log(this.props);
     return (
-      this.props.project.status != 'FETCHING_PROJECT' 
-      &&
-      <Container>
-        <div className="project_info_div">
-          <Row>
-            <Col md={6}>
-              <div class="project_name">
-                <h2>{this.props.project.name}</h2>
-              </div>
-            </Col>
-            <Col md={3}></Col>
-            <Col md={3}>
-              <Button onClick={this.toggleInvitationModel} className="mr-1" color="primary">
-                Invite
-              </Button>
-              <Button color="primary">
-                <span class="labelling">Start Labelling</span>
-              </Button>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <div className="project_desc">
-                <h6>{this.props.project.description}</h6>
-              </div>
-            </Col>
-          </Row>
-        </div>
-        <div>
-          <Nav tabs>
-            {/* Start Overview Nav Tab */}
-            <NavItem>
-              <NavLink
-                className={classnames({
-                  active: this.state.activeTab === "overview",
-                })}
-                onClick={() => {
-                  this.toggle("overview");
-                }}
+      this.props.project.status != "FETCHING_PROJECT" &&
+      this.props.project.status != "NOT_FETCHED" && (
+        <Container>
+          <div className="project_info_div">
+            <Row>
+              <Col md={6}>
+                <div class="project_name">
+                  <h2>{this.props.project.name}</h2>
+                </div>
+              </Col>
+              <Col md={3}></Col>
+              <Col md={3}>
+                <Button
+                  onClick={this.toggleInvitationModel}
+                  className="mr-1"
+                  color="primary"
+                >
+                  Invite
+                </Button>
+                <Button color="primary">
+                  <span class="labelling">Start Labelling</span>
+                </Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div className="project_desc">
+                  <h6>{this.props.project.description}</h6>
+                </div>
+              </Col>
+            </Row>
+          </div>
+          <div>
+            <Nav tabs>
+              {/* Start Overview Nav Tab */}
+              <NavItem>
+                <NavLink
+                  className={classnames({
+                    active: this.state.activeTab === "overview",
+                  })}
+                  onClick={() => {
+                    this.toggle("overview");
+                  }}
+                >
+                  Overview
+                </NavLink>
+              </NavItem>
+              {/* End Overview Nav Tab */}
+
+              {/* Start Export Nav Tab */}
+              <NavItem>
+                <NavLink
+                  className={classnames({
+                    active: this.state.activeTab === "export",
+                  })}
+                  onClick={() => {
+                    this.toggle("export");
+                  }}
+                >
+                  Export
+                </NavLink>
+              </NavItem>
+              {/* End Export Nav Tab */}
+
+              {/* Start Settings Nav Tab */}
+              <NavItem>
+                <NavLink
+                  className={classnames({
+                    active: this.state.activeTab === "settings",
+                  })}
+                  onClick={() => {
+                    this.toggle("settings");
+                  }}
+                >
+                  Settings
+                </NavLink>
+              </NavItem>
+              {/* End Settings Nav Tab */}
+            </Nav>
+
+            <TabContent className="mt-2" activeTab={this.state.activeTab}>
+              {/* Start overview TabPane */}
+              <TabPane
+                // className="d-flex flex-col align-items-stretch"
+                tabId="overview"
               >
-                Overview
-              </NavLink>
-            </NavItem>
-            {/* End Overview Nav Tab */}
-
-            {/* Start Export Nav Tab */}
-            <NavItem>
-              <NavLink
-                className={classnames({
-                  active: this.state.activeTab === "export",
-                })}
-                onClick={() => {
-                  this.toggle("export");
-                }}
-              >
-                Export
-              </NavLink>
-            </NavItem>
-            {/* End Export Nav Tab */}
-          </Nav>
-
-          <TabContent className="mt-2" activeTab={this.state.activeTab}>
-            {/* Start overview TabPane */}
-            <TabPane
-              // className="d-flex flex-col align-items-stretch"
-              tabId="overview"
-            >
-              <div className="overview_master_div">
-                <Row className="overview_first_row">
-                  <Col md={{ span: 6, offset: 2 }}>
-                    <Card className="progress_card">
-                      <CardBody className="card_body_title">
-                        <CardTitle className="progress_title">
-                          Progress
-                        </CardTitle>
-                      </CardBody>
-                      <CardBody className="card_body_text">
-                        <Row>
-                          <div className="progress_metrics">
-                            <div className="progress_metrics_value">10</div>
-                            <div className="progress_metrics_name">
-                              <span>Submitted</span>
+                <div className="overview_master_div">
+                  <Row className="overview_first_row">
+                    <Col md={{ span: 6, offset: 2 }}>
+                      <Card className="progress_card">
+                        <CardBody className="card_body_title">
+                          <CardTitle className="progress_title">
+                            Progress
+                          </CardTitle>
+                        </CardBody>
+                        <CardBody className="card_body_text">
+                          <Row>
+                            <div className="progress_metrics">
+                              <div className="progress_metrics_value">10</div>
+                              <div className="progress_metrics_name">
+                                <span>Submitted</span>
+                              </div>
                             </div>
-                          </div>
-                          <div className="progress_metrics">
-                            <div className="progress_metrics_value">16</div>
-                            <div className="progress_metrics_name">
-                              <span>Remaining</span>
+                            <div className="progress_metrics">
+                              <div className="progress_metrics_value">16</div>
+                              <div className="progress_metrics_name">
+                                <span>Remaining</span>
+                              </div>
                             </div>
-                          </div>
-                          <div className="progress_metrics">
-                            <div className="progress_metrics_value">0</div>
-                            <div className="progress_metrics_name">
-                              <span>Skipped</span>
+                            <div className="progress_metrics">
+                              <div className="progress_metrics_value">0</div>
+                              <div className="progress_metrics_name">
+                                <span>Skipped</span>
+                              </div>
                             </div>
-                          </div>
-                          <div className="progress_metrics">
-                            <div className="progress_metrics_value">39%</div>
-                            <div className="progress_metrics_name">
-                              <span>Complete</span>
+                            <div className="progress_metrics">
+                              <div className="progress_metrics_value">39%</div>
+                              <div className="progress_metrics_name">
+                                <span>Complete</span>
+                              </div>
                             </div>
-                          </div>
-                        </Row>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                </Row>
+                          </Row>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                  </Row>
 
-                <Row className="overview_second_row">
-                  <Col md={4} style={{ paddingRight: "0rem" }}>
-                    <Navbar style={{ padding: "0rem" }}>
-                      <Nav vertical>
-                        <NavItem>
-                          <NavLink
-                            onClick={() => {
-                              console.log("bouding_box");
-                              this.activateNavItem("bounding_box");
-                            }}
-                            className="vertical_navbar_navlinks"
-                          >
-                            <Card
-                              style={{
-                                backgroundColor:
-                                  this.state.activeNavItem === "bounding_box"
-                                    ? "#6ab9e6"
-                                    : "white",
+                  <Row className="overview_second_row">
+                    <Col md={4} style={{ paddingRight: "0rem" }}>
+                      <Navbar style={{ padding: "0rem" }}>
+                        <Nav vertical>
+                          <NavItem>
+                            <NavLink
+                              onClick={() => {
+                                this.activateNavItem("bounding_box");
                               }}
+                              className="vertical_navbar_navlinks"
                             >
-                              <CardBody className="card_body_title">
-                                <CardTitle>Bounding Box</CardTitle>
-                              </CardBody>
-                              <CardBody className="card_body_text">
-                                <div
-                                  style={{
-                                    marginLeft: "1rem",
-                                    display:
-                                      this.state.activeNavItem ===
-                                      "bounding_box"
-                                        ? "block"
-                                        : "none",
-                                    padding: "0rem",
-                                  }}
-                                >
-                                  <span>
-                                    Annotation to describe the width, height and
-                                    location of target objects
-                                  </span>
-                                </div>
-                              </CardBody>
-                            </Card>
-                          </NavLink>
-                        </NavItem>
-                        <NavItem>
-                          <NavLink
-                            onClick={() => {
-                              console.log("classification");
-                              this.activateNavItem("classification");
-                            }}
-                            className="vertical_navbar_navlinks"
-                          >
-                            <Card
-                              style={{
-                                backgroundColor:
-                                  this.state.activeNavItem === "classification"
-                                    ? "#6ab9e6"
-                                    : "white",
+                              <Card
+                                style={{
+                                  backgroundColor:
+                                    this.state.activeNavItem === "bounding_box"
+                                      ? "#6ab9e6"
+                                      : "white",
+                                }}
+                              >
+                                <CardBody className="card_body_title">
+                                  <CardTitle>Bounding Box</CardTitle>
+                                </CardBody>
+                                <CardBody className="card_body_text">
+                                  <div
+                                    style={{
+                                      marginLeft: "1rem",
+                                      display:
+                                        this.state.activeNavItem ===
+                                        "bounding_box"
+                                          ? "block"
+                                          : "none",
+                                      padding: "0rem",
+                                    }}
+                                  >
+                                    <span>
+                                      Annotation to describe the width, height
+                                      and location of target objects
+                                    </span>
+                                  </div>
+                                </CardBody>
+                              </Card>
+                            </NavLink>
+                          </NavItem>
+                          <NavItem>
+                            <NavLink
+                              onClick={() => {
+                                console.log("classification");
+                                this.activateNavItem("classification");
                               }}
+                              className="vertical_navbar_navlinks"
                             >
-                              <CardBody className="card_body_title">
-                                <CardTitle>Classification</CardTitle>
-                              </CardBody>
-                              <CardBody className="card_body_text">
-                                <div
-                                  style={{
-                                    marginLeft: "1rem",
-                                    display:
-                                      this.state.activeNavItem ===
-                                      "classification"
-                                        ? "block"
-                                        : "none",
-                                    padding: "0rem",
-                                  }}
-                                >
-                                  <span>
-                                    Classify images into pre-defined categories
-                                  </span>
-                                </div>
-                              </CardBody>
-                            </Card>
-                          </NavLink>
-                        </NavItem>
-                        <NavItem>
-                          <NavLink
-                            onClick={() => {
-                              this.activateNavItem("lines_and_splines");
-                            }}
-                            className="vertical_navbar_navlinks"
-                          >
-                            <Card
-                              style={{
-                                backgroundColor:
-                                  this.state.activeNavItem ===
-                                  "lines_and_splines"
-                                    ? "#6ab9e6"
-                                    : "white",
+                              <Card
+                                style={{
+                                  backgroundColor:
+                                    this.state.activeNavItem ===
+                                    "classification"
+                                      ? "#6ab9e6"
+                                      : "white",
+                                }}
+                              >
+                                <CardBody className="card_body_title">
+                                  <CardTitle>Classification</CardTitle>
+                                </CardBody>
+                                <CardBody className="card_body_text">
+                                  <div
+                                    style={{
+                                      marginLeft: "1rem",
+                                      display:
+                                        this.state.activeNavItem ===
+                                        "classification"
+                                          ? "block"
+                                          : "none",
+                                      padding: "0rem",
+                                    }}
+                                  >
+                                    <span>
+                                      Classify images into pre-defined
+                                      categories
+                                    </span>
+                                  </div>
+                                </CardBody>
+                              </Card>
+                            </NavLink>
+                          </NavItem>
+                          <NavItem>
+                            <NavLink
+                              onClick={() => {
+                                this.activateNavItem("lines_and_splines");
                               }}
+                              className="vertical_navbar_navlinks"
                             >
-                              <CardBody className="card_body_title">
-                                <CardTitle>Lines and Spines</CardTitle>
-                              </CardBody>
-                              <CardBody className="card_body_text">
-                                <div
-                                  style={{
-                                    marginLeft: "1rem",
-                                    display:
-                                      this.state.activeNavItem ===
-                                      "lines_and_splines"
-                                        ? "block"
-                                        : "none",
-                                    padding: "0rem",
-                                  }}
-                                >
-                                  <span>
-                                    Annotation of straigt or curved lines,
-                                    polylines or splines
-                                  </span>
-                                </div>
-                              </CardBody>
-                            </Card>
-                          </NavLink>
-                        </NavItem>
-                        <NavItem>
-                          <NavLink
-                            onClick={() => {
-                              this.activateNavItem("point");
-                            }}
-                            className="vertical_navbar_navlinks"
-                          >
-                            <Card
-                              style={{
-                                backgroundColor:
-                                  this.state.activeNavItem === "point"
-                                    ? "#6ab9e6"
-                                    : "white",
+                              <Card
+                                style={{
+                                  backgroundColor:
+                                    this.state.activeNavItem ===
+                                    "lines_and_splines"
+                                      ? "#6ab9e6"
+                                      : "white",
+                                }}
+                              >
+                                <CardBody className="card_body_title">
+                                  <CardTitle>Lines and Spines</CardTitle>
+                                </CardBody>
+                                <CardBody className="card_body_text">
+                                  <div
+                                    style={{
+                                      marginLeft: "1rem",
+                                      display:
+                                        this.state.activeNavItem ===
+                                        "lines_and_splines"
+                                          ? "block"
+                                          : "none",
+                                      padding: "0rem",
+                                    }}
+                                  >
+                                    <span>
+                                      Annotation of straigt or curved lines,
+                                      polylines or splines
+                                    </span>
+                                  </div>
+                                </CardBody>
+                              </Card>
+                            </NavLink>
+                          </NavItem>
+                          <NavItem>
+                            <NavLink
+                              onClick={() => {
+                                this.activateNavItem("point");
                               }}
+                              className="vertical_navbar_navlinks"
                             >
-                              <CardBody className="card_body_title">
-                                <CardTitle>Point</CardTitle>
-                              </CardBody>
-                              <CardBody className="card_body_text">
-                                <div
-                                  style={{
-                                    marginLeft: "1rem",
-                                    display:
-                                      this.state.activeNavItem === "point"
-                                        ? "block"
-                                        : "none",
-                                    padding: "0rem",
-                                  }}
-                                >
-                                  <span>
-                                    Annotation of landmarks on objects of
-                                    interest
-                                  </span>
-                                </div>
-                              </CardBody>
-                            </Card>
-                          </NavLink>
-                        </NavItem>
-                        <NavItem>
-                          <NavLink
-                            onClick={() => {
-                              this.activateNavItem("polygons");
-                            }}
-                            className="vertical_navbar_navlinks"
-                          >
-                            <Card
-                              style={{
-                                backgroundColor:
-                                  this.state.activeNavItem === "polygons"
-                                    ? "#6ab9e6"
-                                    : "white",
+                              <Card
+                                style={{
+                                  backgroundColor:
+                                    this.state.activeNavItem === "point"
+                                      ? "#6ab9e6"
+                                      : "white",
+                                }}
+                              >
+                                <CardBody className="card_body_title">
+                                  <CardTitle>Point</CardTitle>
+                                </CardBody>
+                                <CardBody className="card_body_text">
+                                  <div
+                                    style={{
+                                      marginLeft: "1rem",
+                                      display:
+                                        this.state.activeNavItem === "point"
+                                          ? "block"
+                                          : "none",
+                                      padding: "0rem",
+                                    }}
+                                  >
+                                    <span>
+                                      Annotation of landmarks on objects of
+                                      interest
+                                    </span>
+                                  </div>
+                                </CardBody>
+                              </Card>
+                            </NavLink>
+                          </NavItem>
+                          <NavItem>
+                            <NavLink
+                              onClick={() => {
+                                this.activateNavItem("polygons");
                               }}
+                              className="vertical_navbar_navlinks"
                             >
-                              <CardBody className="card_body_title">
-                                <CardTitle>Polygons</CardTitle>
-                              </CardBody>
-                              <CardBody className="card_body_text">
-                                <div
-                                  style={{
-                                    marginLeft: "1rem",
-                                    display:
-                                      this.state.activeNavItem === "polygons"
-                                        ? "block"
-                                        : "none",
-                                    padding: "0rem",
-                                  }}
-                                >
-                                  <span>
-                                    Annotation of exact edges for precise
-                                    definition
-                                  </span>
-                                </div>
-                              </CardBody>
-                            </Card>
-                          </NavLink>
-                        </NavItem>
-                      </Nav>
-                    </Navbar>
-                  </Col>
-                  <Col md={6} style={{ paddingLeft: "0rem" }}>
-                    <div>
-                      <ImageComponent
-                        image_src={
-                          this.state.annotation_image[this.state.activeNavItem]
-                        }
-                      />
-                    </div>
-                  </Col>
-                </Row>
-              </div>
-            </TabPane>
-            {/* End overview TabPane */}
+                              <Card
+                                style={{
+                                  backgroundColor:
+                                    this.state.activeNavItem === "polygons"
+                                      ? "#6ab9e6"
+                                      : "white",
+                                }}
+                              >
+                                <CardBody className="card_body_title">
+                                  <CardTitle>Polygons</CardTitle>
+                                </CardBody>
+                                <CardBody className="card_body_text">
+                                  <div
+                                    style={{
+                                      marginLeft: "1rem",
+                                      display:
+                                        this.state.activeNavItem === "polygons"
+                                          ? "block"
+                                          : "none",
+                                      padding: "0rem",
+                                    }}
+                                  >
+                                    <span>
+                                      Annotation of exact edges for precise
+                                      definition
+                                    </span>
+                                  </div>
+                                </CardBody>
+                              </Card>
+                            </NavLink>
+                          </NavItem>
+                        </Nav>
+                      </Navbar>
+                    </Col>
+                    <Col md={6} style={{ paddingLeft: "0rem" }}>
+                      <div>
+                        <ImageComponent
+                          image_src={
+                            this.state.annotation_image[
+                              this.state.activeNavItem
+                            ]
+                          }
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+              </TabPane>
+              {/* End overview TabPane */}
 
-            {/* Start Export TabPane */}
-            <TabPane tabId="export">
-              <div className="export_master_div">
-                <Row className="export_first_row">
-                  <Col md={3}>
-                    <div>
-                      <span className="subheading">Export Format</span>
-                    </div>
-                    <div style={{ marginLeft: "0.5rem" }}>
-                      <span className="subheading_desc">
-                        Choose the type of export
-                      </span>
-                    </div>
-                  </Col>
-                  <Col md={{ span: 4 }}>
-                    <div>
-                      <select
-                        class="form-control"
-                        id="export_format"
-                        onChange={this.onSelectChange}
-                      >
-                        <option value="json">JSON</option>
-                        <option value="csv">CSV</option>
-                      </select>
-                    </div>
-                  </Col>
-                </Row>
+              {/* Start Export TabPane */}
+              <TabPane tabId="export">
+                <div className="export_master_div">
+                  <Row className="export_first_row">
+                    <Col md={3}>
+                      <div>
+                        <span className="subheading">Export Format</span>
+                      </div>
+                      <div style={{ marginLeft: "0.5rem" }}>
+                        <span className="subheading_desc">
+                          Choose the type of export
+                        </span>
+                      </div>
+                    </Col>
+                    <Col md={{ span: 4 }}>
+                      <div>
+                        <select
+                          class="form-control"
+                          id="export_format"
+                          onChange={this.onSelectChange}
+                        >
+                          <option value="json">JSON</option>
+                          <option value="csv">CSV</option>
+                        </select>
+                      </div>
+                    </Col>
+                  </Row>
 
-                <Row className="export_second_row">
-                  <Col md={3}>
-                    <div>
-                      <span className="subheading">Email Notification</span>
-                    </div>
-                    <div style={{ marginLeft: "0.5rem" }}>
-                      <span className="subheading_desc">
-                        Send Download Link when export ready
-                      </span>
-                    </div>
-                  </Col>
-                  <Col md={{ span: 4 }}>
-                    <div>
-                      <label class="switch">
-                        <input
-                          type="checkbox"
-                          onChange={this.emailNotificationToggle}
-                        ></input>
-                        <span class="slider round"></span>
-                      </label>
-                    </div>
-                  </Col>
-                </Row>
+                  <Row className="export_second_row">
+                    <Col md={3}>
+                      <div>
+                        <span className="subheading">Email Notification</span>
+                      </div>
+                      <div style={{ marginLeft: "0.5rem" }}>
+                        <span className="subheading_desc">
+                          Send Download Link when export ready
+                        </span>
+                      </div>
+                    </Col>
+                    <Col md={{ span: 4 }}>
+                      <div>
+                        <label class="switch">
+                          <input
+                            type="checkbox"
+                            onChange={this.emailNotificationToggle}
+                          ></input>
+                          <span class="slider round"></span>
+                        </label>
+                      </div>
+                    </Col>
+                  </Row>
 
-                <Row className="export_third_row">
-                  <Col md={3}>
-                    <div>
-                      <Button style={{ backgroundColor: "blue" }}>
-                        <span>Generate Export</span>
-                      </Button>
-                    </div>
-                  </Col>
-                </Row>
-              </div>
-            </TabPane>
-            {/* End Export TabPane */}
-          </TabContent>
-        </div>
-        <InviteOnProjectModel modelOpen={this.state.invitationModelOpen} 
-          toggle={this.toggleInvitationModel}
-          invite={(email) => this.props.invite(this.props.project._id, email)}
+                  <Row className="export_third_row">
+                    <Col md={3}>
+                      <div>
+                        <Button style={{ backgroundColor: "blue" }}>
+                          <span>Generate Export</span>
+                        </Button>
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+              </TabPane>
+              {/* End Export TabPane */}
+
+              {/* Start Settings TabPane */}
+              <TabPane tabId="settings">
+                <div className="settings_master_div">
+                  <Row className="settings_first_row">
+                    <Col md={2}>
+                      <Navbar style={{ padding: "0rem" }}>
+                        <Nav vertical>
+                          <NavItem>
+                            <NavLink
+                              style={{ padding: "0.3rem" }}
+                              onClick={() => {
+                                this.activateSettingsNavItem("datasets");
+                              }}
+                            >
+                              Datasets
+                            </NavLink>
+                          </NavItem>
+                          <NavItem>
+                            <NavLink
+                              style={{ padding: "0.3rem" }}
+                              onClick={() => {
+                                this.activateSettingsNavItem("members");
+                              }}
+                            >
+                              Members
+                            </NavLink>
+                          </NavItem>
+                        </Nav>
+                      </Navbar>
+                    </Col>
+                    {this.state.activeSettingsNav == "datasets" ? (
+                      <Col md={10}>
+                        <DatasetListOverview />
+                      </Col>
+                    ) : (
+                      <Col md={10}>
+                        <MemberListOverview />
+                      </Col>
+                    )}
+                  </Row>
+                </div>
+              </TabPane>
+
+              {/* End Settings TabPane */}
+            </TabContent>
+          </div>
+          <InviteOnProjectModel
+            modelOpen={this.state.invitationModelOpen}
+            toggle={this.toggleInvitationModel}
+            invite={(email) => this.props.invite(this.props.project._id, email)}
           />
-      </Container>
+        </Container>
+      )
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  project: state.projects.project
-})
+  project: state.projects.project,
+  users: state.user,
+});
 
 const mapDispatchToProp = (dispatch) => ({
-  fetchProject: (id) => dispatch({type: 'FETCH_PROJECT', projectId: id}),
-  invite: (projectId, email) => dispatch({type: "INVITE_COLLABORATOR", projectId, email})
-})
+  fetchProject: (id) => dispatch({ type: "FETCH_PROJECT", projectId: id }),
+  invite: (projectId, email) =>
+    dispatch({ type: "INVITE_COLLABORATOR", projectId, email }),
+});
 
 export default connect(mapStateToProps, mapDispatchToProp)(OverviewDashBoard);
