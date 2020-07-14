@@ -20,12 +20,22 @@ export const inviteCollaborator = async (projectId, email) => {
     return axios.post('/api/projects/invite', {projectId, email});
 }
 
+export const acceptInvitation = async (id) => {
+    return axios.put('/api/notifications/'+id, {status: 'ACCEPT'});
+}
+
+export const rejectInvitation = async (id) => {
+    return axios.put('/api/notifications/'+id, {status: 'REJECTED'});
+}
+
 const PROJECT = {
     getProject: getProject,
     getProjects: getProjects,
     addProject: addProject,
     deleteProject: deleteProject,
-    inviteCollaborator: inviteCollaborator
+    inviteCollaborator: inviteCollaborator,
+    acceptInvitation: acceptInvitation,
+    rejectInvitation: rejectInvitation,
 }
 
 export default PROJECT;

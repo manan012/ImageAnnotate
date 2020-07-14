@@ -76,3 +76,31 @@ export function* inviteCollaborator(action) {
     });
   }
 }
+
+export function* acceptInvitation(action) {
+  try {
+    const res = yield call(PROJECT.acceptInvitation, action.id);
+    console.log(res);
+    yield put({type: 'ACCEPT_INVITATION_SUCCESS', id:action.id, project: res.data.invite.projectId});
+  } catch(e) {
+    console.dir(e);
+    yield put({
+      type: 'ACCEPT_INVITATION_FAILED',
+      error: e.response.data.message
+    })
+  }
+}
+
+export function* rejectInvitation(action) {
+  try {
+    const res = yield call(PROJECT.rejectInvitation, action.id);
+    console.log(res);
+    yield put({type: 'REJECT_INVITATION_SUCCESS', id:action.id});
+  } catch(e) {
+    console.dir(e);
+    yield put({
+      type: 'REJECT_INVITATION_FAILED',
+      error: e.response.data.message
+    })
+  }
+}

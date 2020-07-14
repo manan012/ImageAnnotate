@@ -38,6 +38,12 @@ const projectsReducer = (state=defaultState, action) => {
             return {...state, status: 'INVITE_COLLABORATOR_SUCCESS'}
         case 'INVITE_COLLABORATOR_FAILED':
             return {...state, status: 'INVITE_COLLABORATOR_FAILED', error: action.error}
+        case 'ACCEPT_INVITATION':
+            return {...state, status: 'ACCEPTING_INVITATION'}
+        case 'ACCEPT_INVITATION_SUCCESS':
+            return {...state, status: 'ACCEPT_INVITATION_SUCCESS', projects: [action.project, ...state.projects]}
+        case 'ACCEPT_INVITATION_FAILED':
+            return {...state, status: 'ACCEPT_INVITATION_FAILED', error: action.error}
         default:
             return state;
     }

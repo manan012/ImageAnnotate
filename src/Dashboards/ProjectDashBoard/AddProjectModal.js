@@ -32,6 +32,7 @@ class AddProjectModal extends Component {
     handleFilesInput = (files) => {
         this.setState({files: files})
     }
+    
     handleDatasetNameInput = (e) => this.setState({datasetName: e.target.value});
 
     handleCreateDatasetSubmit = (e) => {
