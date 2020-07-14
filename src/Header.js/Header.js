@@ -40,9 +40,11 @@ class Header extends Component {
                             </button>
                             <div className={"dropdown-menu " + (this.state.notificationDropdownOpen ? "show" : "")}>
                                 {
-                                    this.props.notifications.length == 0 ?
+                                    this.props.notifications.filter(n => n.status === 'PENDING').length === 0 ?
                                     <div class="px-2 text-muted"><small>No notification</small></div>
-                                    : this.props.notifications.map(n => <MemberNotification notification={n}/>)
+                                    : this.props.notifications
+                                    .filter(n => n.status === 'PENDING')
+                                    .map(n => <MemberNotification notification={n}/>)
                                 }
                             </div>
                         </div>     
