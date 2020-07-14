@@ -3,6 +3,8 @@ import {Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Button} from 'rea
 import { connect } from 'react-redux';
 import FileUpload from './FileUpload';
 import Dataset from '../../api/Dataset';
+import ValidatorForm from 'react-form-validator-core/lib/ValidatorForm';
+import ValidatedInput from '../../Form/ValidatedInput';
 
 class FileUploadModal extends Component {
     constructor(props) {
@@ -42,12 +44,23 @@ class FileUploadModal extends Component {
                         ? 
                             <FileUpload handleFilesInput={this.handleFilesInput} />
                         :
-                            <Form onSubmit={this.handleSubmit}>
-                                <FormGroup>
-                                    <Input type="text" placeholder="Dataset Name" value={this.state.name} onChange={this.handleNameInput} />
-                                </FormGroup>
+                            // <Form onSubmit={this.handleSubmit}>
+                            //     <FormGroup>
+                            //         <Input type="text" placeholder="Dataset Name" value={this.state.name} onChange={this.handleNameInput} />
+                            //     </FormGroup>
+                            //     <Button type="submit" color="primary">Add Dataset</Button>
+                            // </Form>
+                            <ValidatorForm ref="form" onSubmit={this.handleSubmit}>
+                                <ValidatedInput
+                                    name="name"
+                                    value={this.state.name}
+                                    onChange={this.handleNameInput}
+                                    placeholder="Dataset Name"
+                                    validators={['required']}
+                                    errorMessages={['This field is required']}
+                                />
                                 <Button type="submit" color="primary">Add Dataset</Button>
-                            </Form>
+                            </ValidatorForm>
                     }
                 </ModalBody>
             </Modal>

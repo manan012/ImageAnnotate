@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {Modal, ModalHeader, ModalBody, Form, FormGroup,Table, Input, Button, Col, Nav, NavLink, NavItem, TabContent, TabPane} from 'reactstrap';
 import { connect } from 'react-redux';
 import FileUpload from "./FileUpload";
+import ValidatorForm from 'react-form-validator-core/lib/ValidatorForm';
+import ValidatedInput from '../../Form/ValidatedInput';
 
 class AddProjectModal extends Component {
     constructor(props) {
@@ -46,17 +48,27 @@ class AddProjectModal extends Component {
             <Modal isOpen={this.props.modelOpen} size="lg" centered toggle={this.props.toggle} className={'center'}>
                 <ModalHeader toggle={this.props.toggle}>Create Project</ModalHeader>
                 <ModalBody>
-                <Form onSubmit={this.handleSubmit}>
+                <ValidatorForm ref="form" onSubmit={this.handleSubmit}>
                     <div className={"step"}><span className={(this.state.step == 0 ? 'bg-primary': "")}>1 </span>Name your project</div>
                     <div style={{display: (this.state.step == 0 ? "block" : "none")}} className="step-content">
                         <Col xs={6}>
-                            <FormGroup>
-                                <Input type="text" name="name" value={this.state.name} onChange={this.handleNameChange} placeholder="Project Name" />
-                            </FormGroup>
-                            <FormGroup>
-                                <Input type="text" type="description" value={this.state.description} onChange={this.handleDescriptionChange} placeholder="Project Description" />
-                            </FormGroup>
-                            <Button type="button" onClick={()=>this.setState({step: 1})} color="primary" disabled={this.state.name === ""}>Next</Button>
+                            <ValidatedInput 
+                                name="name"
+                                value={this.state.name}
+                                onChange={this.handleNameChange}
+                                placeholder="Project Name"
+                                validators={['required']}
+                                errorMessages={['This field is required']}
+                            />
+                            <ValidatedInput 
+                                name="name"
+                                value={this.state.description}
+                                onChange={this.handleDescriptionChange}
+                                placeholder="Project Description"
+                                validators={['required']}
+                                errorMessages={['This field is required']}
+                            />
+                            <Button type="button" onClick={()=>this.setState({step: 1})} color="primary" disabled={this.state.name === "" || this.state.description === ''}>Next</Button>
                         </Col>
                     </div>
                     <div className="step">
@@ -145,7 +157,7 @@ class AddProjectModal extends Component {
                         <Button color="primary" type="button" onClick={() => this.setState({step: 0})} className="mt-2">Back</Button>
                     </div>
                     <Button type="submit" color="primary">Add Project</Button>
-                </Form>
+                </ValidatorForm>
                 </ModalBody>
             </Modal>
         )

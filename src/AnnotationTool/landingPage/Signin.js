@@ -4,6 +4,7 @@ import "../../../node_modules/@fortawesome/fontawesome-free/css/all.css";
 import "./Signin.css";
 import User from "../../api/User";
 import { connect } from "react-redux";
+import ValidatorForm from "react-form-validator-core/lib/ValidatorForm";
 class Signin extends React.Component {
   constructor(props) {
     super(props);
@@ -161,7 +162,7 @@ class Signin extends React.Component {
               <h2 class="form-title" id="login">
                 <span>or</span>Log in
               </h2>
-              <form
+              <ValidatorForm
                 // action=""
                 // method="POST"
                 name="form2"
@@ -186,7 +187,7 @@ class Signin extends React.Component {
                   />
                 </div>
                 <button class="submit-btn">Log in</button>
-              </form>
+              </ValidatorForm>
             </div>
           </div>
         </div>
