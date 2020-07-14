@@ -26,7 +26,7 @@ export function* createDatasetWithImages(action) {
         yield put({type: 'CREATE_DATASET_WITH_IMAGES_SUCCESS', dataset: res.data.dataset});
     } catch (e) {
         console.dir(e);
-        yield put({type: "CREATE_DATASET_WITH_IMAGES_ERROR", error: e.response.data.message});
+        yield put({type: "CREATE_DATASET_WITH_IMAGES_FAILED", error: e.response.data.message});
     }
 } 
 
@@ -53,7 +53,7 @@ export function* uploadImages(action) {
         const res = yield call(DATASET.uploadImages, action.datasetId, action.images);
         yield put({type: 'UPLOAD_IMAGES_SUCCESS', uploadedImages: res.data.uploaded_images});
     } catch(e) {
-        yield put({type: 'UPLOAD_IMAGES_ERROR', error: e.response.data.message})
+        yield put({type: 'UPLOAD_IMAGES_FAILED', error: e.response.data.message})
     }
 }
 

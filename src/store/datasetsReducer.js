@@ -18,14 +18,14 @@ const datasetsReducer = (state=defaultState, action) => {
             return {...state, status: 'FETCHING_DATASETS'}
         case 'FETCH_DATASETS_SUCCESS':
             return {...state, status: 'FETCH_DATASETS_SUCCESS', datasets: action.datasets}
-        case 'FETCH_DATASETS_ERROR':
+        case 'FETCH_DATASETS_FAILED':
             return {...state, status: 'FETCH_DATASETS_FAILED', error: action.error}
         case 'CREATE_DATASET_WITH_IMAGES':
             return {...state, status: 'CREATING_DATASET_WITH_IMAGES'}
         case 'CREATE_DATASET_WITH_IMAGES_SUCCESS':
             return {...state, status: 'CREATE_DATASET_WITH_IMAGE_SUCCESS', datasets: [action.dataset, ...state.datasets]}
-        case 'CREATE_DATASET_WITH_IMAGES_ERROR':
-            return {...state, status: "CREATE_DATASET_WITH_IMAGES_ERROR", error: action.error}
+        case 'CREATE_DATASET_WITH_IMAGES_FAILED':
+            return {...state, status: "CREATE_DATASET_WITH_IMAGES_FAILED", error: action.error}
         case 'UPLOAD_IMAGES':
             return {...state, dataset: {...state.dataset, status: 'UPLOADING_IMAGES'}}
         case 'UPLOAD_IMAGES_SUCCESS':
