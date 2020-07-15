@@ -52,10 +52,10 @@ class DatasetListOverview extends Component {
                 this.props.project.attachedDatasets.map((data) => (
                   <ListGroupItem>
                     <Row>
-                      <Col md={2}>
+                      <Col md={4}>
                         <span>{data.datasetName} </span>
                       </Col>
-                      <Col md={{ offset: 3, size: 3 }}>
+                      <Col md={{ offset: 2, size: 2 }}>
                         {data.images.length} rows
                       </Col>
                       <Col md={4}>
@@ -101,10 +101,10 @@ class DatasetListOverview extends Component {
                 this.props.nonAttachedDatasets.map((data) => (
                   <ListGroupItem>
                     <Row>
-                      <Col md={2}>
+                      <Col md={4}>
                         <span>{data.datasetName} </span>
                       </Col>
-                      <Col md={{ offset: 3, size: 3 }}>
+                      <Col md={{ offset: 2, size: 2 }}>
                         {data.images.length} rows
                       </Col>
                       <Col md={4}>

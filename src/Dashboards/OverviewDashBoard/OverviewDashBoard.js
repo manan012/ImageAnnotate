@@ -514,7 +514,13 @@ class OverviewDashBoard extends Component {
                         <Nav vertical>
                           <NavItem>
                             <NavLink
-                              style={{ padding: "0.3rem" }}
+                              style={{
+                                padding: "0.3rem",
+                                color:
+                                  this.state.activeSettingsNav === "datasets"
+                                    ? "#2196f3"
+                                    : "black",
+                              }}
                               onClick={() => {
                                 this.activateSettingsNavItem("datasets");
                               }}
@@ -524,7 +530,13 @@ class OverviewDashBoard extends Component {
                           </NavItem>
                           <NavItem>
                             <NavLink
-                              style={{ padding: "0.3rem" }}
+                              style={{
+                                padding: "0.3rem",
+                                color:
+                                  this.state.activeSettingsNav === "members"
+                                    ? "#2196f3"
+                                    : "black",
+                              }}
                               onClick={() => {
                                 this.activateSettingsNavItem("members");
                               }}

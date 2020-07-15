@@ -125,6 +125,29 @@ const projectsReducer = (state = defaultState, action) => {
           error: action.error,
         },
       };
+    case "REMOVE_MEMBER":
+      return {
+        ...state,
+        project: { ...state.project, status: "REMOVING_MEMBER" },
+      };
+    case "REMOVE_MEMBER_SUCCESS":
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          status: "REMOVE_MEMBER_SUCCESS",
+          ...action.project,
+        },
+      };
+    case "REMOVE_MEMBER_FAILED":
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          status: "REMOVE_MEMBER_FAILED",
+          error: action.error,
+        },
+      };
     default:
       return state;
   }
