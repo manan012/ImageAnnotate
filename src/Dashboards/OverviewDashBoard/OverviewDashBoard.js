@@ -24,6 +24,7 @@ import { connect } from "react-redux";
 import InviteOnProjectModel from "./InviteOnProjectModel";
 import DatasetListOverview from "./DatasetListOverview";
 import MemberListOverview from "./MemberListOverview";
+import { Link } from "react-router-dom";
 
 class OverviewDashBoard extends Component {
   constructor(props) {
@@ -52,6 +53,7 @@ class OverviewDashBoard extends Component {
   componentWillMount = () => {
     console.log("executed");
     this.props.fetchProject(this.props.match.params.projectId);
+    this.props.fetchDatasets();
   };
 
   activateSettingsNavItem = (navName) => {
@@ -109,9 +111,11 @@ class OverviewDashBoard extends Component {
                 >
                   Invite
                 </Button>
-                <Button color="primary">
-                  <span class="labelling">Start Labelling</span>
-                </Button>
+                <Link to="/label">
+                  <Button color="primary">
+                    <span class="labelling">Start Labelling</span>
+                  </Button>
+                </Link>
               </Col>
             </Row>
             <Row>
@@ -565,6 +569,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProp = (dispatch) => ({
   fetchProject: (id) => dispatch({ type: "FETCH_PROJECT", projectId: id }),
+  fetchDatasets: () => dispatch({type: 'FETCH_DATASETS'}),
   invite: (projectId, email) =>
     dispatch({ type: "INVITE_COLLABORATOR", projectId, email }),
 });

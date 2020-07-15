@@ -8,52 +8,19 @@ import {
   Spinner,
   Button,
 } from "reactstrap";
+import { attachDataset } from "../../sagas/projectSagas";
 
 class DatasetListOverview extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      attachedDatasets: this.props.project.attachedDatasets,
-      nonAttachedDatasets: [],
-    };
   }
-  componentWillMount = () => {
-    var non_attached = this.props.users.datasets.filter(
-      (data) =>
-        this.props.project.attachedDatasets.filter((d) => d._id === data._id)
-          .length === 0
-    );
-    this.setState({
-      nonAttachedDatasets: non_attached,
-    });
-  };
 
   attachDataset = (dataset) => {
     this.props.attachDataset(this.props.project._id, dataset._id);
-    this.setState({
-      attachedDatasets: [...this.state.attachedDatasets, dataset],
-    });
-    this.setState({
-      nonAttachedDatasets: this.state.nonAttachedDatasets.filter(function (
-        nonAttachedDataset
-      ) {
-        return nonAttachedDataset !== dataset;
-      }),
-    });
   };
 
   detachDataset = (dataset) => {
     this.props.detachDataset(this.props.project._id, dataset._id);
-    this.setState({
-      nonAttachedDatasets: [...this.state.nonAttachedDatasets, dataset],
-    });
-    this.setState({
-      attachedDatasets: this.state.attachedDatasets.filter(function (
-        attachedDataset
-      ) {
-        return attachedDataset !== dataset;
-      }),
-    });
   };
 
   render() {
@@ -79,10 +46,10 @@ class DatasetListOverview extends Component {
                 >
                   <Spinner style={{ marginTop: 200 }} color="primary" />
                 </div>
-              ) : this.state.attachedDatasets.length == 0 ? (
+              ) : this.props.project.attachedDatasets.length == 0 ? (
                 <ListGroupItem>No Attached Datasets</ListGroupItem>
               ) : (
-                this.state.attachedDatasets.map((data) => (
+                this.props.project.attachedDatasets.map((data) => (
                   <ListGroupItem>
                     <Row>
                       <Col md={2}>
@@ -128,10 +95,10 @@ class DatasetListOverview extends Component {
                 >
                   <Spinner style={{ marginTop: 200 }} color="primary" />
                 </div>
-              ) : this.state.nonAttachedDatasets.length == 0 ? (
+              ) : this.props.nonAttachedDatasets.length == 0 ? (
                 <ListGroupItem>No Datasets</ListGroupItem>
               ) : (
-                this.state.nonAttachedDatasets.map((data) => (
+                this.props.nonAttachedDatasets.map((data) => (
                   <ListGroupItem>
                     <Row>
                       <Col md={2}>
@@ -165,6 +132,12 @@ class DatasetListOverview extends Component {
 const mapStateToProps = (state) => ({
   users: state.user,
   project: state.projects.project,
+  datasets: state.datasets.datasets,
+  nonAttachedDatasets: state.datasets.datasets.filter(
+    (data) =>
+      state.projects.project.attachedDatasets.filter((d) => d._id === data._id)
+        .length === 0
+  )
 });
 
 const mapDispatchToProp = (dispatch) => ({

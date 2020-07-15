@@ -65,7 +65,6 @@ class ReadImage extends Component {
         <CardImg
           style={{ width: "70px" }}
           src={this.state.readed != 100 ? "./img/images.jpg" : this.state.image}
-          alt={this.state.file.name}
         />
         <CardImgOverlay style={{ width: "70px" }} className="p-0 d-flex justify-content-center align-items-center">
           <small className="text-muted">{this.state.readed} %</small>

@@ -85,7 +85,7 @@ const projectsReducer = (state = defaultState, action) => {
         ...state,
         project: { ...state.project, status: "ATTACHING_DATASET" },
       };
-    case "ATTACH_DATASET_SUCCESSS":
+    case "ATTACH_DATASET_SUCCESS":
       return {
         ...state,
         project: {
@@ -108,11 +108,10 @@ const projectsReducer = (state = defaultState, action) => {
         ...state,
         project: { ...state.project, status: "DETACHING_DATASET" },
       };
-    case "DETACH_DATASET_SUCCESSS":
+    case "DETACH_DATASET_SUCCESS":
       return {
         ...state,
         project: {
-          ...state.project,
           status: "DETACH_DATASET_SUCCESS",
           ...action.project,
         },

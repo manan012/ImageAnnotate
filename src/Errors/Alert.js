@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Alert } from 'reactstrap';
-import { prop } from 'ramda';
 
 export class CustomAlert extends Component {
     constructor(props){
@@ -23,7 +22,10 @@ export class CustomAlert extends Component {
 
     render() {
         return (
-            <Alert color="danger" isOpen={this.state.visible} toggle={this.remove}>{this.props.error}</Alert>
+            <Alert className="position-relative bg-grey border-0" color="dark" isOpen={this.state.visible} toggle={this.remove}>
+                {this.props.error}
+                <div className="position-absolute bg-danger" style={{width: 5, height: '100%', top: 0, right: 0}}></div>
+            </Alert>
         )
     }
 }

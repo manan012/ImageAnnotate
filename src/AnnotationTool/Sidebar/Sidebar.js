@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import "./Sidebar.css";
 import "../../../node_modules/@fortawesome/fontawesome-free/css/all.css";
+import { connect } from "react-redux";
+import DatasetListOverview from "../../Dashboards/OverviewDashBoard/DatasetListOverview";
+import { flatten } from "ramda";
 
 // This file has 2 main functions
 //  1. It lets up upload file from the user's device (Code line: 22-36)
@@ -15,6 +18,25 @@ class Sidebar extends Component {
       varx: false,
       rectangles: [],
     };
+  }
+
+  componentWillMount() {
+    const baseURL = 'http://localhost:5000/public/'
+    this.props.images.map(imgUrl => {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', baseURL + imgUrl);
+      xhr.responseType = "blob";
+      xhr.onload = () => {
+        var blob = xhr.response;
+        this.props.addImages([{
+          file: blob,
+          readed: 0,
+          image: "",
+          annotations: { rectangles: [], circles: [], polygons: [], lines: [] },
+        }])
+      }
+      xhr.send();
+    });
   }
 
   //Add new images to read
@@ -152,4 +174,10 @@ class Sidebar extends Component {
   }
 }
 
-export default Sidebar;
+const mapStateToProp = (state) => ({
+  images: (state.projects.project.status === 'NOT_FETCHED' ? [] 
+          : flatten(state.projects.project.attachedDatasets.
+          map(dataset => dataset.images.map(img => img.location))))
+}) 
+
+export default connect(mapStateToProp, null)(Sidebar);
