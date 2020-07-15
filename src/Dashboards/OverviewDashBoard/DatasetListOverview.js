@@ -29,6 +29,7 @@ class DatasetListOverview extends Component {
   };
 
   attachDataset = (dataset) => {
+    this.props.attachDataset(this.props.project._id, dataset._id);
     this.setState({
       attachedDatasets: [...this.state.attachedDatasets, dataset],
     });
@@ -42,6 +43,7 @@ class DatasetListOverview extends Component {
   };
 
   detachDataset = (dataset) => {
+    this.props.detachDataset(this.props.project._id, dataset._id);
     this.setState({
       nonAttachedDatasets: [...this.state.nonAttachedDatasets, dataset],
     });
@@ -135,7 +137,9 @@ class DatasetListOverview extends Component {
                       <Col md={2}>
                         <span>{data.datasetName} </span>
                       </Col>
-                      <Col md={{ offset: 3, size: 3 }}>rows</Col>
+                      <Col md={{ offset: 3, size: 3 }}>
+                        {data.images.length} rows
+                      </Col>
                       <Col md={4}>
                         <Button
                           type="button"
@@ -165,6 +169,18 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProp = (dispatch) => ({
   fetchProject: (id) => dispatch({ type: "FETCH_PROJECT", projectId: id }),
+  attachDataset: (projectId, datasetId) =>
+    dispatch({
+      type: "ATTACH_DATASET",
+      projectId: projectId,
+      datasetId: datasetId,
+    }),
+  detachDataset: (projectId, datasetId) =>
+    dispatch({
+      type: "DETACH_DATASET",
+      projectId: projectId,
+      datasetId: datasetId,
+    }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProp)(DatasetListOverview);

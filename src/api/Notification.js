@@ -1,11 +1,11 @@
-import axios from "axios"
+import axios from "axios";
 
 export const fetchNotifications = () => {
-    return axios.get("/api/notifications/");
-}
+  return axios.get("/api/notifications/");
+};
 
 const NOTIFICATION = {
-    fetchNotifications,
-}
+  fetchNotifications,
+};
 
 export default NOTIFICATION;

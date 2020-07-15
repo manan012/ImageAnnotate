@@ -25,36 +25,36 @@ export const inviteCollaborator = async (projectId, email) => {
 };
 
 export const acceptInvitation = async (id) => {
-    return axios.put('/api/notifications/'+id, {status: 'ACCEPT'});
-}
+  return axios.put("/api/notifications/" + id, { status: "ACCEPT" });
+};
 
 export const rejectInvitation = async (id) => {
-    return axios.put('/api/notifications/'+id, {status: 'REJECTED'});
-}
+  return axios.put("/api/notifications/" + id, { status: "REJECTED" });
+};
 
 export const removeMember = async (projectId, memberId) => {
-  return axios.delete('/api/projects/'+projectId+"/member/"+memberId);
-}
+  return axios.delete("/api/projects/" + projectId + "/member/" + memberId);
+};
 
 export const attachDataset = async (projectId, datasetId) => {
-  return axios.put('/api/projects/dataset', {projectId, datasetId});
-}
+  return axios.post("/api/projects/dataset", { projectId, datasetId });
+};
 
 export const detachDataset = async (projectId, datasetId) => {
-  return axios.put('/api/projects/'+projectId+'/dataset/'+datasetId);
-}
+  return axios.delete("/api/projects/" + projectId + "/dataset/" + datasetId);
+};
 
 const PROJECT = {
-    getProject: getProject,
-    getProjects: getProjects,
-    addProject: addProject,
-    deleteProject: deleteProject,
-    inviteCollaborator: inviteCollaborator,
-    acceptInvitation: acceptInvitation,
-    rejectInvitation: rejectInvitation,
-    removeMember: removeMember,
-    attachDataset: attachDataset,
-    detachDataset: detachDataset
-}
+  getProject: getProject,
+  getProjects: getProjects,
+  addProject: addProject,
+  deleteProject: deleteProject,
+  inviteCollaborator: inviteCollaborator,
+  acceptInvitation: acceptInvitation,
+  rejectInvitation: rejectInvitation,
+  removeMember: removeMember,
+  attachDataset: attachDataset,
+  detachDataset: detachDataset,
+};
 
 export default PROJECT;
