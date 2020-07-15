@@ -104,3 +104,33 @@ export function* rejectInvitation(action) {
     })
   }
 }
+
+export function* removeMember(action) {
+  try {
+    const res = yield call(PROJECT.removeMember, action.projectId, action.memberId);
+    console.log(res);
+    yield put({type: 'REMOVE_MEMBER_SUCCESS', projectId: action.projectId, memberId: action.memberId, project: res.data.project});
+  } catch (e) {
+    yield put({type: 'REMOVE_MEMBER_FAILED', error: e.response.data.message});
+  }
+}
+
+export function* attachDataset(action) {
+  try {
+    const res = yield call(PROJECT.attachDataset, action.projectId, action.datasetId);
+    console.log(res);
+    yield put({type: 'ATTACH_DATASET_SUCCESS', projectId: action.projectId, datasetId: action.datasetId, project: res.data.project});
+  } catch(e) {
+    yield put({type: 'ATTACH_DATASET_FAILED', error: e.response.data.message});
+  }
+}
+
+export function* detachDataset(action) {
+  try {
+    const res = yield call(PROJECT.detachDataset, action.projectId, action.datasetId);
+    console.log(res);
+    yield put({type: 'DETACH_DATASET_SUCCESS', projectId: action.projectId, datasetId: action.datasetId, project: res.data.project});
+  } catch(e) {
+    yield put({type: 'DETACH_DATASET_FAILED', error: e.response.data.message});
+  }
+}
