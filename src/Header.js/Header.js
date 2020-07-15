@@ -35,8 +35,15 @@ class Header extends Component {
                             <Link>Component</Link>
                         </NavItem> */}
                         <div className="dropdown">
-                            <button className="btn" type="button" onClick={this.toggleNotificationDropdown} data-toggle="dropdown">
+                            <button className="btn position-relative" type="button" onClick={this.toggleNotificationDropdown} data-toggle="dropdown">
                                 <i class="fas fa-bell"></i>
+                                {
+                                    this.props.notifications.filter(n => n.status === 'PENDING').length > 0 &&
+                                    <span className="position-absolute bg-danger text-center text-white rounded-circle" 
+                                        style={{width: 15, height: 15, fontSize: 10, right: 5, top: 0}}>
+                                        {this.props.notifications.filter(n => n.status === 'PENDING').length}
+                                    </span>
+                                }
                             </button>
                             <div className={"dropdown-menu " + (this.state.notificationDropdownOpen ? "show" : "")}>
                                 {
