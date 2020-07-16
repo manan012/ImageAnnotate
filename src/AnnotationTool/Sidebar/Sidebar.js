@@ -4,6 +4,7 @@ import "../../../node_modules/@fortawesome/fontawesome-free/css/all.css";
 import { connect } from "react-redux";
 import DatasetListOverview from "../../Dashboards/OverviewDashBoard/DatasetListOverview";
 import { flatten } from "ramda";
+import { baseURL } from "../../config";
 
 // This file has 2 main functions
 //  1. It lets up upload file from the user's device (Code line: 22-36)
@@ -21,10 +22,10 @@ class Sidebar extends Component {
   }
 
   componentWillMount() {
-    const baseURL = 'http://localhost:5000/public/'
+    const publicURL = baseURL + 'public/'
     this.props.images.map(imgUrl => {
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', baseURL + imgUrl);
+      xhr.open('GET', publicURL + imgUrl);
       xhr.responseType = "blob";
       xhr.onload = () => {
         var blob = xhr.response;

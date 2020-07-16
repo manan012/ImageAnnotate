@@ -11,6 +11,7 @@ import rootReducer from "./store";
 import { logger } from "redux-logger";
 import rootSaga from "./sagas";
 import registerServiceWorker from "./registerServiceWorker";
+import { baseURL } from "./config";
 
 //Default axio headers
 const sagaMiddleware = createSagaMiddleware();
@@ -31,8 +32,7 @@ store.subscribe(() => {
 })
 store.subscribe(() => {if (store.getState().user.loggedIn) axios.defaults.headers['x_auth_token'] = store.getState().user.token})
 store.subscribe(() => {if (store.getState().user.status === 'LOGOUT') localStorage.removeItem('token')})
-axios.defaults.baseURL = 'http://localhost:5000/'
-//axios.defaults.baseURL = 'https://glacial-chamber-36231.herokuapp.com/';
+axios.defaults.baseURL = baseURL;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 
 ReactDOM.render(

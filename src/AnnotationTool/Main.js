@@ -75,6 +75,11 @@ class App extends React.Component {
     console.log(this.state);
   }
 
+  componentDidCatch(error, errorInfo) {
+    // You can also log the error to an error reporting service
+    console.log(error, errorInfo);
+  }
+
   componentDidMount = () => {
     this.setState({
       drawingAreaHeight: this.drawingArea.getBoundingClientRect().height,
@@ -624,9 +629,9 @@ class App extends React.Component {
             </h1>
           </div>
           <div className="col-md-2 name1">
-            <Button color="primary" type="submit" onClick={this.handleSubmit}>
+            {/* <Button color="primary" type="submit" onClick={this.handleSubmit}>
               Log out
-            </Button>
+            </Button> */}
           </div>
           <Col xs={12} className={"py-2"}>
             <ImageSelector

@@ -3,6 +3,7 @@ import {Container, Button, Table, Input, Modal, ModalHeader, ModalBody, Breadcru
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
 import FileUpload from './FileUpload';
+import { baseURL } from '../../config';
 
 class DatasetDisplay extends Component {
     constructor(props) {
@@ -93,7 +94,7 @@ class DatasetDisplay extends Component {
                                     </td>
                                     <td className="text-dark">{img.imageName}</td>
                                     <td>
-                                        <a href={'http://localhost:5000/public/'+img.location} target="_blank">{'http://localhost:5000/public/'+img.location}</a>
+                                        <a href={baseURL + 'public/'+img.location} target="_blank">{baseURL + 'public/'+img.location}</a>
                                     </td>
                                 </tr>
                             ))
