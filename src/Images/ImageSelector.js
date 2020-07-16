@@ -35,7 +35,7 @@ class ImageSelector extends Component {
 
   render() {
     return (
-      <Container className="d-flex align-items-center">
+      <Container className="d-none align-items-center">
         <div className="mr-2">
           <Button disabled={this.state.seleted <= 0} onClick={this.moveBackward}><i class="fas fa-long-arrow-alt-left"></i></Button>
         </div>

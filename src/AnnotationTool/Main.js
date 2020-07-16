@@ -620,20 +620,9 @@ class App extends React.Component {
     } = this;
     points = points.concat(mousePos)
     return (
-      <Container fuild>
+      <Container fluid>
         <Row className="border-bottom">
-          <div className="col-md-2 "></div>
-          <div className="col-md-8 name " style={{ color: "#08c751" }}>
-            <h1>
-              <b>Image Annotator</b>
-            </h1>
-          </div>
-          <div className="col-md-2 name1">
-            {/* <Button color="primary" type="submit" onClick={this.handleSubmit}>
-              Log out
-            </Button> */}
-          </div>
-          <Col xs={12} className={"py-2"}>
+          <Col xs={12}>
             <ImageSelector
               images={this.state.images}
               onComplete={(idx, image) => this.updateImage(idx, image)}
@@ -643,7 +632,7 @@ class App extends React.Component {
             />
           </Col>
         </Row>
-        <Row>
+        <div className="d-flex">
           <div className="my-2 border">
             <Sidebar
               imageSet={this.imageSet}
@@ -654,12 +643,14 @@ class App extends React.Component {
               saveAnnotationsAsJson={this.saveAnnotationsAsJson}
               setDrawingMode={this.setDrawingMode}
               drawingMode={this.state.drawingMode}
+              selectNext={() => {this.state.selectedImage && this.state.selectedImage.idx !== this.state.images.length -1 ? this.selectImage(this.state.selectedImage.idx + 1) : null}}
+              selectPrev={() => {this.state.selectedImage && this.state.selectedImage.idx !== 0  ? this.selectImage(this.state.selectedImage.idx - 1) : null}}
             />
           </div>
           <div
             id="app"
             ref={(ref) => (this.drawingArea = ref)}
-            className="col-md-9 m-2 p-0 border overflow-hidden"
+            className="flex-grow-1 m-2 p-0 border overflow-hidden"
           >
             <Stage
               ref={(node) => {
@@ -784,7 +775,7 @@ class App extends React.Component {
               </Layer>
             </Stage>
           </div>
-          <div className="col-md-2 p-0 border my-2">
+          <div className="p-0 border my-2" style={{"width": 200}}>
             <NameAnnotations
               annotations={
                 this.state.selectedImage
@@ -797,7 +788,7 @@ class App extends React.Component {
               updatePolygon={this.updatePolygon}
             />
           </div>
-        </Row>
+        </div>
       </Container>
     );
   }

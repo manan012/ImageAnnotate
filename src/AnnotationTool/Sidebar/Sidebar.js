@@ -62,7 +62,7 @@ class Sidebar extends Component {
     return (
       <div className="">
         <div>
-          <label
+          {/* <label
             htmlFor="file"
             className="submitButton"
             title="Select File to Upload"
@@ -75,9 +75,17 @@ class Sidebar extends Component {
             hidden="hidden"
             type="file"
             onChange={this.newImages}
-          />
+          /> */}
+          <div className="submitButton" onClick={this.props.selectPrev}>
+            <i class="fas fa-long-arrow-alt-left fa-3x"></i>
+          </div>
         </div>
         <div>
+          <div className="submitButton" onClick={this.props.selectNext}>
+            <i class="fas fa-long-arrow-alt-right fa-3x"></i>
+          </div>
+        </div>
+        {/* <div>
           <label
             htmlFor="files"
             className="submitButton"
@@ -94,7 +102,7 @@ class Sidebar extends Component {
             directory=""
             onChange={this.newImages}
           />
-        </div>
+        </div> */}
         <div>
           <button
             className="submitButton"
