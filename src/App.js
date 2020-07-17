@@ -79,7 +79,7 @@ class App extends Component {
                       <Signin {...props} handleUser={this.signInUser} />
                     )}
                   ></Route>
-                  <Route
+                  {/* <Route
                     exact
                     path="/label"
                     component={() => <Redirect to="/signin" />}
@@ -93,8 +93,8 @@ class App extends Component {
                     exact
                     path="/overview"
                     component={() => <Redirect to="/signin" />}
-                  />
-                  {/* <Route path="*" component={() => <Redirect to="/" />} /> */}
+                  /> */}
+                  <Route path="*" component={() => <Redirect to="/" />} />
                 </Switch>
               </Router>
             )
