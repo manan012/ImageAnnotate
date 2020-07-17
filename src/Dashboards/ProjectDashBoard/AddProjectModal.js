@@ -27,6 +27,7 @@ class AddProjectModal extends Component {
     handleDescriptionChange = e => this.setState({description: e.target.value});
     handleSubmit = (e) => {
         e.preventDefault();
+        console.log('exicuted');
         this.props.addProject(this.state.name, this.state.description, this.state.attachedDataset.map(d => d._id));
         this.setState({name: "", description: "", step: 0});
         this.props.toggle();
@@ -41,7 +42,7 @@ class AddProjectModal extends Component {
         e.preventDefault();
         e.stopPropagation();
         this.props.createDatasetWithImages(this.state.files, this.state.datasetName);
-        this.setState({files: [], name: "", activeTab: "existing"});
+        this.setState({files: [], activeTab: "existing"});
     }
     render() {
         return (
