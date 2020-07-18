@@ -22,22 +22,22 @@ class Sidebar extends Component {
   }
 
   componentWillMount() {
-    const publicURL = baseURL + 'public/'
-    this.props.images.map(imgUrl => {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', publicURL + imgUrl);
-      xhr.responseType = "blob";
-      xhr.onload = () => {
-        var blob = xhr.response;
-        this.props.addImages([{
-          file: blob,
-          readed: 0,
-          image: "",
-          annotations: { rectangles: [], circles: [], polygons: [], lines: [] },
-        }])
-      }
-      xhr.send();
-    });
+    // this.props.images.map(img => {
+    //   var xhr = new XMLHttpRequest();
+    //   xhr.open('GET', publicURL + img.location);
+    //   xhr.responseType = "blob";
+    //   xhr.onload = () => {
+    //     var blob = xhr.response;
+    //     this.props.addImages([{
+    //       file: blob,
+    //       name: img.imageName,
+    //       readed: 0,
+    //       image: "",
+    //       annotations: { rectangles: [], circles: [], polygons: [], lines: [] },
+    //     }])
+    //   }
+    //   xhr.send();
+    // });
   }
 
   //Add new images to read
@@ -84,6 +84,28 @@ class Sidebar extends Component {
           <div className="submitButton" onClick={this.props.selectNext}>
             <i class="fas fa-long-arrow-alt-right fa-3x"></i>
           </div>
+        </div>
+        <div>
+          <button
+              className={"submitButton " + (this.props.drawingMode === 'zoomIn' ? 'active' : "")}
+              title="Zoom In"
+              onClick={() => {
+                this.props.setDrawingMode('zoomIn');
+              }}
+            >
+              <i class="fas fa-search-plus fa-3x"></i>
+          </button>
+        </div>
+        <div>
+          <button
+              className={"submitButton " + (this.props.drawingMode === 'zoomOut' ? 'active' : "")}
+              title="Zoom Out"
+              onClick={() => {
+                this.props.setDrawingMode('zoomOut');
+              }}
+            >
+              <i class="fas fa-search-minus fa-3x"></i>
+          </button>
         </div>
         {/* <div>
           <label
@@ -181,12 +203,6 @@ class Sidebar extends Component {
       </div>
     );
   }
-}
+} 
 
-const mapStateToProp = (state) => ({
-  images: (state.projects.project.status === 'NOT_FETCHED' ? [] 
-          : flatten(state.projects.project.attachedDatasets.
-          map(dataset => dataset.images.map(img => img.location))))
-}) 
-
-export default connect(mapStateToProp, null)(Sidebar);
+export default Sidebar;

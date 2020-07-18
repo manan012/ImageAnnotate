@@ -8,13 +8,15 @@ import DrawCircle from "./Circle/DrawCircle";
 import ImageSelector from "../Images/ImageSelector";
 import { Container, Row, Col, Button } from "reactstrap";
 import NameAnnotations from "./Names/NameAnnotations";
-import { omit } from "ramda";
+import { omit, flatten } from "ramda";
 import detectObject from "../utils/objectDetection";
 import saveObjectAsJSONFfile from "../utils/saveObjectAsJSONFile";
 import Rectangle from "./Rectangle/Rectangle";
 import Circ from "./Circle/Circ";
 import DrawPolygons from "./Polygon/DrawPolygons";
 import DisplayLines from "./Line/DisplayLines";
+import { connect } from "react-redux";
+import { baseURL } from "../config";
 
 //  This is the main page for Image Annotation.
 //  It has a Sidebar component which has buttons which serves different purposes
@@ -27,7 +29,6 @@ class App extends React.Component {
     this.state = {
       images: [],
       selectedImage: undefined,
-      stageWidth: 1000,
       mouseDown: false,
       drawingMode: "rectangle",
       rector: false,
@@ -39,6 +40,8 @@ class App extends React.Component {
       selectedCircularNode: null,
       selectedLineNode: null,
       selectedPolygonNode: null,
+      stageScaleX: 1,
+      stageScaleY: 1,
       rectangle: {
         x: 0,
         y: 0,
@@ -76,7 +79,6 @@ class App extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    // You can also log the error to an error reporting service
     console.log(error, errorInfo);
   }
 
@@ -85,14 +87,72 @@ class App extends React.Component {
       drawingAreaHeight: this.drawingArea.getBoundingClientRect().height,
       drawingAreaWidth: this.drawingArea.getBoundingClientRect().width,
     });
-    // window.addEventListener("resize", this.updateDrawingAreaSize);
+    window.addEventListener("resize", this.updateDrawingAreaSize);
     // window.addEventListener("resize", this.correctScaleOfSelectedImage);
+    const publicURL = baseURL + 'public/'
+    this.props.imagesInAllDataset.map(async (img) => {
+      const blob = await this.downloadFile(publicURL + img.location);
+      const readedImg = await this.readImage(blob);
+
+      const height = readedImg.height;
+      const width = readedImg.width;
+      const ratio = width/height;
+      const drawingAreaHeight = this.state.drawingAreaHeight;
+      const drawingAreaWidth = this.state.drawingAreaWidth;
+      const resizedWidth = drawingAreaWidth;
+      const resizedHeight = resizedWidth/ratio;
+      const scaleX = resizedWidth/width;
+      const scaleY = resizedHeight/height;
+
+      this.addImages([{
+        file: blob,
+        name: img.imageName,
+        image: readedImg,
+        height: height, 
+        width: width, 
+        ratio: ratio,
+        resizedHeight: resizedHeight,
+        resizedWidth: resizedWidth,
+        scaleX: scaleX,
+        scaleY: scaleY,
+        annotations: { rectangles: [], circles: [], polygons: [], lines: [] },
+      }])
+    })
   };
 
+  downloadFile = (url) => new Promise((res, rej) => {
+    try {
+      let xhr = new XMLHttpRequest();
+      xhr.open('GET', url);
+      xhr.responseType="blob";
+      xhr.onload = () => {
+        console.log(xhr.response);
+        return res(xhr.response);
+      }
+      xhr.send();
+    } catch (e) {
+      return rej(e);
+    }
+  })
+
+  readImage = (blob) => new Promise((res, rej) => {
+    try {
+      const imageUrl = URL.createObjectURL(blob);
+      const img = document.createElement('img');
+      img.src = imageUrl;
+      img.onload = () => {
+        res(img);
+      }
+    } catch(e) {
+      rej(e);
+    }
+  })
+
   updateDrawingAreaSize = () => {
+    const boundingRect = this.drawingArea.getBoundingClientRect();
     this.setState({
-      drawingAreaHeight: this.drawingArea.getBoundingClientRect().height,
-      drawingAreaWidth: this.drawingArea.getBoundingClientRect().width,
+      drawingAreaHeight: boundingRect.height,
+      drawingAreaWidth: boundingRect.width,
     });
   };
 
@@ -102,7 +162,9 @@ class App extends React.Component {
   };
 
   addImages = (newImages) => {
-    this.setState((state) => ({ images: [...state.images, ...newImages] }));
+    this.setState((state) => ({ images: [...state.images, ...newImages] }), () => {
+      if (!this.state.selectedImage) this.selectImage(0);
+    });
   };
 
   updateImage = (idx, updatedImages) => {
@@ -504,6 +566,21 @@ class App extends React.Component {
     this.selectPolygonNode(null);
   }
 
+  zoomIn = (x, y) => {
+    console.log(x, y);
+    this.setState(state => this.setState({
+      stageScaleX: state.stageScaleX+0.2,
+      stageScaleY: state.stageScaleY+0.2
+    }))
+  }
+
+  zoomOut = (x, y) => {
+    this.setState(state => this.setState({
+      stageScaleX: state.stageScaleX <= 0.5 ? state.stageScaleX : state.stageScaleX-0.2,
+      stageScaleY: state.stageScaleY <= 0.5 ? state.stageScaleY : state.stageScaleY-0.2
+    }))
+  }
+
   //Signout Button Action
   handleSubmit(event) {
     event.preventDefault();
@@ -604,6 +681,18 @@ class App extends React.Component {
         const mousePos = stage.getPointerPosition();
         this.startDrawingLine(mousePos.x, mousePos.y);
       }
+
+      if (this.state.drawingMode === 'zoomIn') {
+        const stage = event.target.getStage();
+        const mousePos = stage.getPointerPosition();
+        this.zoomIn(mousePos.x, mousePos.y);
+      }
+
+      if (this.state.drawingMode === 'zoomOut') {
+        const stage = event.target.getStage();
+        const mousePos = stage.getPointerPosition();
+        this.zoomOut(mousePos.x, mousePos.y);
+      }
     }
   };
 
@@ -623,13 +712,13 @@ class App extends React.Component {
       <Container fluid>
         <Row className="border-bottom">
           <Col xs={12}>
-            <ImageSelector
+            {/* <ImageSelector
               images={this.state.images}
               onComplete={(idx, image) => this.updateImage(idx, image)}
               onSelect={(idx) => this.selectImage(idx)}
               drawingAreaWidth={this.state.drawingAreaWidth}
               drawingAreaHeight={this.state.drawingAreaHeight}
-            />
+            /> */}
           </Col>
         </Row>
         <div className="d-flex">
@@ -650,15 +739,18 @@ class App extends React.Component {
           <div
             id="app"
             ref={(ref) => (this.drawingArea = ref)}
-            className="flex-grow-1 m-2 p-0 border overflow-hidden"
+            className="flex-grow-1 m-2 p-0 border"
+            style={{height: "90vh", overflow: "scroll"}}
           >
             <Stage
               ref={(node) => {
                 this.stage = node;
               }}
+              scaleX={this.state.stageScaleX}
+              scaleY={this.state.stageScaleY}
               container="app"
-              width={this.state.stageWidth}
-              height={window.innerHeight * 0.88}
+              width={this.state.drawingAreaWidth}
+              height={this.state.selectedImage ? this.state.selectedImage.resizedHeight : this.state.drawingAreaHeight}
               onMouseDown={handleStageMouseDown}
               onTouchStart={handleStageMouseDown}
               onMouseMove={handleNewShapeChange}
@@ -687,8 +779,8 @@ class App extends React.Component {
                       ? this.state.selectedImage.scaleY
                       : 1
                   }
-                  rector={this.state.rector}
-                  circle={this.state.circle}
+                  height={this.state.selectedImage ? this.state.selectedImage.height: 0}
+                  width={this.state.selectedImage ? this.state.selectedImage.width : 0}
                 />
               </Layer>
 
@@ -794,4 +886,10 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProp = (state) => ({
+  imagesInAllDataset: (state.projects.project.status === 'NOT_FETCHED' ? [] 
+          : flatten(state.projects.project.attachedDatasets.
+          map(dataset => dataset.images)))
+})
+
+export default connect(mapStateToProp)(App);

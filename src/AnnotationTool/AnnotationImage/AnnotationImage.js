@@ -9,13 +9,13 @@ class AnnotationImage extends React.Component {
   };
 
   async componentDidUpdate() {
-    const image = new window.Image();
-    image.src = this.props.image;
-    image.onload = () => {
-      this.setState({
-        image,
-      });
-    };
+    // const image = new window.Image();
+    // image.src = this.props.image;
+    // image.onload = () => {
+    //   this.setState({
+    //     image,
+    //   });
+    // };
   }
 
   handleMouseOver = (event) => {
@@ -75,9 +75,9 @@ class AnnotationImage extends React.Component {
     } = this;
     return (
       <Image
-        image={this.state.image}
-        height={this.state.image.height*this.props.scaleY}
-        width={this.state.image.width*this.props.scaleX}
+        image={this.props.image}
+        height={this.props.height*this.props.scaleY}
+        width={this.props.width*this.props.scaleX}
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}
         onMouseDown={handleMouseDown}
