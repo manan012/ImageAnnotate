@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { deleteProject } from "../sagas/projectSagas";
 import { Link } from "react-router-dom";
 
 class ListItem extends Component {

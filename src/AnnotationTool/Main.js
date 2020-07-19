@@ -5,8 +5,7 @@ import "./Main.css";
 import Sidebar from "./Sidebar/Sidebar";
 import DrawRect from "./Rectangle/DrawRect";
 import DrawCircle from "./Circle/DrawCircle";
-import ImageSelector from "../Images/ImageSelector";
-import { Container, Row, Col, Button } from "reactstrap";
+import { Container } from "reactstrap";
 import NameAnnotations from "./Names/NameAnnotations";
 import { omit, flatten } from "ramda";
 import detectObject from "../utils/objectDetection";
@@ -17,11 +16,6 @@ import DrawPolygons from "./Polygon/DrawPolygons";
 import DisplayLines from "./Line/DisplayLines";
 import { connect } from "react-redux";
 import { baseURL } from "../config";
-
-//  This is the main page for Image Annotation.
-//  It has a Sidebar component which has buttons which serves different purposes
-//  It has a Canvas built on Konva.js for Image
-//  It has a Annotation bar which have Input field for Annoting the image
 
 class App extends React.Component {
   constructor(props) {
@@ -532,11 +526,11 @@ class App extends React.Component {
   saveAnnotationsAsJson = () => {
     const data = {};
     this.state.images.map((img) => {
-      data[img.file.name] = img.annotations;
+      data[img.name] = img.annotations;
     });
     if (this.state.selectedImage) {
       data[
-        this.state.selectedImage.file.name
+        this.state.selectedImage.name
       ] = this.state.selectedImage.annotations;
     }
     saveObjectAsJSONFfile(data, "annotations");
@@ -710,17 +704,6 @@ class App extends React.Component {
     points = points.concat(mousePos)
     return (
       <Container fluid>
-        <Row className="border-bottom">
-          <Col xs={12}>
-            {/* <ImageSelector
-              images={this.state.images}
-              onComplete={(idx, image) => this.updateImage(idx, image)}
-              onSelect={(idx) => this.selectImage(idx)}
-              drawingAreaWidth={this.state.drawingAreaWidth}
-              drawingAreaHeight={this.state.drawingAreaHeight}
-            /> */}
-          </Col>
-        </Row>
         <div className="d-flex">
           <div className="my-2 border">
             <Sidebar
