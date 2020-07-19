@@ -1,10 +1,8 @@
 const cocoSsd = require("@tensorflow-models/coco-ssd");
 
 const detectObject = async (img) => {
-  const imgEle = document.createElement("img");
-  imgEle.src = img;
   const model = await cocoSsd.load();
-  const predictions = await model.detect(imgEle);
+  const predictions = await model.detect(img);
   return predictions.map((prediction) => ({
     name: prediction.class,
     x: prediction.bbox[0],

@@ -226,8 +226,8 @@ class App extends React.Component {
   anotateSeletedImage = () => {
     if (!this.state.selectedImage) return;
     (async (selectedImage) => {
+      console.log(selectedImage);
       detectObject(selectedImage.image).then((newRectangles) => {
-        //console.log(newRectangles);
         this.updateImage(selectedImage.idx, {
           ...omit(["idx"], selectedImage),
           annotations: {
@@ -732,7 +732,7 @@ class App extends React.Component {
               scaleX={this.state.stageScaleX}
               scaleY={this.state.stageScaleY}
               container="app"
-              width={this.state.drawingAreaWidth}
+              width={this.state.drawingAreaWidth-20}
               height={this.state.selectedImage ? this.state.selectedImage.resizedHeight : this.state.drawingAreaHeight}
               onMouseDown={handleStageMouseDown}
               onTouchStart={handleStageMouseDown}
