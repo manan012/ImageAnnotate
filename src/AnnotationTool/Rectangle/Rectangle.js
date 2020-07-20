@@ -54,6 +54,7 @@ class Rectangle extends React.Component {
                 height,
                 name,
                 stroke,
+                strokeWidth,
                 scaleX,
                 scaleY,
                 fill,
@@ -78,7 +79,7 @@ class Rectangle extends React.Component {
                     fill={fill}
                     id={this.props.id}
                     opacity={opacity}
-                    strokeWidth={5}
+                    strokeWidth={strokeWidth}
                     name={name}
                     className="Rect"
                     // save state on dragend or transformend

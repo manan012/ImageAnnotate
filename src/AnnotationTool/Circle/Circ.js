@@ -58,6 +58,7 @@ class Circ extends React.Component {
                 opacity,
                 name,
                 stroke,
+                strokeWidth,
                 scaleX,
                 scaleY
             },
@@ -78,7 +79,7 @@ class Circ extends React.Component {
                     fill={fill}
                     opacity={opacity}
                     stroke={stroke}
-                    strokeWidth={5}
+                    strokeWidth={strokeWidth}
                     name={name}
                     className="Circ"
                     id={this.props.id}

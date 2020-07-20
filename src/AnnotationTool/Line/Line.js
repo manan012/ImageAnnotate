@@ -43,7 +43,7 @@ class CustomeLine extends Component {
   render() {
     const {
       state: { points, x, y, closed },
-      props: {transformerOn, selectNode, stroke, fill, opacity},
+      props: {transformerOn, selectNode, stroke, fill, strokeWidth, opacity},
       handleDragMovePoint,
     } = this;
     const flattenedPoints = points
@@ -52,7 +52,7 @@ class CustomeLine extends Component {
         <Group x={x} y={y} draggable onDragEnd={this.handleDragEnd} onCLick={() => selectNode && selectNode()}>
           <Line
             points={flattenedPoints}
-            strokeWidth={5}
+            strokeWidth={strokeWidth}
             stroke={stroke}
             fill={fill}
             opacity={opacity}

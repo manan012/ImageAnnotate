@@ -15,7 +15,7 @@ import Circ from "./Circle/Circ";
 import DrawPolygons from "./Polygon/DrawPolygons";
 import DisplayLines from "./Line/DisplayLines";
 import { connect } from "react-redux";
-import { baseURL } from "../config";
+import { baseURL, shape } from "../config";
 
 class App extends React.Component {
   constructor(props) {
@@ -41,6 +41,7 @@ class App extends React.Component {
         y: 0,
         width: 0,
         height: 0,
+        strokeWidth: shape.reactangle.strokeWidth,
         stroke: "#00A3AA",
         name: "",
       },
@@ -49,19 +50,20 @@ class App extends React.Component {
         y: 0,
         width: 0,
         stroke: "#00A3AA",
+        strokeWidth: shape.circle.strokeWidth,
         name: "",
       },
       polygon: {
         points: [],
         stroke: "#00A3AA",
-        strokeWidth: 5,
+        strokeWidth: shape.polygon.strokeWidth,
         name: ""
       },
       line: {
         point1: [],
         point2: [],
         stroke: "#00A3AA",
-        strokeWidth: 5,
+        strokeWidth: shape.line.strokeWidth,
         name: ""
       },
       mousPos: [0, 0],
@@ -199,6 +201,10 @@ class App extends React.Component {
             : img
         ),
         selectedImage: { idx: idx, ...this.state.images[idx] },
+        selectedRectangulareNode: null,
+        selectedCircularNode: null,
+        selectedLineNode: null,
+        selectedPolygonNode: null,
       }
   });
   };
@@ -834,7 +840,7 @@ class App extends React.Component {
                     <Line 
                       points={points} 
                       stroke='#00A3AA'
-                      strokeWidth={5}
+                      strokeWidth={this.state.polygon.strokeWidth}
                     />
                   :null
                 }
@@ -843,7 +849,7 @@ class App extends React.Component {
                     <Line 
                       points={[...this.state.line.point1, ...this.state.line.point2]} 
                       stroke='#00A3AA'
-                      strokeWidth={5}
+                      strokeWidth={this.state.line.strokeWidth}
                     />
                   :null
                 }

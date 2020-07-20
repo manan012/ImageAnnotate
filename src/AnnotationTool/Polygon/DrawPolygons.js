@@ -28,6 +28,7 @@ class DrawPolygons extends Component {
                             selectNode={()=>this.props.selectNode(i)}
                             points={splitEvery(2, poly.points)} closed={true} 
                             stroke={poly.stroke}
+                            strokeWidth={poly.strokeWidth}
                             fill={poly.fill}
                             opacity={poly.opacity}
                             onDragEnd={(event) => this.handleDrag(i, event)} onTransFormEnd={(points) => this.handleChange(i, points)}/>

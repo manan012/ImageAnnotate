@@ -51,6 +51,7 @@ class DisplayLines extends Component {
                             points={[line.point1, line.point2]} 
                             onDragEnd={(e) => this.handleChange(i, e)}
                             stroke={line.stroke} 
+                            strokeWidth={line.strokeWidth}
                             onTransFormEnd={(points) => this.handleTransformation(i, points)} />
                 })
             }
