@@ -15,6 +15,7 @@ import Circ from "./Circle/Circ";
 import DrawPolygons from "./Polygon/DrawPolygons";
 import DisplayLines from "./Line/DisplayLines";
 import { connect } from "react-redux";
+import saveObjectAsXMLFile from '../utils/saveAsXMLFile'
 import { baseURL, shape } from "../config";
 
 class App extends React.Component {
@@ -529,18 +530,31 @@ class App extends React.Component {
     }));
   };
 
-  saveAnnotationsAsJson = () => {
-    const data = {};
-    this.state.images.map((img) => {
-      data[img.name] = img.annotations;
-    });
+  getData = () => {
+    const data = this.state.images.map((img) => {
+      return {image: {
+        name: img.name,
+        annotations: img.annotations
+      }
+    }});
     if (this.state.selectedImage) {
-      data[
-        this.state.selectedImage.name
-      ] = this.state.selectedImage.annotations;
+      data.push({image: {
+        name: this.state.selectedImage.name,
+        annotations: this.state.selectedImage.annotations
+      }})
     }
+    return {images: data}
+  }
+
+  saveAnnotationsAsJson = () => {
+    const data = this.getData();
     saveObjectAsJSONFfile(data, "annotations");
   };
+
+  saveAnnotationsXML = () => {
+    const data = this.getData();
+    saveObjectAsXMLFile(data, 'annotations');
+  }
 
   selectRectangularNode = (node) => {
     this.setState({selectedRectangulareNode: node});
@@ -719,6 +733,7 @@ class App extends React.Component {
               addImages={this.addImages}
               anotateSeletedImage={this.anotateSeletedImage}
               saveAnnotationsAsJson={this.saveAnnotationsAsJson}
+              saveAnnotationsAsXML={this.saveAnnotationsXML}
               setDrawingMode={this.setDrawingMode}
               drawingMode={this.state.drawingMode}
               selectNext={() => {this.state.selectedImage && this.state.selectedImage.idx !== this.state.images.length -1 ? this.selectImage(this.state.selectedImage.idx + 1) : null}}

@@ -121,6 +121,15 @@ class Sidebar extends Component {
             <i className="fas fa-download fa-3x"></i>
           </button>
         </div>
+        <div>
+          <button
+            className="submitButton"
+            title="Save XML"
+            onClick={() => this.props.saveAnnotationsAsXML()}
+          >
+            <i className="fas fa-download fa-3x"></i>
+          </button>
+        </div>
       </div>
     );
   }
